@@ -1,6 +1,9 @@
+import { ThemeToggle } from "@/components/theme-toggle";
+
 export default function Home() {
   return (
     <div className="bg-gray-900 h-screen flex flex-col items-center justify-center text-center">
+      <ThemeToggle />
       <main className="text-white">
         <p className="mt-4 text-lg">Coming Soon: The Unofficial Home for</p>
         <h1 className="text-4xl font-bold">Project K</h1>
