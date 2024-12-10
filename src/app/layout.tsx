@@ -46,14 +46,14 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* <SignedOut>
+            <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
 
-            <ThemeToggle /> */}
+            <ThemeToggle />
 
             {children}
           </ThemeProvider>
