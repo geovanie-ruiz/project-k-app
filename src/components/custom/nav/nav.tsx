@@ -1,19 +1,31 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
+import { useTheme } from 'next-themes';
 
 interface MenuProps {
   className: string;
 }
 
+function isDarkTheme(
+  theme: string | undefined,
+  systemTheme: 'dark' | 'light' | undefined
+) {
+  if (theme === 'light') return false;
+  return theme === 'dark' || systemTheme === 'dark';
+}
+
 export function NavBar() {
+  const { theme, systemTheme } = useTheme();
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full max-w-7xl mx-auto px-4">
@@ -97,13 +109,17 @@ export function NavBar() {
               </div>
             </SheetContent>
           </Sheet>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 min-w-32">
             <ThemeToggle />
             <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <UserButton
+                appearance={{
+                  baseTheme: isDarkTheme(theme, systemTheme) ? dark : undefined,
+                }}
+              />
             </SignedIn>
           </div>
         </div>
