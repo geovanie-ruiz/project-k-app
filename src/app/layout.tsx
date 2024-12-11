@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavBar } from "@/components/custom/nav/nav";
@@ -42,6 +43,7 @@ export default function RootLayout({
           >
             <NavBar />
             {children}
+            <SpeedInsights />
           </ThemeProvider>
         </body>
       </html>
