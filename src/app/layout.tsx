@@ -5,6 +5,7 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
+import { Footer } from '@/components/custom/footer';
 import { NavBar } from '@/components/custom/nav';
 import { ThemeProvider } from '@/components/theme-provider';
 
@@ -46,6 +47,7 @@ export default function RootLayout({
             <main className="container mx-auto my-auto px-4 py-8">
               {children}
             </main>
+            <Footer />
             <SpeedInsights />
           </ThemeProvider>
         </body>
