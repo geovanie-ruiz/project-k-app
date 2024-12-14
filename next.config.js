@@ -1,11 +1,12 @@
 module.exports = {
   images: {
+    loader: 'custom',
+    loaderFile: './src/lib/cloudflareLoader.ts',
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'media.discordapp.net',
+        hostname: 'imagedelivery.net',
         port: '',
-        pathname: '/attachments/**',
       },
     ],
   },
