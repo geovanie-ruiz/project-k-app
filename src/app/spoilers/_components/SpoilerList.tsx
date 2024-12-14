@@ -2,9 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Spoiler } from '@/lib/database.types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { Spoiler } from '../_types/spoiler';
 
 import { useInView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';
