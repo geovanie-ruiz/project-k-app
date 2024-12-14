@@ -40,7 +40,7 @@ export function NavBar() {
               width={48}
               height={40}
             />
-            <span className="sr-only">Project K</span>
+            <span className="sr-only">Two Runes</span>
           </Link>
           <nav className="hidden md:flex justify-evenly gap-4">
             <NavLink
