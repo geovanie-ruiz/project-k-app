@@ -1,8 +1,14 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+
+// more on routing: https://clerk.com/docs/references/nextjs/clerk-middleware#dynamic-keys
+
+const isProtectedRoute = createRouteMatcher(['/profile(.*)'])
 
 // This Middleware does not protect any routes by default.
 // See https://clerk.com/docs/references/nextjs/clerk-middleware for more information about configuring your Middleware
-export default clerkMiddleware();
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) await auth.protect()
+})
 
 export const config = {
   matcher: [
