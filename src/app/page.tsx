@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className=" flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-none shadow-none">
         <CardContent className="text-center">
           <p className="mt-4 text-lg">Coming Soon: The Unofficial Home for</p>
