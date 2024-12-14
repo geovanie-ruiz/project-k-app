@@ -1,14 +1,14 @@
 'use server';
 
-import { createClerkSupabaseClientSsr } from '@/app/ssr/client';
-import { Spoiler } from '@/lib/database.types';
+import { createClient } from '@/utils/supabase/createClient';
+import { Spoiler } from '../_types/spoiler';
 
 export async function fetchSpoilers(
   page: number = 1,
   pageSize: number = 6
 ): Promise<{ spoilers: Spoiler[]; hasMore: boolean }> {
   // Use the custom Supabase client you created
-  const client = await createClerkSupabaseClientSsr();
+  const client = await createClient();
 
   // Set up pagination
   const startIndex = (page - 1) * pageSize;
