@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
@@ -11,63 +12,45 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
+import { isDarkTheme } from '@/lib/utils';
+import clsx from 'clsx';
+
 interface MenuProps {
   className: string;
 }
 
-function isDarkTheme(
-  theme: string | undefined,
-  systemTheme: 'dark' | 'light' | undefined
-) {
-  if (theme === 'light') return false;
-  return theme === 'dark' || systemTheme === 'dark';
+interface NavItem {
+  url: string;
+  label: string;
+  currentPathname: string;
 }
 
 export function NavBar() {
   const { theme, systemTheme } = useTheme();
+  const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-14 items-center">
-          <Link href="#" className="flex items-center" prefetch={false}>
+          <Link href="/" className="flex items-center" prefetch={false}>
             <Image
-              src="/logo.svg"
+              src="/logo-outline.png"
               alt="Temporary logo"
-              width={125}
+              width={48}
               height={40}
             />
             <span className="sr-only">Project K</span>
           </Link>
           <nav className="hidden md:flex justify-evenly gap-4">
-            <Link
-              href="#"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
-              prefetch={false}
-            >
-              Spoilers
-            </Link>
-            <Link
-              href="#"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
-              prefetch={false}
-            >
-              Card Library
-            </Link>
-            <Link
-              href="#"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
-              prefetch={false}
-            >
-              Deck Builder
-            </Link>
-            <Link
-              href="#"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
-              prefetch={false}
-            >
-              Events
-            </Link>
+            <NavLink
+              url="/spoilers"
+              label="Spoilers"
+              currentPathname={pathname}
+            />
+            <NavLink url="#" label="Card Library" currentPathname={pathname} />
+            <NavLink url="#" label="Deck Builder" currentPathname={pathname} />
+            <NavLink url="#" label="Events" currentPathname={pathname} />
           </nav>
           <Sheet>
             <SheetTrigger asChild>
@@ -79,7 +62,7 @@ export function NavBar() {
             <SheetContent side="left">
               <div className="grid gap-6 p-6">
                 <Link
-                  href="#"
+                  href="/spoilers"
                   className="text-sm font-medium hover:underline underline-offset-4"
                   prefetch={false}
                 >
@@ -119,6 +102,8 @@ export function NavBar() {
                 appearance={{
                   baseTheme: isDarkTheme(theme, systemTheme) ? dark : undefined,
                 }}
+                userProfileMode="navigation"
+                userProfileUrl="/profile"
               />
             </SignedIn>
           </div>
@@ -146,5 +131,21 @@ function MenuIcon(props: MenuProps) {
       <line x1="4" x2="20" y1="6" y2="6" />
       <line x1="4" x2="20" y1="18" y2="18" />
     </svg>
+  );
+}
+
+function NavLink(props: NavItem) {
+  return (
+    <Link
+      href={props.url}
+      className={clsx(
+        'font-medium flex items-center text-sm transition-colors hover:underline',
+        {
+          'text-blue-500': props.currentPathname === props.url,
+        }
+      )}
+    >
+      {props.label}
+    </Link>
   );
 }
