@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900">
+    <footer className="bg-neutral-200 dark:bg-gray-800">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
@@ -92,6 +92,9 @@ export function Footer() {
             2Runes.gg was created under Riot Games&apos; &quot;Legal Jibber
             Jabber&quot; policy using assets owned by Riot Games. Riot Games
             does not endorse or sponsor this project.
+            <br />
+            All original content is © 2024 2Runes.gg and may not be used or
+            reproduced without consent.
           </span>
         </div>
       </div>
