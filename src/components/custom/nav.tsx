@@ -33,15 +33,17 @@ export function NavBar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-14 items-center">
-          <Link href="/" className="flex items-center" prefetch={false}>
-            <Image
-              src="/logo-outline.png"
-              alt="Temporary logo"
-              width={48}
-              height={40}
-            />
-            <span className="sr-only">Project K</span>
-          </Link>
+          <div className="flex items-center justify-center min-w-32">
+            <Link href="/" prefetch={false}>
+              <Image
+                src="/logo-outline.png"
+                alt="Temporary logo"
+                width={48}
+                height={40}
+              />
+              <span className="sr-only">Two Runes</span>
+            </Link>
+          </div>
           <nav className="hidden md:flex justify-evenly gap-4">
             <NavLink
               url="/spoilers"
