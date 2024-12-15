@@ -79,7 +79,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link href="/policies/cookies" className="hover:underline">
-                    Cookie Consent
+                    Cookie Policy
                   </Link>
                 </li>
               </ul>
