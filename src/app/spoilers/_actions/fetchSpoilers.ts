@@ -14,12 +14,13 @@ export async function fetchSpoilers(
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize - 1;
 
-  // Query the 'tasks' table to render the list of tasks
   const { data, count, error } = await client
     .from('spoiler')
     .select('*', { count: 'exact' })
     .order('published_on', { ascending: false })
+    .order('description')
     .range(startIndex, endIndex);
+
   if (error) {
     if (error.code === 'PGRST103') {
       // this is safe to ignore; occurs when db isnt big enough

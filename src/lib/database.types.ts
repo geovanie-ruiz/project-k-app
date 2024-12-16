@@ -9,29 +9,115 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      cards: {
+        Row: {
+          colors: string[] | null
+          cost: number | null
+          created_at: string
+          effect: string | null
+          id: string
+          might: number | null
+          number: string | null
+          rarity: string | null
+          recycle: number | null
+          set: string | null
+          subtitle: string | null
+          tags: string[] | null
+          title: string | null
+          type: Database["public"]["Enums"]["card_type"] | null
+        }
+        Insert: {
+          colors?: string[] | null
+          cost?: number | null
+          created_at?: string
+          effect?: string | null
+          id?: string
+          might?: number | null
+          number?: string | null
+          rarity?: string | null
+          recycle?: number | null
+          set?: string | null
+          subtitle?: string | null
+          tags?: string[] | null
+          title?: string | null
+          type?: Database["public"]["Enums"]["card_type"] | null
+        }
+        Update: {
+          colors?: string[] | null
+          cost?: number | null
+          created_at?: string
+          effect?: string | null
+          id?: string
+          might?: number | null
+          number?: string | null
+          rarity?: string | null
+          recycle?: number | null
+          set?: string | null
+          subtitle?: string | null
+          tags?: string[] | null
+          title?: string | null
+          type?: Database["public"]["Enums"]["card_type"] | null
+        }
+        Relationships: []
+      }
+      set: {
+        Row: {
+          id: string
+          name: string
+          release_date: string | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          release_date?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          release_date?: string | null
+        }
+        Relationships: []
+      }
       spoiler: {
         Row: {
+          card: string | null
           card_type: Database["public"]["Enums"]["card_type"]
           description: string | null
           id: string
           image_url: string | null
           published_on: string
+          source_text: string | null
+          source_url: string | null
         }
         Insert: {
+          card?: string | null
           card_type: Database["public"]["Enums"]["card_type"]
           description?: string | null
           id?: string
           image_url?: string | null
           published_on?: string
+          source_text?: string | null
+          source_url?: string | null
         }
         Update: {
+          card?: string | null
           card_type?: Database["public"]["Enums"]["card_type"]
           description?: string | null
           id?: string
           image_url?: string | null
           published_on?: string
+          source_text?: string | null
+          source_url?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "spoiler_card_fkey"
+            columns: ["card"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -44,7 +130,14 @@ export type Database = {
       }
     }
     Enums: {
-      card_type: "unit" | "champion" | "legend" | "spell" | "battlefield"
+      card_type:
+        | "unit"
+        | "champion"
+        | "legend"
+        | "spell"
+        | "battlefield"
+        | "gear"
+        | "rune"
     }
     CompositeTypes: {
       [_ in never]: never
