@@ -7,6 +7,7 @@ module.exports = {
         protocol: 'https',
         hostname: 'imagedelivery.net',
         port: '',
+        pathname: '/v8gJdXICPv6MCqZxAubenw/',
       },
     ],
   },

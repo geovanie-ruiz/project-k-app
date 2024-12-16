@@ -22,7 +22,7 @@ export function CookieConsent() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-100 dark:bg-gray-800 p-4 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-100 dark:bg-gray-700 p-4 shadow-lg">
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between">
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 sm:mb-0">
           We use cookies. They&apos;re not delicious but they&apos;re keeping

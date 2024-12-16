@@ -9,14 +9,13 @@ export function Footer() {
           <div className="mb-6 md:mb-0">
             <Link href="/" className="flex items-center">
               <Image
-                src="/logo-outline.png"
-                alt="Temporary logo"
-                className="h-8 me-3"
+                src="9c217ebe-44b4-4239-4472-eae1efd54900/public"
+                alt="Logo"
                 width={48}
                 height={40}
               />
               <span className="sr-only">Two Runes</span>
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              <span className="mx-4 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 2Runes.gg
               </span>
             </Link>

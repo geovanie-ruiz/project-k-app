@@ -33,11 +33,51 @@ export function NavBar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-14 items-center">
-          <div className="flex items-center justify-center min-w-32">
+          <div className="flex items-center justify-center min-w-32 gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon" className="md:hidden">
+                  <MenuIcon className="h-6 w-6" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <div className="grid gap-6 p-6">
+                  <Link
+                    href="/spoilers"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    prefetch={false}
+                  >
+                    Spoilers
+                  </Link>
+                  <Link
+                    href="#"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    prefetch={false}
+                  >
+                    Card Library
+                  </Link>
+                  <Link
+                    href="#"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    prefetch={false}
+                  >
+                    Deckbuilder
+                  </Link>
+                  <Link
+                    href="#"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    prefetch={false}
+                  >
+                    Events
+                  </Link>
+                </div>
+              </SheetContent>
+            </Sheet>
             <Link href="/" prefetch={false}>
               <Image
-                src="/logo-outline.png"
-                alt="Temporary logo"
+                src="9c217ebe-44b4-4239-4472-eae1efd54900/public"
+                alt="Logo"
                 width={48}
                 height={40}
               />
@@ -54,47 +94,7 @@ export function NavBar() {
             <NavLink url="#" label="Deck Builder" currentPathname={pathname} />
             <NavLink url="#" label="Events" currentPathname={pathname} />
           </nav>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
-                <MenuIcon className="h-6 w-6" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <div className="grid gap-6 p-6">
-                <Link
-                  href="/spoilers"
-                  className="text-sm font-medium hover:underline underline-offset-4"
-                  prefetch={false}
-                >
-                  Spoilers
-                </Link>
-                <Link
-                  href="#"
-                  className="text-sm font-medium hover:underline underline-offset-4"
-                  prefetch={false}
-                >
-                  Card Library
-                </Link>
-                <Link
-                  href="#"
-                  className="text-sm font-medium hover:underline underline-offset-4"
-                  prefetch={false}
-                >
-                  Deckbuilder
-                </Link>
-                <Link
-                  href="#"
-                  className="text-sm font-medium hover:underline underline-offset-4"
-                  prefetch={false}
-                >
-                  Events
-                </Link>
-              </div>
-            </SheetContent>
-          </Sheet>
-          <div className="flex items-center gap-4 min-w-32">
+          <div className="flex items-center justify-center min-w-32 gap-4">
             <ThemeToggle />
             <SignedOut>
               <SignInButton />
