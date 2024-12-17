@@ -12,3 +12,14 @@ export function isDarkTheme(
   if (theme === 'light') return false;
   return theme === 'dark' || systemTheme === 'dark';
 }
+
+export function showDateTitle(dateString: string, simple: boolean = false) {
+  const date = new Date(dateString);
+
+  if (simple) return date.toLocaleDateString();
+  return date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  });
+};

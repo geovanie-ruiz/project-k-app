@@ -5,40 +5,24 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { ChevronDown } from 'lucide-react';
+import { showDateTitle } from '@/lib/utils';
 import { useInView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';
 import { Spoiler } from '../_types/spoiler';
-
-interface SpoilerListProps {
-  initialSpoilers: Spoiler[];
-}
+import { SpoilerModal } from './spoilerModal';
 
 // Page is arbitrarily set number of spoilers to load each request
 export const SPOILERS_PER_PAGE = 6;
 
-export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
-  const [spoilers, setSpoilers] = useState<Spoiler[]>(initialSpoilers);
+export function SpoilerList() {
+  const [spoilers, setSpoilers] = useState<Spoiler[]>([]);
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [showNoImageToggles, setShowNoImageToggles] = useState<
-    Record<string, boolean>
-  >({});
-  const [collapsedSets, setCollapsedSets] = useState<Record<string, boolean>>(
-    {}
-  );
-  const { ref, inView } = useInView();
+  const [selectedSpoiler, setSelectedSpoiler] = useState<Spoiler | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const initialToggles = initialSpoilers.reduce((acc, spoiler) => {
-      acc[spoiler.published_on] = true;
-      return acc;
-    }, {} as Record<string, boolean>);
-    setShowNoImageToggles(initialToggles);
-  }, [initialSpoilers]);
+  const { ref, inView } = useInView();
 
   const loadMoreSpoilers = async () => {
     if (isLoading || !hasMore) return;
@@ -49,13 +33,6 @@ export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
         setHasMore(false);
       } else {
         setSpoilers((prevSpoilers) => [...prevSpoilers, ...result.spoilers]);
-        setShowNoImageToggles((prevToggles) => ({
-          ...prevToggles,
-          ...result.spoilers.reduce((acc, spoiler) => {
-            acc[spoiler.published_on] = true;
-            return acc;
-          }, {} as Record<string, boolean>),
-        }));
       }
       setPage((prevPage) => prevPage + 1);
       setHasMore(result.hasMore);
@@ -67,24 +44,43 @@ export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
     }
   };
 
-  const toggleSetCollapse = (setId: string) => {
-    setCollapsedSets((prev) => ({ ...prev, [setId]: !prev[setId] }));
-  };
-
   useEffect(() => {
     if (inView) {
       loadMoreSpoilers();
     }
   }, [inView]);
 
-  const renderSpoiler = (spoiler: Spoiler, showNoImage: boolean) => {
-    if (!showNoImage && !spoiler.image_url) return null;
+  useEffect(() => {
+    if (inView && !isLoading) {
+      loadMoreSpoilers();
+    }
+  }, [isLoading]);
 
+  const isHorizontal = (spoiler: Spoiler) => {
+    return spoiler.card_type === 'battlefield';
+  };
+
+  const handleSpoilerClick = (spoiler: Spoiler) => {
+    setSelectedSpoiler(spoiler);
+    setIsModalOpen(true);
+  };
+
+  const renderSpoiler = (spoiler: Spoiler) => {
     return (
-      <Card key={spoiler.id} className="overflow-hidden">
+      <div
+        key={spoiler.id}
+        className={`cursor-pointer overflow-hidden ${
+          isHorizontal(spoiler) ? 'col-span-2 ' : 'col-span-1'
+        }`}
+        onClick={() => handleSpoilerClick(spoiler)}
+      >
         <div
-          className="relative w-full"
-          style={{ paddingBottom: 'calc(88 / 63 * 100%)' }}
+          className={`relative w-full`}
+          style={{
+            paddingBottom: isHorizontal(spoiler)
+              ? 'calc(63 / 88 * 100%)'
+              : 'calc(88 / 63 * 100%)',
+          }}
         >
           {spoiler.image_url ? (
             <Image
@@ -92,7 +88,11 @@ export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
               alt={spoiler.description || 'Spoiler Image'}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes={
+                isHorizontal(spoiler)
+                  ? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 66vw'
+                  : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+              }
             />
           ) : (
             <Image
@@ -104,7 +104,7 @@ export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
             />
           )}
         </div>
-      </Card>
+      </div>
     );
   };
 
@@ -119,64 +119,24 @@ export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
     return acc;
   }, {} as Record<string, { publication_date: string; spoilers: Spoiler[] }>);
 
-  const showDateTitle = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
   return (
     <div className="space-y-8">
       {Object.values(groupedSpoilers).map(({ publication_date, spoilers }) => (
         <Card key={publication_date} className="p-6 bg-secondary/20">
           <CardHeader>
-            <div
-              className="flex items-center justify-between cursor-pointer mb-4 align-middle bg-neutral-200 dark:bg-gray-800 rounded-full p-4"
-              onClick={() => toggleSetCollapse(publication_date)}
-            >
-              <h2 className="text-2xl font-bold flex items-center">
-                <ChevronDown
-                  className={`mr-2 h-6 w-6 transition-transform ${
-                    collapsedSets[publication_date] ? 'rotate-180' : ''
-                  }`}
-                />
+            <div className="flex items-center justify-between mb-4 align-middle bg-neutral-200 dark:bg-gray-800 rounded-full p-4">
+              <h2 className="hidden text-2xl font-bold md:flex items-center">
                 {showDateTitle(publication_date)}
               </h2>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id={`show-no-image-${publication_date}`}
-                  checked={showNoImageToggles[publication_date]}
-                  onCheckedChange={(checked) => {
-                    setShowNoImageToggles((prev) => ({
-                      ...prev,
-                      [publication_date]: checked,
-                    }));
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                />
-                <Label
-                  htmlFor={`show-no-image-${publication_date}`}
-                  onClick={(e) => e.stopPropagation()} // Prevent label click from collapsing the set
-                >
-                  Show Spoilers without images
-                </Label>
-              </div>
+              <p className="md:hidden text-center w-full">
+                {showDateTitle(publication_date, true)}
+              </p>
             </div>
           </CardHeader>
           <CardContent>
-            {!collapsedSets[publication_date] && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {spoilers.map((spoiler) =>
-                  renderSpoiler(spoiler, showNoImageToggles[publication_date])
-                )}
-              </div>
-            )}
+            <div className="grid grid-flow-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+              {spoilers.map((spoiler) => renderSpoiler(spoiler))}
+            </div>
           </CardContent>
         </Card>
       ))}
@@ -195,6 +155,13 @@ export function SpoilerList({ initialSpoilers }: SpoilerListProps) {
         <p className="text-center text-muted-foreground py-4">
           No more spoilers to load.
         </p>
+      )}
+      {selectedSpoiler && (
+        <SpoilerModal
+          spoiler={selectedSpoiler}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </div>
   );
