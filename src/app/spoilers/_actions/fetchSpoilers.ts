@@ -1,11 +1,12 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/createClient';
+import { SPOILERS_PER_PAGE } from '../_components/SpoilerList';
 import { Spoiler } from '../_types/spoiler';
 
 export async function fetchSpoilers(
   page: number = 1,
-  pageSize: number = 6
+  pageSize: number = SPOILERS_PER_PAGE
 ): Promise<{ spoilers: Spoiler[]; hasMore: boolean }> {
   // Use the custom Supabase client you created
   const client = await createClient();
