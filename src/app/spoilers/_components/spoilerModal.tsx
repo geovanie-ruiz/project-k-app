@@ -10,7 +10,6 @@ import {
 import { showDateTitle } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { Spoiler } from '../_types/spoiler';
 
 interface SpoilerModalProps {
@@ -20,17 +19,6 @@ interface SpoilerModalProps {
 }
 
 export function SpoilerModal({ spoiler, isOpen, onClose }: SpoilerModalProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   const isVertical = spoiler.card_type !== 'battlefield';
 
   return (
