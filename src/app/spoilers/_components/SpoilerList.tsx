@@ -16,7 +16,7 @@ export const SPOILERS_PER_PAGE = 6;
 
 export function SpoilerList() {
   const [spoilers, setSpoilers] = useState<Spoiler[]>([]);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSpoiler, setSelectedSpoiler] = useState<Spoiler | null>(null);

@@ -1,5 +1,10 @@
+'use client';
+
+import localLoader from '@/lib/localLoader';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import LOGO_SVG from '../../../public/2Runes.svg';
 
 export function Footer() {
   return (
@@ -9,10 +14,11 @@ export function Footer() {
           <div className="mb-6 md:mb-0">
             <Link href="/" className="flex items-center">
               <Image
-                src="9c217ebe-44b4-4239-4472-eae1efd54900/public"
+                src={LOGO_SVG}
                 alt="Logo"
-                width={48}
-                height={40}
+                loader={localLoader}
+                width={63} //57
+                height={40} //36
               />
               <span className="sr-only">Two Runes</span>
               <span className="mx-4 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">

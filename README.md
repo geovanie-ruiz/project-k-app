@@ -37,4 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Update datatabase types
 
-npx supabase gen types typescript --project-id impwbepmzksdcuawrhfd --schema public > src/lib/database.types.ts
+npx supabase gen types typescript --project-id <SUPABASE_PROJECT_ID> --schema public > src/lib/database.types.ts

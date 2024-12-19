@@ -15,6 +15,9 @@ import { useTheme } from 'next-themes';
 import { isDarkTheme } from '@/lib/utils';
 import clsx from 'clsx';
 
+import localLoader from '@/lib/localLoader';
+import LOGO_SVG from '../../../public/2Runes.svg';
+
 interface MenuProps {
   className: string;
 }
@@ -76,10 +79,11 @@ export function NavBar() {
             </Sheet>
             <Link href="/" prefetch={false}>
               <Image
-                src="9c217ebe-44b4-4239-4472-eae1efd54900/public"
+                src={LOGO_SVG}
                 alt="Logo"
-                width={48}
-                height={40}
+                loader={localLoader}
+                width={57}
+                height={36}
               />
               <span className="sr-only">Two Runes</span>
             </Link>
