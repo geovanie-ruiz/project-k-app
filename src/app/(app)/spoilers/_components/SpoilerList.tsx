@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { showDateTitle } from '@/lib/utils';
+import { showDateTitle } from '@/utils/utils';
 import { useInView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';
 import { Spoiler } from '../_types/spoiler';
@@ -108,16 +108,19 @@ export function SpoilerList() {
     );
   };
 
-  const groupedSpoilers = spoilers.reduce((acc, spoiler) => {
-    if (!acc[spoiler.published_on]) {
-      acc[spoiler.published_on] = {
-        publication_date: spoiler.published_on,
-        spoilers: [],
-      };
-    }
-    acc[spoiler.published_on].spoilers.push(spoiler);
-    return acc;
-  }, {} as Record<string, { publication_date: string; spoilers: Spoiler[] }>);
+  const groupedSpoilers = spoilers.reduce(
+    (acc, spoiler) => {
+      if (!acc[spoiler.published_on]) {
+        acc[spoiler.published_on] = {
+          publication_date: spoiler.published_on,
+          spoilers: [],
+        };
+      }
+      acc[spoiler.published_on].spoilers.push(spoiler);
+      return acc;
+    },
+    {} as Record<string, { publication_date: string; spoilers: Spoiler[] }>
+  );
 
   return (
     <div className="space-y-8">

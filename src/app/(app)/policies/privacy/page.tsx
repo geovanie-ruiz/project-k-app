@@ -541,7 +541,7 @@ export default function Privacy() {
         <h2 className="text-4xl font-bold mb-4">Contact Us</h2>
         <p className="mb-4">
           If you have any questions about this Privacy Policy, You can contact
-          us by email: privacy@2Runes.gg
+          us by email: contact@2Runes.gg
         </p>
       </div>
     </div>

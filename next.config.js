@@ -1,7 +1,8 @@
-module.exports = {
+const { withPayload } = require('@payloadcms/next/withPayload');
+module.exports = withPayload({
   images: {
     loader: 'custom',
-    loaderFile: './src/lib/cloudflareLoader.ts',
+    loaderFile: './src/utils/loaders/cloudflareLoader.ts',
     remotePatterns: [
       {
         protocol: 'https',
@@ -11,4 +12,4 @@ module.exports = {
       },
     ],
   },
-};
+});
