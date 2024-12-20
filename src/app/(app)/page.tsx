@@ -2,7 +2,7 @@
 
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 import { Card, CardContent } from '@/components/ui/card';
-import { isDarkTheme } from '@/lib/utils';
+import { isDarkTheme } from '@/utils/utils';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';

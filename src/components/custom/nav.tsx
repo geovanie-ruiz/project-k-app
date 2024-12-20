@@ -12,10 +12,10 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
-import { isDarkTheme } from '@/lib/utils';
+import { isDarkTheme } from '@/utils/utils';
 import clsx from 'clsx';
 
-import localLoader from '@/lib/localLoader';
+import localLoader from '@/utils/loaders/localLoader';
 import LOGO_SVG from '../../../public/2Runes.svg';
 
 interface MenuProps {

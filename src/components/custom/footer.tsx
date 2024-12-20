@@ -1,6 +1,6 @@
 'use client';
 
-import localLoader from '@/lib/localLoader';
+import localLoader from '@/utils/loaders/localLoader';
 import Image from 'next/image';
 import Link from 'next/link';
 

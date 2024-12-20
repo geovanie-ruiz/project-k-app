@@ -1,3 +1,3 @@
-import { Database } from "@/lib/database.types";
+import { Database } from '@/utils/types/database.types';
 
-export type Spoiler = Database['public']['Tables']['spoiler']['Row']
+export type Spoiler = Database['public']['Tables']['spoiler']['Row'];

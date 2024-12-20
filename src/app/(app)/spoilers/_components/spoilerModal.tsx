@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { showDateTitle } from '@/lib/utils';
+import { showDateTitle } from '@/utils/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Spoiler } from '../_types/spoiler';

@@ -1,6 +1,6 @@
 'use client';
 
-import { isDarkTheme } from '@/lib/utils';
+import { isDarkTheme } from '@/utils/utils';
 import { UserProfile } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
