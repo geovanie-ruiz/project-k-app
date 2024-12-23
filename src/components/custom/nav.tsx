@@ -24,6 +24,7 @@ import clsx from 'clsx';
 import localLoader from '@/utils/loaders/localLoader';
 import LOGO_SVG from '../../../public/2Runes.svg';
 import PayloadIcon from '../icons/PayloadCMS';
+import { useState } from 'react';
 
 interface MenuProps {
   className: string;
@@ -36,6 +37,8 @@ interface NavItem {
 }
 
 export function NavBar() {
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   const { theme, systemTheme } = useTheme();
   const pathname = usePathname();
   const { user } = useUser();
@@ -47,7 +50,7 @@ export function NavBar() {
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-14 items-center">
           <div className="flex items-center justify-center min-w-32 gap-4">
-            <Sheet>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="md:hidden">
                   <MenuIcon className="h-6 w-6" />
@@ -67,24 +70,28 @@ export function NavBar() {
                   <Link
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={(() => setSheetOpen(false))}
                   >
                     Spoilers
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={(() => setSheetOpen(false))}
                   >
                     Card Library
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={(() => setSheetOpen(false))}
                   >
                     Deckbuilder
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={(() => setSheetOpen(false))}
                   >
                     Events
                   </Link>
