@@ -1,5 +1,7 @@
-const { withPayload } = require('@payloadcms/next/withPayload');
-module.exports = withPayload({
+import { withPayload } from '@payloadcms/next/withPayload';
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile: './src/utils/loaders/cloudflareLoader.ts',
@@ -12,4 +14,6 @@ module.exports = withPayload({
       },
     ],
   },
-});
+};
+
+export default withPayload(nextConfig);
