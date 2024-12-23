@@ -4,8 +4,6 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { showDateTitle } from '@/utils/utils';
 import { useInView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';
 import { Spoiler } from '../_types/spoiler';
@@ -124,7 +122,7 @@ export function SpoilerList() {
 
   return (
     <div className="space-y-8">
-      {Object.values(groupedSpoilers).map(({ publication_date, spoilers }) => (
+      {/* {Object.values(groupedSpoilers).map(({ publication_date, spoilers }) => (
         <Card key={publication_date} className="p-6 bg-secondary/20">
           <CardHeader>
             <div className="flex items-center justify-between mb-4 align-middle bg-neutral-200 dark:bg-gray-800 rounded-full p-4">
@@ -142,7 +140,7 @@ export function SpoilerList() {
             </div>
           </CardContent>
         </Card>
-      ))}
+      ))} */}
       {hasMore && (
         <div ref={ref} className="flex justify-center py-4">
           {isLoading ? (
