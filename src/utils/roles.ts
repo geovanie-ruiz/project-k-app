@@ -8,6 +8,6 @@ export const checkRole = async (role: Roles) => {
   return sessionClaims?.metadata.role === role;
 };
 
-export const isntACollaborator = (role: Roles) => {
-  return !COLLABORATORS.includes(role);
+export const isACollaborator = (role: Roles) => {
+  return COLLABORATORS.includes(role);
 };
