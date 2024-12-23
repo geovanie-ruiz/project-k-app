@@ -22,9 +22,9 @@ import { isDarkTheme } from '@/utils/utils';
 import clsx from 'clsx';
 
 import localLoader from '@/utils/loaders/localLoader';
+import { useState } from 'react';
 import LOGO_SVG from '../../../public/2Runes.svg';
 import PayloadIcon from '../icons/PayloadCMS';
-import { useState } from 'react';
 
 interface MenuProps {
   className: string;
@@ -70,28 +70,28 @@ export function NavBar() {
                   <Link
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Spoilers
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Card Library
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Deckbuilder
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Events
                   </Link>
@@ -126,9 +126,11 @@ export function NavBar() {
             </SignedOut>
             <SignedIn>
               {isCollaborator && (
-                <Link href="/admin">
-                  <PayloadIcon />
-                </Link>
+                <Button variant="outline" size="icon" asChild>
+                  <Link href="/admin">
+                    <PayloadIcon />
+                  </Link>
+                </Button>
               )}
               <UserButton
                 appearance={{

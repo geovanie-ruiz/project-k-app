@@ -28,6 +28,20 @@ export default buildConfig({
       },
       collections: ['articles', 'cards', 'decks', 'spoilers', 'events'],
     },
+    avatar: {
+      Component: '@/components/custom/clerkAvatar',
+    },
+    routes: {
+      account: '',
+    },
+    components: {
+      providers: ['@/utils/clerk/context'],
+      logout: {
+        Button: {
+          path: '@/components/custom/adminLogOut',
+        },
+      },
+    },
   },
   collections: [Users, Media],
   editor: lexicalEditor(),
