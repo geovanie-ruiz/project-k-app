@@ -8,7 +8,13 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
@@ -17,6 +23,7 @@ import clsx from 'clsx';
 
 import localLoader from '@/utils/loaders/localLoader';
 import LOGO_SVG from '../../../public/2Runes.svg';
+import PayloadIcon from '../icons/PayloadCMS';
 
 interface MenuProps {
   className: string;
@@ -31,6 +38,9 @@ interface NavItem {
 export function NavBar() {
   const { theme, systemTheme } = useTheme();
   const pathname = usePathname();
+  const { user } = useUser();
+  const userRole = user?.publicMetadata?.role as string;
+  const isCollaborator = ['admin', 'collaborator'].includes(userRole);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -47,37 +57,41 @@ export function NavBar() {
               <SheetContent side="left">
                 <div className="grid gap-6 p-6">
                   <Link
+                    href="/"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    <h1>2Runes.gg</h1>
+                  </Link>
+                  <hr />
+                  <Link
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
                   >
                     Spoilers
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
                   >
                     Card Library
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
                   >
                     Deckbuilder
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
                   >
                     Events
                   </Link>
                 </div>
               </SheetContent>
             </Sheet>
-            <Link href="/" prefetch={false}>
+            <Link href="/">
               <Image
                 src={LOGO_SVG}
                 alt="Logo"
@@ -104,6 +118,11 @@ export function NavBar() {
               <SignInButton />
             </SignedOut>
             <SignedIn>
+              {isCollaborator && (
+                <Link href="/admin">
+                  <PayloadIcon />
+                </Link>
+              )}
               <UserButton
                 appearance={{
                   baseTheme: isDarkTheme(theme, systemTheme) ? dark : undefined,
