@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload';
 
-import { isAdmin } from '@/access/isAdmin';
+import { isAdminAuthorOrPublished } from '@/access/isAdminAuthorOrPublished';
 import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isCollaborator } from '@/access/isCollaborator';
 import {
@@ -13,8 +13,8 @@ export const Articles: CollectionConfig = {
   slug: 'articles',
   access: {
     create: isCollaborator,
-    delete: isAdmin,
-    read: () => true,
+    delete: isAdminOrAuthor,
+    read: isAdminAuthorOrPublished,
     update: isAdminOrAuthor,
   },
   admin: {

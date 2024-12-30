@@ -5,7 +5,7 @@ import { UserButton } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
-const DotIcon = () => {
+const PersonIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ const ClerkAvatar: React.FC = () => {
       <UserButton.MenuItems>
         <UserButton.Link
           label="Creator Profile"
-          labelIcon={<DotIcon />}
+          labelIcon={<PersonIcon />}
           href="/admin/account"
         />
         <UserButton.Action label="manageAccount" />
