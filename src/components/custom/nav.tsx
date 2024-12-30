@@ -22,6 +22,7 @@ import { isDarkTheme } from '@/utils/utils';
 import clsx from 'clsx';
 
 import localLoader from '@/utils/loaders/localLoader';
+import { isACollaborator, normalizeClerkRole } from '@/utils/types/roles.types';
 import { useState } from 'react';
 import LOGO_SVG from '../../../public/2Runes.svg';
 import PayloadIcon from '../icons/PayloadCMS';
@@ -42,8 +43,8 @@ export function NavBar() {
   const { theme, systemTheme } = useTheme();
   const pathname = usePathname();
   const { user } = useUser();
-  const userRole = user?.publicMetadata?.role as string;
-  const isCollaborator = ['admin', 'collaborator'].includes(userRole);
+  const userRole = normalizeClerkRole(user?.publicMetadata?.role);
+  const isCollaborator = !!userRole && isACollaborator(userRole);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

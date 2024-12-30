@@ -3,7 +3,7 @@ import * as React from 'react';
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
-const MightIcon = React.forwardRef<SVGSVGElement, IconProps>(
+const BattlefieldIcon = React.forwardRef<SVGSVGElement, IconProps>(
   ({ className, ...props }, ref) => (
     <svg
       ref={ref}
@@ -15,10 +15,10 @@ const MightIcon = React.forwardRef<SVGSVGElement, IconProps>(
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="m166.14 257.91-1.94-14.17 116.37-9.82v47.99zM280.56 59.5l-113.6-33.14-151.7 73.4L43.7 230.6l35.6-3.11-8.83-74.23 18.9-7.99 10.06 80.46 43.32-3.35-9.1-89.68 19.64-5.69 11.31 93.46 41.27-4.12-8.2-101.61 23.98-5.81 10.17 105.22 48.75-4.26V59.5Z" />
+      <path d="M42.51 81.11v172.54l41.45-35.74 68.4 78.76 68.4-78.76 41.45 35.74V81.11zm109.85 141.01-23.68-29.43 23.68-29.43 23.68 29.43zm137.32-172.1H14.53V6.5h275.15v43.53Z" />
     </svg>
   )
 );
 
-MightIcon.displayName = 'MightIcon';
-export default MightIcon;
+BattlefieldIcon.displayName = 'BattlefieldIcon';
+export default BattlefieldIcon;

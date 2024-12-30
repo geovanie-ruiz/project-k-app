@@ -1,6 +1,6 @@
+import { isACollaborator } from '@/utils/types/roles.types';
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import { isACollaborator } from './utils/roles';
 
 // more on routing: https://clerk.com/docs/references/nextjs/clerk-middleware#dynamic-keys
 const isProtectedRoute = createRouteMatcher(['/profile(.*)']);
@@ -11,7 +11,7 @@ const isPublicRoute = createRouteMatcher(['/api/webhooks(.*)']);
 // See https://clerk.com/docs/references/nextjs/clerk-middleware for more information about configuring your Middleware
 export default clerkMiddleware(async (auth, req) => {
   const { sessionClaims } = await auth();
-  const role = sessionClaims?.metadata?.role || '';
+  const role = sessionClaims?.metadata?.role || 'user';
 
   // Enforce some routes remain public, especially webhooks
   if (isPublicRoute(req)) return;

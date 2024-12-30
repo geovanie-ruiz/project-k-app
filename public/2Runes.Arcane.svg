@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 512 512" width="512px" height="512px" xmlns="http://www.w3.org/2000/svg"
+  xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="left-rune" bx:pinned="true">
+      <stop offset="0" style="stop-color: rgb(162, 40, 36);" />
+      <stop offset="0.496" style="stop-color: rgb(189, 120, 46);" />
+      <stop offset="1" style="stop-color: rgb(201, 182, 62);" />
+    </linearGradient>
+    <filter id="inner-shadow-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <title>Inner shadow</title>
+      <feOffset dx="0" dy="0" in="SourceGraphic" result="offset-0" />
+      <feGaussianBlur stdDeviation="5" in="offset-0" result="gaussian-blur-0" />
+      <feComposite operator="in" in="SourceGraphic" in2="gaussian-blur-0" result="composite-0" />
+      <feComponentTransfer result="choke" in="composite-0">
+        <feFuncA type="linear" slope="1" />
+        <feFuncR />
+      </feComponentTransfer>
+      <feFlood flood-color="#fff" result="color" />
+      <feComposite operator="in" in="color" in2="choke" result="shadow" />
+      <feComposite operator="over" in="shadow" in2="SourceGraphic" result="composite-1" height="0" />
+    </filter>
+    <filter id="outline-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <title>Outline</title>
+      <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="3" />
+      <feFlood result="flood" flood-color="#fe019a" />
+      <feComposite in="flood" in2="dilated" operator="in" result="outline" />
+      <feMerge result="merge-0">
+        <feMergeNode in="outline" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <title>Drop shadow</title>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
+      <feOffset dx="0" dy="0" />
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="1.14" />
+      </feComponentTransfer>
+      <feFlood flood-color="#fe019a" />
+      <feComposite in2="offsetblur" operator="in" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="inner-shadow-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <title>Inner shadow</title>
+      <feOffset dx="0" dy="0" in="SourceGraphic" result="offset-0" />
+      <feGaussianBlur stdDeviation="10" in="offset-0" result="gaussian-blur-0" />
+      <feComposite operator="in" in="SourceGraphic" in2="gaussian-blur-0" result="composite-0" />
+      <feComponentTransfer result="choke" in="composite-0">
+        <feFuncA type="linear" slope="1" />
+      </feComponentTransfer>
+      <feFlood flood-color="#fff" result="color" />
+      <feComposite operator="in" in="color" in2="choke" result="shadow" />
+      <feComposite operator="over" in="shadow" in2="SourceGraphic" result="composite-1" />
+    </filter>
+    <filter id="outline-filter-1" bx:preset="outline 1 3 #04d9ff" color-interpolation-filters="sRGB" x="-50%" y="-50%"
+      width="200%" height="200%">
+      <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="3" />
+      <feFlood flood-color="#04d9ff" result="flood" />
+      <feComposite in="flood" in2="dilated" operator="in" result="outline" />
+      <feMerge>
+        <feMergeNode in="outline" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow-filter-1" bx:preset="drop-shadow 1 0 0 10 0.38 #04d9ff" color-interpolation-filters="sRGB"
+      x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10" />
+      <feOffset dx="0" dy="0" />
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="0.76" />
+      </feComponentTransfer>
+      <feFlood flood-color="#04d9ff" />
+      <feComposite in2="offsetblur" operator="in" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <bx:export>
+      <bx:file format="svg" href="#object-0" path="Left.svg" />
+      <bx:file format="svg" href="#object-1" path="Right.svg" />
+      <bx:file format="svg" />
+      <bx:file format="svg" href="#object-2" path="Vi.svg" />
+      <bx:file format="svg" href="#object-3" path="Jinx.svg" />
+    </bx:export>
+  </defs>
+  <g>
+    <g transform="matrix(0.982163, 0, 0, 0.987163, 167.525925, 47.942535)" style="" id="object-2">
+      <title>Vi</title>
+      <path
+        style="fill: rgb(254, 1, 154); filter: url(&quot;#inner-shadow-filter-0&quot;) url(&quot;#outline-filter-0&quot;) url(&quot;#drop-shadow-filter-0&quot;); mix-blend-mode: screen;"
+        d="M 202.065 64.838 C 207.225 103.108 206.005 127.938 203.985 143.138 C 182.255 160.728 147.215 208.668 142.045 214.878 C 136.875 221.088 158.605 229.368 169.985 237.648 C 181.365 245.928 193.785 253.168 202.065 253.168 C 210.345 253.168 227.935 238.678 227.935 231.438 C 227.935 224.198 214.485 210.738 208.275 205.568 C 202.065 200.398 192.755 212.808 191.715 220.058 C 190.685 227.298 167.225 220.058 165.155 215.918 C 163.085 211.778 192.055 180.018 198.265 173.808 C 204.475 167.598 203.865 164.178 214.345 172.458 C 224.825 180.738 239.305 203.498 248.625 212.818 C 257.935 222.128 254.835 234.548 248.625 241.788 C 242.415 249.028 218.035 272.118 211.465 278.008 C 204.525 284.218 197.925 282.148 186.545 273.868 C 175.165 265.588 118.245 238.688 105.835 234.548 C 93.415 230.408 92.385 221.098 105.835 211.778 C 119.285 202.468 162.215 153.668 172.405 133.138 C 182.595 112.608 202.065 64.838 202.065 64.838 Z">
+        <title>Left</title>
+      </path>
+      <path
+        style="filter: url(&quot;#inner-shadow-filter-0&quot;) url(&quot;#outline-filter-0&quot;) url(&quot;#drop-shadow-filter-0&quot;); fill: rgb(254, 1, 154); mix-blend-mode: screen;"
+        d="M 256.985 297.678 C 229.045 328.458 217.285 353.808 207.185 362.348 C 205.375 339.068 202.785 321.318 206.175 310.348 C 219.215 295.868 255.695 263.008 267.075 249.558 C 278.455 236.108 282.755 224.208 272.415 210.758 C 262.075 197.308 246.325 181.438 242.565 176.838 C 235.315 167.978 228.265 152.808 227.235 145.048 C 253.455 170.708 295.185 197.818 303.465 204.028 C 311.745 210.238 322.955 219.028 319.855 223.168 C 316.755 227.298 272.885 280.158 256.995 297.668 L 256.985 297.678 Z">
+        <title>Right</title>
+      </path>
+    </g>
+    <g transform="matrix(0.982163, 0, 0, 0.987163, -76.220909, 47.942535)" style="" id="object-3">
+      <title>Jinx</title>
+      <path
+        style="fill: rgb(4, 217, 255); mix-blend-mode: screen; filter: url(&quot;#inner-shadow-filter-1&quot;) url(&quot;#outline-filter-1&quot;) url(&quot;#drop-shadow-filter-1&quot;);"
+        d="M 202.065 64.838 C 207.225 103.108 206.005 127.938 203.985 143.138 C 182.255 160.728 147.215 208.668 142.045 214.878 C 136.875 221.088 158.605 229.368 169.985 237.648 C 181.365 245.928 193.785 253.168 202.065 253.168 C 210.345 253.168 227.935 238.678 227.935 231.438 C 227.935 224.198 214.485 210.738 208.275 205.568 C 202.065 200.398 192.755 212.808 191.715 220.058 C 190.685 227.298 167.225 220.058 165.155 215.918 C 163.085 211.778 192.055 180.018 198.265 173.808 C 204.475 167.598 203.865 164.178 214.345 172.458 C 224.825 180.738 239.305 203.498 248.625 212.818 C 257.935 222.128 254.835 234.548 248.625 241.788 C 242.415 249.028 218.035 272.118 211.465 278.008 C 204.525 284.218 197.925 282.148 186.545 273.868 C 175.165 265.588 118.245 238.688 105.835 234.548 C 93.415 230.408 92.385 221.098 105.835 211.778 C 119.285 202.468 162.215 153.668 172.405 133.138 C 182.595 112.608 202.065 64.838 202.065 64.838 Z"
+        id="object-0">
+        <title>Left</title>
+      </path>
+      <path
+        style="fill: rgb(4, 217, 255); mix-blend-mode: screen; filter: url(&quot;#inner-shadow-filter-1&quot;) url(&quot;#outline-filter-1&quot;) url(&quot;#drop-shadow-filter-1&quot;);"
+        d="M 256.985 297.678 C 229.045 328.458 217.285 353.808 207.185 362.348 C 205.375 339.068 202.785 321.318 206.175 310.348 C 219.215 295.868 255.695 263.008 267.075 249.558 C 278.455 236.108 282.755 224.208 272.415 210.758 C 262.075 197.308 246.325 181.438 242.565 176.838 C 235.315 167.978 228.265 152.808 227.235 145.048 C 253.455 170.708 295.185 197.818 303.465 204.028 C 311.745 210.238 322.955 219.028 319.855 223.168 C 316.755 227.298 272.885 280.158 256.995 297.668 L 256.985 297.678 Z"
+        id="object-1">
+        <title>Right</title>
+      </path>
+    </g>
+  </g>
+</svg>

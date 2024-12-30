@@ -9,9 +9,152 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      _articles_v: {
+        Row: {
+          autosave: boolean | null
+          created_at: string
+          id: number
+          latest: boolean | null
+          parent_id: number | null
+          updated_at: string
+          version__status:
+            | Database["public"]["Enums"]["enum__articles_v_version_status"]
+            | null
+          version_author_id: number | null
+          version_category: string | null
+          version_content: Json | null
+          version_cover_image_id: number | null
+          version_created_at: string | null
+          version_published_date: string | null
+          version_slug: string | null
+          version_title: string | null
+          version_updated_at: string | null
+        }
+        Insert: {
+          autosave?: boolean | null
+          created_at?: string
+          id?: number
+          latest?: boolean | null
+          parent_id?: number | null
+          updated_at?: string
+          version__status?:
+            | Database["public"]["Enums"]["enum__articles_v_version_status"]
+            | null
+          version_author_id?: number | null
+          version_category?: string | null
+          version_content?: Json | null
+          version_cover_image_id?: number | null
+          version_created_at?: string | null
+          version_published_date?: string | null
+          version_slug?: string | null
+          version_title?: string | null
+          version_updated_at?: string | null
+        }
+        Update: {
+          autosave?: boolean | null
+          created_at?: string
+          id?: number
+          latest?: boolean | null
+          parent_id?: number | null
+          updated_at?: string
+          version__status?:
+            | Database["public"]["Enums"]["enum__articles_v_version_status"]
+            | null
+          version_author_id?: number | null
+          version_category?: string | null
+          version_content?: Json | null
+          version_cover_image_id?: number | null
+          version_created_at?: string | null
+          version_published_date?: string | null
+          version_slug?: string | null
+          version_title?: string | null
+          version_updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "_articles_v_parent_id_articles_id_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "_articles_v_version_author_id_users_id_fk"
+            columns: ["version_author_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "_articles_v_version_cover_image_id_media_id_fk"
+            columns: ["version_cover_image_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      articles: {
+        Row: {
+          _status: Database["public"]["Enums"]["enum_articles_status"] | null
+          author_id: number | null
+          category: string | null
+          content: Json | null
+          cover_image_id: number | null
+          created_at: string
+          id: number
+          published_date: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          _status?: Database["public"]["Enums"]["enum_articles_status"] | null
+          author_id?: number | null
+          category?: string | null
+          content?: Json | null
+          cover_image_id?: number | null
+          created_at?: string
+          id?: number
+          published_date?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          _status?: Database["public"]["Enums"]["enum_articles_status"] | null
+          author_id?: number | null
+          category?: string | null
+          content?: Json | null
+          cover_image_id?: number | null
+          created_at?: string
+          id?: number
+          published_date?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_author_id_users_id_fk"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "articles_cover_image_id_media_id_fk"
+            columns: ["cover_image_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media: {
         Row: {
           alt: string
+          cloudflare_id: string | null
           created_at: string
           filename: string | null
           filesize: number | null
@@ -27,6 +170,7 @@ export type Database = {
         }
         Insert: {
           alt: string
+          cloudflare_id?: string | null
           created_at?: string
           filename?: string | null
           filesize?: number | null
@@ -42,6 +186,7 @@ export type Database = {
         }
         Update: {
           alt?: string
+          cloudflare_id?: string | null
           created_at?: string
           filename?: string | null
           filesize?: number | null
@@ -80,6 +225,7 @@ export type Database = {
       }
       payload_locked_documents_rels: {
         Row: {
+          articles_id: number | null
           id: number
           media_id: number | null
           order: number | null
@@ -88,6 +234,7 @@ export type Database = {
           users_id: number | null
         }
         Insert: {
+          articles_id?: number | null
           id?: number
           media_id?: number | null
           order?: number | null
@@ -96,6 +243,7 @@ export type Database = {
           users_id?: number | null
         }
         Update: {
+          articles_id?: number | null
           id?: number
           media_id?: number | null
           order?: number | null
@@ -104,6 +252,13 @@ export type Database = {
           users_id?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "payload_locked_documents_rels_articles_fk"
+            columns: ["articles_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "payload_locked_documents_rels_media_fk"
             columns: ["media_id"]
@@ -252,6 +407,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      enum__articles_v_version_status: "draft" | "published"
+      enum_articles_status: "draft" | "published"
       enum_users_role: "admin" | "creator" | "user"
     }
     CompositeTypes: {

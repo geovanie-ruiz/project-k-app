@@ -1,13 +1,21 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres';
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud';
-import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import path from 'path';
 import { buildConfig } from 'payload';
-import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 
+import { Articles } from './collections/Articles';
+import { Artists } from './collections/Artists';
+import { CardCollection } from './collections/CardCollection';
+import { Cards } from './collections/Cards';
+import { Categories } from './collections/Categories';
+import { Characters } from './collections/Characters';
+import { Decks } from './collections/Decks';
+import { Keywords } from './collections/Keywords';
 import { Media } from './collections/Media';
+import { Sets } from './collections/Sets';
+import { Spoilers } from './collections/Spoilers';
+import { Tags } from './collections/Tags';
 import { Users } from './collections/Users';
 
 const filename = fileURLToPath(import.meta.url);
@@ -20,19 +28,17 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     livePreview: {
-      url: ({ data, req }) => {
-        if (process.env.NODE_ENV === 'development') {
-          return 'http://localhost:300';
-        }
-        return `${req.protocol}//${req.host}/${data.slug}`;
-      },
-      collections: ['articles', 'cards', 'decks', 'spoilers', 'events'],
+      breakpoints: [
+        {
+          name: 'mobile',
+          height: 667,
+          label: 'Mobile',
+          width: 375,
+        },
+      ],
     },
     avatar: {
       Component: '@/components/custom/clerkAvatar',
-    },
-    routes: {
-      account: '',
     },
     components: {
       providers: ['@/utils/clerk/context'],
@@ -43,8 +49,21 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media],
-  editor: lexicalEditor(),
+  collections: [
+    Articles,
+    Artists,
+    Cards,
+    Categories,
+    Characters,
+    Keywords,
+    Media,
+    Sets,
+    Spoilers,
+    Tags,
+    Users,
+    Decks,
+    CardCollection,
+  ],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -54,9 +73,4 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  sharp,
-  plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
-  ],
 });

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
-const MightIcon = React.forwardRef<SVGSVGElement, IconProps>(
+const LegendIcon = React.forwardRef<SVGSVGElement, IconProps>(
   ({ className, ...props }, ref) => (
     <svg
       ref={ref}
@@ -15,10 +15,10 @@ const MightIcon = React.forwardRef<SVGSVGElement, IconProps>(
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="m166.14 257.91-1.94-14.17 116.37-9.82v47.99zM280.56 59.5l-113.6-33.14-151.7 73.4L43.7 230.6l35.6-3.11-8.83-74.23 18.9-7.99 10.06 80.46 43.32-3.35-9.1-89.68 19.64-5.69 11.31 93.46 41.27-4.12-8.2-101.61 23.98-5.81 10.17 105.22 48.75-4.26V59.5Z" />
+      <path d="M248.69 198.29V49.21h-56.45L153.17 2.89l-39.08 46.32H57.64v149.08l-24.61 20.26 66.58 75.27h28.95V166.45l-37.63-17.37v-34.74l36.19 7.24 26.05 27.5 26.05-27.5 36.18-7.24v34.74l-37.63 17.37v127.37h28.95l66.58-75.27zM153.17 100l-16.99-23.29 16.99-23.28 16.99 23.28z" />
     </svg>
   )
 );
 
-MightIcon.displayName = 'MightIcon';
-export default MightIcon;
+LegendIcon.displayName = 'LegendIcon';
+export default LegendIcon;
