@@ -18,9 +18,6 @@ import RuneIcon from './RuneIcon';
 import SpellIcon from './SpellIcon';
 import UnitIcon from './UnitIcon';
 
-interface IconProps extends React.SVGProps<SVGSVGElement> {}
-type Icon = React.ForwardRefRenderFunction<SVGSVGElement, IconProps>;
-
 export type ICON_KEYS =
   | 'logo'
   | 'anyRune'
@@ -69,6 +66,11 @@ export type ICON_KEYS =
   | 'rune'
   | 'spell'
   | 'unit';
+
+type Icon = React.ForwardRefRenderFunction<
+  SVGSVGElement,
+  React.SVGProps<SVGSVGElement>
+>;
 
 export const ICONS = new Map<ICON_KEYS, Icon>([
   ['logo', LogoIcon],

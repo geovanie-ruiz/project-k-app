@@ -1,9 +1,9 @@
 import { cn } from '@/utils/utils';
 import * as React from 'react';
 
-interface IconProps extends React.SVGProps<SVGSVGElement> {}
+// interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
-const GearIcon = React.forwardRef<SVGSVGElement, IconProps>(
+const GearIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
     <svg
       ref={ref}
