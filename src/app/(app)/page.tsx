@@ -3,9 +3,10 @@
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 import { Card, CardContent } from '@/components/ui/card';
 import { isDarkTheme } from '@/utils/utils';
+import { CldImage } from 'next-cloudinary';
 import { useTheme } from 'next-themes';
-import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export default function Home() {
   const { theme, systemTheme } = useTheme();
@@ -19,29 +20,36 @@ export default function Home() {
           <CardContainer className="inter-var">
             <CardBody className="relative group/card w-auto h-auto rounded-xl p-6">
               <CardItem translateZ="100" className="w-full mt-4">
-                {isDarkTheme(theme, systemTheme) ? (
-                  <Image
-                    src="71eedeb2-87ca-4fa4-bc23-9d17fd004600/public"
-                    height="901"
-                    width="647"
-                    className="h-full w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                    alt="thumbnail"
-                  />
-                ) : (
-                  <Image
-                    src="32be31f2-ef85-4ef5-c169-4a0114388e00/public"
-                    height="901"
-                    width="647"
-                    className="h-full w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                    alt="thumbnail"
-                  />
-                )}
+                <Suspense fallback={<div>Loading...</div>}>
+                  {isDarkTheme(theme, systemTheme) ? (
+                    <CldImage
+                      src={'cardback-white'}
+                      height="901"
+                      width="647"
+                      className="h-full w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                      alt="thumbnail"
+                    />
+                  ) : (
+                    <CldImage
+                      src={'cardback-black'}
+                      height="901"
+                      width="647"
+                      className="h-full w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                      alt="thumbnail"
+                    />
+                  )}
+                </Suspense>
               </CardItem>
             </CardBody>
           </CardContainer>
-          <Link href="https://discord.com/invite/n7hgcgbvpG">
-            Join us on Discord
-          </Link>
+          <div className="flex items-center justify-center flex-col gap-4">
+            <Link href="https://discord.com/invite/n7hgcgbvpG" target="_blank">
+              Join us on Discord
+            </Link>
+            <Link href="https://project-k-cardmaker.vercel.app" target="_blank">
+              Or Make Your Own Cards
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -1,10 +1,7 @@
 'use client';
 
-import localLoader from '@/utils/loaders/localLoader';
-import Image from 'next/image';
 import Link from 'next/link';
-
-import LOGO_SVG from '../../../public/2Runes.svg';
+import LogoIcon from '../icons/2RunesLogo';
 
 export function Footer() {
   return (
@@ -13,13 +10,7 @@ export function Footer() {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link href="/" className="flex items-center">
-              <Image
-                src={LOGO_SVG}
-                alt="Logo"
-                loader={localLoader}
-                width={63} //57
-                height={40} //36
-              />
+              <LogoIcon className="w-[63px] h-[40px]" />
               <span className="sr-only">Two Runes</span>
               <span className="mx-4 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 2Runes.gg

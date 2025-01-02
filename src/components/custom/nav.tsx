@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -21,10 +20,10 @@ import { useTheme } from 'next-themes';
 import { isDarkTheme } from '@/utils/utils';
 import clsx from 'clsx';
 
-import localLoader from '@/utils/loaders/localLoader';
 import { isACollaborator, normalizeClerkRole } from '@/utils/types/roles.types';
 import { useState } from 'react';
-import LOGO_SVG from '../../../public/2Runes.svg';
+import LogoIcon from '../icons/2RunesLogo';
+import ProfileIcon from '../icons/CreatorProfile';
 import PayloadIcon from '../icons/PayloadCMS';
 
 interface MenuProps {
@@ -49,7 +48,7 @@ export function NavBar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-14 items-center">
+        <div className="flex justify-between h-[65px] items-center">
           <div className="flex items-center justify-center min-w-32 gap-4">
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
@@ -100,13 +99,7 @@ export function NavBar() {
               </SheetContent>
             </Sheet>
             <Link href="/">
-              <Image
-                src={LOGO_SVG}
-                alt="Logo"
-                loader={localLoader}
-                width={57}
-                height={36}
-              />
+              <LogoIcon className="w-[60px] h-[38px]" />
               <span className="sr-only">Two Runes</span>
             </Link>
           </div>
@@ -126,20 +119,38 @@ export function NavBar() {
               <SignInButton />
             </SignedOut>
             <SignedIn>
-              {isCollaborator && (
-                <Button variant="outline" size="icon" asChild>
-                  <Link href="/admin">
-                    <PayloadIcon />
-                  </Link>
-                </Button>
-              )}
               <UserButton
                 appearance={{
                   baseTheme: isDarkTheme(theme, systemTheme) ? dark : undefined,
+                  elements: {
+                    userButtonAvatarBox: {
+                      width: '45px',
+                      height: '45px',
+                    },
+                  },
                 }}
                 userProfileMode="navigation"
                 userProfileUrl="/profile"
-              />
+              >
+                <UserButton.MenuItems>
+                  {isCollaborator && (
+                    <UserButton.Link
+                      label="Creator Portal"
+                      labelIcon={<PayloadIcon />}
+                      href="/admin"
+                    />
+                  )}
+                  {isCollaborator && (
+                    <UserButton.Link
+                      label="Creator Profile"
+                      labelIcon={<ProfileIcon />}
+                      href="/admin/account"
+                    />
+                  )}
+                  <UserButton.Action label="manageAccount" />
+                  <UserButton.Action label="signOut" />
+                </UserButton.MenuItems>
+              </UserButton>
             </SignedIn>
           </div>
         </div>
@@ -176,7 +187,7 @@ function NavLink(props: NavItem) {
       className={clsx(
         'font-medium flex items-center text-sm transition-colors hover:underline',
         {
-          'text-blue-500': props.currentPathname === props.url,
+          'text-accent-foreground': props.currentPathname === props.url,
         }
       )}
     >
