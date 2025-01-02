@@ -1,7 +1,7 @@
 import { cn } from '@/utils/utils';
 import * as React from 'react';
 
-export interface IconProps extends React.SVGProps<SVGSVGElement> {}
+interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
 const AnyRuneIcon = React.forwardRef<SVGSVGElement, IconProps>(
   ({ className, ...props }, ref) => (
