@@ -1,21 +1,7 @@
 import { Article } from '@/payload-types';
+import { kebabIt } from '@/utils/utils';
 import type { CollectionBeforeChangeHook } from 'payload';
 
-const stopWords = [
-  'the',
-  'a',
-  'an',
-  'and',
-  'or',
-  'but',
-  'in',
-  'on',
-  'at',
-  'of',
-  'for',
-  'to',
-  'with',
-];
 const slugNumber = [
   'One',
   'Two',
@@ -47,21 +33,7 @@ export const formatSlug: CollectionBeforeChangeHook<Article> = async ({
   if (operation === 'create' || (data.title ?? '') === '') return data;
   if (data.slug) return data;
 
-  let newSlug = '';
-  const words = data
-    .title!.toLowerCase()
-    .replaceAll('-', ' ')
-    .replaceAll("'", '')
-    .replace(/[0-9&\/\\#,+()$~%.":*!?<>{}]/g, ' ')
-    .split(' ')
-    .filter((word) => word !== '');
-
-  if (words.length > 5) {
-    // filter stop words if the slug is getting long
-    newSlug = words.filter((word) => !stopWords.includes(word)).join('-');
-  } else {
-    newSlug = words.join('-');
-  }
+  let newSlug = kebabIt(data.title!);
 
   const matchingArticleSlugs = await req.payload.count({
     collection: 'articles',

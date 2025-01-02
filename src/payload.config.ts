@@ -1,4 +1,3 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import path from 'path';
 import { buildConfig } from 'payload';
@@ -17,6 +16,7 @@ import { Sets } from './collections/Sets';
 import { Spoilers } from './collections/Spoilers';
 import { Tags } from './collections/Tags';
 import { Users } from './collections/Users';
+import { cloudinaryStorage } from './utils/cloudinary';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -73,4 +73,17 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
+  plugins: [
+    cloudinaryStorage({
+      enabled: true,
+      collections: {
+        ['media']: true,
+      },
+      config: {
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '',
+        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '',
+        api_secret: process.env.CLOUDINARY_API_SECRET || '',
+      },
+    }),
+  ],
 });
