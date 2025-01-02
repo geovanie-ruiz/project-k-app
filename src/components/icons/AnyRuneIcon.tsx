@@ -1,15 +1,22 @@
+import { cn } from '@/utils/utils';
 import * as React from 'react';
 
-type IconProps = React.HTMLAttributes<SVGElement>;
+// interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
-const AnyRuneIcon = (props: IconProps) => (
+const AnyRuneIcon = React.forwardRef<
+  SVGSVGElement,
+  React.SVGProps<SVGSVGElement>
+>(({ className, ...props }, ref) => (
   <svg
+    ref={ref}
+    {...props}
+    className={cn('relative top-0.5 flex-shrink h-[1em] w-[1em]', className)}
+    width={220}
+    height={294}
+    viewBox="136.526 105.067 220.253 293.691"
+    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    viewBox="136.526 105.067 220.253 293.691"
-    {...props}
-    fill="currentColor"
-    className="inline-block align-middle w-4 h-4 text-gray-800 dark:text-white"
   >
     <defs>
       <linearGradient
@@ -88,6 +95,7 @@ const AnyRuneIcon = (props: IconProps) => (
       <title>{'Right'}</title>
     </path>
   </svg>
-);
+));
 
+AnyRuneIcon.displayName = 'AnyRune';
 export default AnyRuneIcon;

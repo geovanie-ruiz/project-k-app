@@ -23,6 +23,7 @@ export default function Privacy() {
             href="https://www.termsfeed.com/privacy-policy-generator/"
             className="text-blue-600 dark:text-blue-500 hover:underline"
             prefetch={false}
+            target="_blank"
           >
             Privacy Policy Generator
           </Link>
@@ -165,10 +166,8 @@ export default function Privacy() {
         </p>
         <ul className="space-y-1 list-disc list-inside mb-4">
           <li>Google</li>
-          <li>Facebook</li>
-          <li>Instagram</li>
-          <li>Twitter</li>
-          <li>LinkedIn</li>
+          <li>Discord</li>
+          <li>Twitch</li>
         </ul>
         <p className="mb-4">
           If You decide to register through or otherwise grant us access to a
@@ -224,6 +223,7 @@ export default function Privacy() {
             href="https://www.termsfeed.com/blog/cookies/#What_Are_Cookies"
             className="text-blue-600 dark:text-blue-500 hover:underline"
             prefetch={false}
+            target="_blank"
           >
             TermsFeed website
           </Link>{' '}

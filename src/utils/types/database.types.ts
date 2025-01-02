@@ -9,135 +9,407 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      cards: {
+      _articles_v: {
         Row: {
-          colors: string[] | null
-          cost: number | null
+          autosave: boolean | null
           created_at: string
-          effect: string | null
-          id: string
-          might: number | null
-          number: string | null
-          rarity: string | null
-          recycle: number | null
-          set: string | null
-          subtitle: string | null
-          tags: string[] | null
-          title: string | null
-          type: Database["public"]["Enums"]["card_type"] | null
+          id: number
+          latest: boolean | null
+          parent_id: number | null
+          updated_at: string
+          version__status:
+            | Database["public"]["Enums"]["enum__articles_v_version_status"]
+            | null
+          version_author_id: number | null
+          version_category: string | null
+          version_content: Json | null
+          version_cover_image_id: number | null
+          version_created_at: string | null
+          version_published_date: string | null
+          version_slug: string | null
+          version_title: string | null
+          version_updated_at: string | null
         }
         Insert: {
-          colors?: string[] | null
-          cost?: number | null
+          autosave?: boolean | null
           created_at?: string
-          effect?: string | null
-          id?: string
-          might?: number | null
-          number?: string | null
-          rarity?: string | null
-          recycle?: number | null
-          set?: string | null
-          subtitle?: string | null
-          tags?: string[] | null
-          title?: string | null
-          type?: Database["public"]["Enums"]["card_type"] | null
+          id?: number
+          latest?: boolean | null
+          parent_id?: number | null
+          updated_at?: string
+          version__status?:
+            | Database["public"]["Enums"]["enum__articles_v_version_status"]
+            | null
+          version_author_id?: number | null
+          version_category?: string | null
+          version_content?: Json | null
+          version_cover_image_id?: number | null
+          version_created_at?: string | null
+          version_published_date?: string | null
+          version_slug?: string | null
+          version_title?: string | null
+          version_updated_at?: string | null
         }
         Update: {
-          colors?: string[] | null
-          cost?: number | null
+          autosave?: boolean | null
           created_at?: string
-          effect?: string | null
-          id?: string
-          might?: number | null
-          number?: string | null
-          rarity?: string | null
-          recycle?: number | null
-          set?: string | null
-          subtitle?: string | null
-          tags?: string[] | null
-          title?: string | null
-          type?: Database["public"]["Enums"]["card_type"] | null
-        }
-        Relationships: []
-      }
-      set: {
-        Row: {
-          id: string
-          name: string
-          release_date: string | null
-        }
-        Insert: {
-          id?: string
-          name: string
-          release_date?: string | null
-        }
-        Update: {
-          id?: string
-          name?: string
-          release_date?: string | null
-        }
-        Relationships: []
-      }
-      spoiler: {
-        Row: {
-          card: string | null
-          card_type: Database["public"]["Enums"]["card_type"]
-          description: string | null
-          id: string
-          image_url: string | null
-          published_on: string
-          source_text: string | null
-          source_url: string | null
-        }
-        Insert: {
-          card?: string | null
-          card_type: Database["public"]["Enums"]["card_type"]
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          published_on?: string
-          source_text?: string | null
-          source_url?: string | null
-        }
-        Update: {
-          card?: string | null
-          card_type?: Database["public"]["Enums"]["card_type"]
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          published_on?: string
-          source_text?: string | null
-          source_url?: string | null
+          id?: number
+          latest?: boolean | null
+          parent_id?: number | null
+          updated_at?: string
+          version__status?:
+            | Database["public"]["Enums"]["enum__articles_v_version_status"]
+            | null
+          version_author_id?: number | null
+          version_category?: string | null
+          version_content?: Json | null
+          version_cover_image_id?: number | null
+          version_created_at?: string | null
+          version_published_date?: string | null
+          version_slug?: string | null
+          version_title?: string | null
+          version_updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "spoiler_card_fkey"
-            columns: ["card"]
+            foreignKeyName: "_articles_v_parent_id_articles_id_fk"
+            columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: "cards"
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "_articles_v_version_author_id_users_id_fk"
+            columns: ["version_author_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "_articles_v_version_cover_image_id_media_id_fk"
+            columns: ["version_cover_image_id"]
+            isOneToOne: false
+            referencedRelation: "media"
             referencedColumns: ["id"]
           },
         ]
+      }
+      articles: {
+        Row: {
+          _status: Database["public"]["Enums"]["enum_articles_status"] | null
+          author_id: number | null
+          category: string | null
+          content: Json | null
+          cover_image_id: number | null
+          created_at: string
+          id: number
+          published_date: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          _status?: Database["public"]["Enums"]["enum_articles_status"] | null
+          author_id?: number | null
+          category?: string | null
+          content?: Json | null
+          cover_image_id?: number | null
+          created_at?: string
+          id?: number
+          published_date?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          _status?: Database["public"]["Enums"]["enum_articles_status"] | null
+          author_id?: number | null
+          category?: string | null
+          content?: Json | null
+          cover_image_id?: number | null
+          created_at?: string
+          id?: number
+          published_date?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_author_id_users_id_fk"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "articles_cover_image_id_media_id_fk"
+            columns: ["cover_image_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      media: {
+        Row: {
+          alt: string
+          cloudflare_id: string | null
+          created_at: string
+          filename: string | null
+          filesize: number | null
+          focal_x: number | null
+          focal_y: number | null
+          height: number | null
+          id: number
+          mime_type: string | null
+          thumbnail_u_r_l: string | null
+          updated_at: string
+          url: string | null
+          width: number | null
+        }
+        Insert: {
+          alt: string
+          cloudflare_id?: string | null
+          created_at?: string
+          filename?: string | null
+          filesize?: number | null
+          focal_x?: number | null
+          focal_y?: number | null
+          height?: number | null
+          id?: number
+          mime_type?: string | null
+          thumbnail_u_r_l?: string | null
+          updated_at?: string
+          url?: string | null
+          width?: number | null
+        }
+        Update: {
+          alt?: string
+          cloudflare_id?: string | null
+          created_at?: string
+          filename?: string | null
+          filesize?: number | null
+          focal_x?: number | null
+          focal_y?: number | null
+          height?: number | null
+          id?: number
+          mime_type?: string | null
+          thumbnail_u_r_l?: string | null
+          updated_at?: string
+          url?: string | null
+          width?: number | null
+        }
+        Relationships: []
+      }
+      payload_locked_documents: {
+        Row: {
+          created_at: string
+          global_slug: string | null
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          global_slug?: string | null
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          global_slug?: string | null
+          id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payload_locked_documents_rels: {
+        Row: {
+          articles_id: number | null
+          id: number
+          media_id: number | null
+          order: number | null
+          parent_id: number
+          path: string
+          users_id: number | null
+        }
+        Insert: {
+          articles_id?: number | null
+          id?: number
+          media_id?: number | null
+          order?: number | null
+          parent_id: number
+          path: string
+          users_id?: number | null
+        }
+        Update: {
+          articles_id?: number | null
+          id?: number
+          media_id?: number | null
+          order?: number | null
+          parent_id?: number
+          path?: string
+          users_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payload_locked_documents_rels_articles_fk"
+            columns: ["articles_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_media_fk"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "payload_locked_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_users_fk"
+            columns: ["users_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payload_migrations: {
+        Row: {
+          batch: number | null
+          created_at: string
+          id: number
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          batch?: number | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          batch?: number | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payload_preferences: {
+        Row: {
+          created_at: string
+          id: number
+          key: string | null
+          updated_at: string
+          value: Json | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          key?: string | null
+          updated_at?: string
+          value?: Json | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          key?: string | null
+          updated_at?: string
+          value?: Json | null
+        }
+        Relationships: []
+      }
+      payload_preferences_rels: {
+        Row: {
+          id: number
+          order: number | null
+          parent_id: number
+          path: string
+          users_id: number | null
+        }
+        Insert: {
+          id?: number
+          order?: number | null
+          parent_id: number
+          path: string
+          users_id?: number | null
+        }
+        Update: {
+          id?: number
+          order?: number | null
+          parent_id?: number
+          path?: string
+          users_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payload_preferences_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "payload_preferences"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_preferences_rels_users_fk"
+            columns: ["users_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          clerk_id: string | null
+          created_at: string
+          email: string | null
+          id: number
+          role: Database["public"]["Enums"]["enum_users_role"] | null
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          clerk_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: number
+          role?: Database["public"]["Enums"]["enum_users_role"] | null
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          clerk_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: number
+          role?: Database["public"]["Enums"]["enum_users_role"] | null
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      requesting_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      [_ in never]: never
     }
     Enums: {
-      card_type:
-        | "unit"
-        | "champion"
-        | "legend"
-        | "spell"
-        | "battlefield"
-        | "gear"
-        | "rune"
+      enum__articles_v_version_status: "draft" | "published"
+      enum_articles_status: "draft" | "published"
+      enum_users_role: "admin" | "creator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never

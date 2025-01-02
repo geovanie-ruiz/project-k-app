@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -8,16 +7,24 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
 import { isDarkTheme } from '@/utils/utils';
 import clsx from 'clsx';
 
-import localLoader from '@/utils/loaders/localLoader';
-import LOGO_SVG from '../../../public/2Runes.svg';
+import { isACollaborator, normalizeClerkRole } from '@/utils/types/roles.types';
 import { useState } from 'react';
+import LogoIcon from '../icons/2RunesLogo';
+import ProfileIcon from '../icons/CreatorProfile';
+import PayloadIcon from '../icons/PayloadCMS';
 
 interface MenuProps {
   className: string;
@@ -34,11 +41,14 @@ export function NavBar() {
 
   const { theme, systemTheme } = useTheme();
   const pathname = usePathname();
+  const { user } = useUser();
+  const userRole = normalizeClerkRole(user?.publicMetadata?.role);
+  const isCollaborator = !!userRole && isACollaborator(userRole);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-14 items-center">
+        <div className="flex justify-between h-[65px] items-center">
           <div className="flex items-center justify-center min-w-32 gap-4">
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
@@ -50,48 +60,46 @@ export function NavBar() {
               <SheetContent side="left">
                 <div className="grid gap-6 p-6">
                   <Link
+                    href="/"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    <h1>2Runes.gg</h1>
+                  </Link>
+                  <hr />
+                  <Link
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Spoilers
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Card Library
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Deckbuilder
                   </Link>
                   <Link
                     href="#"
                     className="text-sm font-medium hover:underline underline-offset-4"
-                    prefetch={false}
-                    onClick={(() => setSheetOpen(false))}
+                    onClick={() => setSheetOpen(false)}
                   >
                     Events
                   </Link>
                 </div>
               </SheetContent>
             </Sheet>
-            <Link href="/" prefetch={false}>
-              <Image
-                src={LOGO_SVG}
-                alt="Logo"
-                loader={localLoader}
-                width={57}
-                height={36}
-              />
+            <Link href="/">
+              <LogoIcon className="w-[60px] h-[38px]" />
               <span className="sr-only">Two Runes</span>
             </Link>
           </div>
@@ -114,10 +122,35 @@ export function NavBar() {
               <UserButton
                 appearance={{
                   baseTheme: isDarkTheme(theme, systemTheme) ? dark : undefined,
+                  elements: {
+                    userButtonAvatarBox: {
+                      width: '45px',
+                      height: '45px',
+                    },
+                  },
                 }}
                 userProfileMode="navigation"
                 userProfileUrl="/profile"
-              />
+              >
+                <UserButton.MenuItems>
+                  {isCollaborator && (
+                    <UserButton.Link
+                      label="Creator Portal"
+                      labelIcon={<PayloadIcon />}
+                      href="/admin"
+                    />
+                  )}
+                  {isCollaborator && (
+                    <UserButton.Link
+                      label="Creator Profile"
+                      labelIcon={<ProfileIcon />}
+                      href="/admin/account"
+                    />
+                  )}
+                  <UserButton.Action label="manageAccount" />
+                  <UserButton.Action label="signOut" />
+                </UserButton.MenuItems>
+              </UserButton>
             </SignedIn>
           </div>
         </div>
@@ -154,7 +187,7 @@ function NavLink(props: NavItem) {
       className={clsx(
         'font-medium flex items-center text-sm transition-colors hover:underline',
         {
-          'text-blue-500': props.currentPathname === props.url,
+          'text-accent-foreground': props.currentPathname === props.url,
         }
       )}
     >

@@ -1,14 +1,14 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Spoiler } from '@/payload-types';
 import { showDateTitle } from '@/utils/utils';
+import { CldImage } from 'next-cloudinary';
 import { useInView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';
-import { Spoiler } from '../_types/spoiler';
 import { SpoilerModal } from './spoilerModal';
 
 // Page is arbitrarily set number of spoilers to load each request
@@ -57,7 +57,7 @@ export function SpoilerList() {
   }, [isLoading]);
 
   const isHorizontal = (spoiler: Spoiler) => {
-    return spoiler.card_type === 'battlefield';
+    return spoiler.type === 'Battlefield';
   };
 
   const handleSpoilerClick = (spoiler: Spoiler) => {
@@ -82,9 +82,11 @@ export function SpoilerList() {
               : 'calc(88 / 63 * 100%)',
           }}
         >
-          {spoiler.image_url ? (
-            <Image
-              src={spoiler.image_url}
+          {spoiler.card_art &&
+          typeof spoiler.card_art !== 'number' &&
+          spoiler.card_art.filename ? (
+            <CldImage
+              src={spoiler.card_art.filename}
               alt={spoiler.description || 'Spoiler Image'}
               fill
               className="object-cover"
@@ -95,8 +97,8 @@ export function SpoilerList() {
               }
             />
           ) : (
-            <Image
-              src="32be31f2-ef85-4ef5-c169-4a0114388e00/card"
+            <CldImage
+              src={'cardback-black'}
               alt="Card without front image"
               fill
               className="object-cover"
@@ -110,13 +112,13 @@ export function SpoilerList() {
 
   const groupedSpoilers = spoilers.reduce(
     (acc, spoiler) => {
-      if (!acc[spoiler.published_on]) {
-        acc[spoiler.published_on] = {
-          publication_date: spoiler.published_on,
+      if (!acc[spoiler.createdAt]) {
+        acc[spoiler.createdAt] = {
+          publication_date: spoiler.createdAt,
           spoilers: [],
         };
       }
-      acc[spoiler.published_on].spoilers.push(spoiler);
+      acc[spoiler.createdAt].spoilers.push(spoiler);
       return acc;
     },
     {} as Record<string, { publication_date: string; spoilers: Spoiler[] }>

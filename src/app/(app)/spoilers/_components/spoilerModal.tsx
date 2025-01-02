@@ -1,16 +1,16 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Spoiler } from '@/payload-types';
 import { showDateTitle } from '@/utils/utils';
-import Image from 'next/image';
+import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
-import { Spoiler } from '../_types/spoiler';
 
 interface SpoilerModalProps {
   spoiler: Spoiler;
@@ -19,14 +19,14 @@ interface SpoilerModalProps {
 }
 
 export function SpoilerModal({ spoiler, isOpen, onClose }: SpoilerModalProps) {
-  const isVertical = spoiler.card_type !== 'battlefield';
+  const isVertical = spoiler.type !== 'Battlefield';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-[1000px] w-[95vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl">
-            Published {showDateTitle(spoiler.published_on, true)}
+            {spoiler.title} - Spoiled {showDateTitle(spoiler.createdAt)}
           </DialogTitle>
         </DialogHeader>
 
@@ -35,7 +35,9 @@ export function SpoilerModal({ spoiler, isOpen, onClose }: SpoilerModalProps) {
             isVertical ? 'lg:grid-cols-2' : 'grid-cols-1'
           }`}
         >
-          {spoiler.image_url && (
+          {spoiler.card_art &&
+          typeof spoiler.card_art !== 'number' &&
+          spoiler.card_art.filename ? (
             <div
               className={`relative w-full ${
                 isVertical
@@ -43,9 +45,9 @@ export function SpoilerModal({ spoiler, isOpen, onClose }: SpoilerModalProps) {
                   : 'h-[300px] lg:h-[400px]'
               }`}
             >
-              <Image
-                src={spoiler.image_url}
-                alt={spoiler.description || ''}
+              <CldImage
+                src={spoiler.card_art.filename}
+                alt={spoiler.card_art.alt || ''}
                 fill
                 className="object-contain rounded-md"
                 sizes={
@@ -53,6 +55,16 @@ export function SpoilerModal({ spoiler, isOpen, onClose }: SpoilerModalProps) {
                     ? '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px'
                     : '(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 500px'
                 }
+              />
+            </div>
+          ) : (
+            <div className="relative w-full h-[300px] lg:h-[400px]">
+              <CldImage
+                src={'cardback-black'}
+                alt={'No spoiler image available'}
+                fill
+                className="object-contain rounded-md"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 500px"
               />
             </div>
           )}
@@ -63,24 +75,30 @@ export function SpoilerModal({ spoiler, isOpen, onClose }: SpoilerModalProps) {
             </p>
 
             <p className="text-sm md:text-base text-muted-foreground">
-              Spoiler source: {spoiler.source_text}
+              Spoiler source: {spoiler.source_description}
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between mt-4 gap-2">
               <Link
                 href={spoiler.source_url || '#'}
                 className="w-full sm:w-auto"
+                target="_blank"
               >
                 More Info
               </Link>
-              <Link
-                href={spoiler.source_url || '#'}
-                className="w-full sm:w-auto"
-              >
-                <Button variant="outline" disabled={!spoiler.card}>
+
+              {spoiler.card ? (
+                <Link
+                  href={'#'}
+                  className={buttonVariants({ variant: 'outline' })}
+                >
+                  Card
+                </Link>
+              ) : (
+                <Button variant="outline" disabled>
                   Card
                 </Button>
-              </Link>
+              )}
             </div>
           </div>
         </div>
