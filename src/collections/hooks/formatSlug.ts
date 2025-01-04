@@ -33,7 +33,7 @@ export const formatSlug: CollectionBeforeChangeHook<Article> = async ({
   if (operation === 'create' || (data.title ?? '') === '') return data;
   if (data.slug) return data;
 
-  let newSlug = kebabIt(data.title!);
+  let newSlug = kebabIt({ toSkewer: data.title! });
 
   const matchingArticleSlugs = await req.payload.count({
     collection: 'articles',

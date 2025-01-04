@@ -36,7 +36,7 @@ export const Media: CollectionConfig = {
           if (ext > 0) {
             newName = name.slice(0, ext);
           }
-          req.file.name = kebabIt(newName);
+          req.file.name = kebabIt({ toSkewer: newName, isFilename: true });
         }
       },
     ],
