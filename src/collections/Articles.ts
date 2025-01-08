@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 import { isAdminAuthorOrPublished } from '@/access/isAdminAuthorOrPublished';
 import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isCollaborator } from '@/access/isCollaborator';
+import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import {
   FixedToolbarFeature,
   lexicalEditor,
@@ -34,10 +35,10 @@ export const Articles: CollectionConfig = {
       required: true,
     },
     {
-      name: 'category',
+      name: 'tags',
       type: 'relationship',
       relationTo: 'categories',
-      hasMany: false,
+      hasMany: true,
       required: true,
     },
     {
@@ -72,6 +73,26 @@ export const Articles: CollectionConfig = {
       unique: true,
     },
     {
+      name: 'publishedAt',
+      type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === 'published' && !value) {
+              return new Date();
+            }
+            return value;
+          },
+        ],
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
@@ -96,6 +117,7 @@ export const Articles: CollectionConfig = {
                 features: ({ defaultFeatures }) => [
                   ...defaultFeatures,
                   FixedToolbarFeature(),
+                  PrettyIconsFeature(),
                 ],
               }),
             },

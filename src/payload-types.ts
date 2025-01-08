@@ -112,9 +112,10 @@ export interface UserAuthOperations {
 export interface Article {
   id: number;
   title: string;
-  category: number | Category;
+  tags: (number | Category)[];
   author?: (number | null) | User;
   slug?: string | null;
+  publishedAt?: string | null;
   coverImage: number | Media;
   content: {
     root: {
@@ -542,9 +543,10 @@ export interface PayloadMigration {
  */
 export interface ArticlesSelect<T extends boolean = true> {
   title?: T;
-  category?: T;
+  tags?: T;
   author?: T;
   slug?: T;
+  publishedAt?: T;
   coverImage?: T;
   content?: T;
   updatedAt?: T;
