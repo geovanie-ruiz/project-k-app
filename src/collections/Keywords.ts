@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload';
 
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
+import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import {
   FixedToolbarFeature,
   lexicalEditor,
@@ -84,6 +85,7 @@ export const Keywords: CollectionConfig = {
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
           FixedToolbarFeature(),
+          PrettyIconsFeature(),
         ],
       }),
     },

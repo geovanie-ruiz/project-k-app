@@ -1,25 +1,23 @@
 import { cn } from '@/utils/utils';
 import React from 'react';
+import { IconProps } from './ComponentIcon';
 
-// interface IconProps extends React.SVGProps<SVGSVGElement> {}
-
-const MightIcon = React.forwardRef<
-  SVGSVGElement,
-  React.SVGProps<SVGSVGElement>
->(({ className, ...props }, ref) => (
-  <svg
-    ref={ref}
-    {...props}
-    className={cn('relative top-0.5 flex-shrink h-[1em] w-[1em]', className)}
-    width="300"
-    height="300"
-    viewBox="0 0 300 300"
-    fill="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="m166.14 257.91-1.94-14.17 116.37-9.82v47.99zM280.56 59.5l-113.6-33.14-151.7 73.4L43.7 230.6l35.6-3.11-8.83-74.23 18.9-7.99 10.06 80.46 43.32-3.35-9.1-89.68 19.64-5.69 11.31 93.46 41.27-4.12-8.2-101.61 23.98-5.81 10.17 105.22 48.75-4.26V59.5Z" />
-  </svg>
-));
+const MightIcon = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => (
+    <svg
+      ref={ref}
+      {...props}
+      className={cn('relative flex-shrink size-6', className)}
+      width="300"
+      height="300"
+      viewBox="0 0 300 300"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="m166.14 257.91-1.94-14.17 116.37-9.82v47.99zM280.56 59.5l-113.6-33.14-151.7 73.4L43.7 230.6l35.6-3.11-8.83-74.23 18.9-7.99 10.06 80.46 43.32-3.35-9.1-89.68 19.64-5.69 11.31 93.46 41.27-4.12-8.2-101.61 23.98-5.81 10.17 105.22 48.75-4.26V59.5Z" />
+    </svg>
+  )
+);
 
 MightIcon.displayName = 'MightIcon';
 export default MightIcon;

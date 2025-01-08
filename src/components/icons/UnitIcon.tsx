@@ -1,14 +1,13 @@
 import { cn } from '@/utils/utils';
 import React from 'react';
+import { IconProps } from './ComponentIcon';
 
-// interface IconProps extends React.SVGProps<SVGSVGElement> {}
-
-const UnitIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
+const UnitIcon = React.forwardRef<SVGSVGElement, IconProps>(
   ({ className, ...props }, ref) => (
     <svg
       ref={ref}
       {...props}
-      className={cn('relative top-0.5 flex-shrink h-[1em] w-[1em]', className)}
+      className={cn('relative flex-shrink size-6', className)}
       width="300"
       height="300"
       viewBox="0 0 300 300"

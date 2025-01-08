@@ -40,20 +40,50 @@ export function showDateTitle(dateString: string, simple: boolean = false) {
   });
 }
 
-export function kebabIt(toSkewer: string) {
-  const words = toSkewer
+export function kebabIt({
+  toSkewer,
+  isFilename = false,
+}: {
+  toSkewer: string;
+  isFilename?: boolean;
+}) {
+  let justTheMeat = toSkewer
     .replaceAll('-', ' ')
     .replaceAll("'", '')
     .replace(/([a-z])([A-Z])/g, '$1 $2') // give spacing for capital letters
     .replace(/[_]+/g, ' ')
-    .replace(/[0-9&\/\\#,+()$~%.":*!?<>{}]/g, ' ')
+    .replace(/[&\/\\#,+()$~%.":*!?<>{}]/g, ' '); // remove the symbols
+
+  if (!isFilename) {
+    justTheMeat = justTheMeat.replace(/[0-9]/g, ''); // remove numbers from article slugs
+  }
+
+  const words = justTheMeat
     .toLowerCase()
     .split(' ')
     .filter((word) => word !== '');
 
-  if (words.length > 5) {
+  if (words.length > 5 && !isFilename) {
     return words.filter((word) => !stopWords.includes(word)).join('-');
   } else {
     return words.join('-');
   }
+}
+
+export function formatDateTime(timestamp: string): string {
+  const date = timestamp ? new Date(timestamp) : new Date();
+
+  const months = date.getMonth();
+  const days = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  const MM = months + 1 < 10 ? `0${months + 1}` : months + 1;
+  const DD = days < 10 ? `0${days}` : days;
+  const YYYY = date.getFullYear();
+  const HH = hours > 12 ? hours - 12 : hours;
+  const MinMin = minutes < 10 ? `0${minutes}` : minutes;
+  const AMPM = hours < 12 ? 'AM' : 'PM';
+
+  return `${MM}/${DD}/${YYYY} ${HH}:${MinMin} ${AMPM}`;
 }
