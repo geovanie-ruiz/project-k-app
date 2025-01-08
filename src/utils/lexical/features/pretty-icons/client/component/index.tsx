@@ -12,7 +12,6 @@ import {
   $isTextNode,
   $setSelection,
   BLUR_COMMAND,
-  CLICK_COMMAND,
   COMMAND_PRIORITY_LOW,
   KEY_ARROW_LEFT_COMMAND,
   KEY_ARROW_RIGHT_COMMAND,
@@ -22,7 +21,7 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from '@payloadcms/richtext-lexical/lexical';
 import { mergeRegister } from '@payloadcms/richtext-lexical/lexical/utils';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   $isPrettyIconNode,
   PrettyIconNodeProps,
@@ -39,9 +38,7 @@ function PrettyIconComponent({
 }: PrettyIconComponentProps): React.JSX.Element {
   const { icon: iconType, ...rest } = iconProps;
   const [editor] = useLexicalComposerContext();
-  const ref = useRef<any>(null);
-  const [isSelected, setSelected, clearSelection] =
-    useLexicalNodeSelection(nodeKey);
+  const [isSelected, setSelected] = useLexicalNodeSelection(nodeKey);
 
   const onDelete = useCallback(
     (payload: KeyboardEvent) => {
@@ -121,23 +118,6 @@ function PrettyIconComponent({
     [nodeKey]
   );
 
-  const onClick = useCallback(
-    (event: MouseEvent) => {
-      if (
-        event.target === ref.current ||
-        ref.current?.contains(event.target as Node)
-      ) {
-        if (!event.shiftKey) {
-          clearSelection();
-        }
-        setSelected(true);
-        return true;
-      }
-      return false;
-    },
-    [clearSelection, setSelected]
-  );
-
   const onBlur = useCallback(() => {
     const node = $getNodeByKey(nodeKey);
     if (!node?.isSelected()) {
@@ -163,11 +143,6 @@ function PrettyIconComponent({
 
   useEffect(() => {
     const unregister = mergeRegister(
-      editor.registerCommand<MouseEvent>(
-        CLICK_COMMAND,
-        onClick,
-        COMMAND_PRIORITY_LOW
-      ),
       editor.registerCommand(
         KEY_DELETE_COMMAND,
         onDelete,
@@ -202,7 +177,6 @@ function PrettyIconComponent({
     editor,
     onArrowLeftPress,
     onArrowRightPress,
-    onClick,
     onDelete,
     onBlur,
     onSelectionChange,

@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Spoiler } from '@/payload-types';
 import { showDateTitle } from '@/utils/utils';
 import { CldImage } from 'next-cloudinary';
-import { useInView } from 'react-intersection-observer';
+import { InView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';
 import { SpoilerModal } from './spoilerModal';
 
@@ -21,8 +21,6 @@ export function SpoilerList() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSpoiler, setSelectedSpoiler] = useState<Spoiler | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { ref, inView } = useInView();
 
   const loadMoreSpoilers = async () => {
     if (isLoading || !hasMore) return;
@@ -44,17 +42,11 @@ export function SpoilerList() {
     }
   };
 
-  useEffect(() => {
-    if (inView) {
-      loadMoreSpoilers();
-    }
-  }, [inView]);
-
-  useEffect(() => {
+  const handleInViewChange = (inView: boolean) => {
     if (inView && !isLoading) {
       loadMoreSpoilers();
     }
-  }, [isLoading]);
+  };
 
   const isHorizontal = (spoiler: Spoiler) => {
     return spoiler.type === 'Battlefield';
@@ -145,16 +137,26 @@ export function SpoilerList() {
           </CardContent>
         </Card>
       ))}
-      {hasMore && (
-        <div ref={ref} className="flex justify-center py-4">
-          {isLoading ? (
-            <p className="text-muted-foreground">Loading more spoilers...</p>
-          ) : (
-            <Button onClick={loadMoreSpoilers} variant="outline">
-              Load More
-            </Button>
+      {isLoading && (
+        <p className="text-center text-muted-foreground py-4">
+          Loading more spoilers...
+        </p>
+      )}
+      {hasMore && !isLoading && (
+        <InView
+          onChange={handleInViewChange}
+          trackVisibility={true}
+          delay={100}
+          initialInView={true}
+        >
+          {({ ref }) => (
+            <div ref={ref} className="text-center">
+              <Button onClick={loadMoreSpoilers} variant="outline">
+                Load More
+              </Button>
+            </div>
           )}
-        </div>
+        </InView>
       )}
       {!hasMore && (
         <p className="text-center text-muted-foreground py-4">

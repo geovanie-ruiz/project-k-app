@@ -1,7 +1,7 @@
 import Home from '@/app/(app)/page';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider, ThemeProviderProps } from 'next-themes';
 
 // Mock window.matchMedia
 beforeAll(() => {
@@ -22,10 +22,7 @@ beforeAll(() => {
 
 const customRender = (
   ui: React.JSX.Element,
-  {
-    providerProps,
-    ...renderOptions
-  }: { providerProps: any; [key: string]: any }
+  { providerProps, ...renderOptions }: { providerProps: ThemeProviderProps }
 ) => {
   return render(
     <ThemeProvider {...providerProps}>{ui}</ThemeProvider>,

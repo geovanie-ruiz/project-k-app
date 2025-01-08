@@ -48,9 +48,9 @@ function $convertPrettyIconElement(
     }
   }
 
-  let complex =
+  const complex =
     domNode.getAttribute('data-lexical-pretty-icon-complex') || 'false';
-  let colored =
+  const colored =
     domNode.getAttribute('data-lexical-pretty-icon-colored') || 'false';
 
   if (icon !== null) {
