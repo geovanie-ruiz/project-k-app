@@ -14,11 +14,15 @@ export const colorSwatches: Swatch = {
   '#566f94': 'bg-[#566f94] text-white',
   '#ab972c': 'bg-[#ab972c] text-white',
   '#ba7152': 'bg-[#ba7152] text-white',
+  '#536878': 'bg-[#536878] text-white',
+  '#8F7236': 'bg-[#8F7236] text-white',
 };
 
-export default function Keyword({ label, color }: KeywordProps) {
+export default function KeywordBadge({ label, color }: KeywordProps) {
   return (
-    <div className={`border rounded-[4px] px-2 py-1 ${colorSwatches[color]}`}>
+    <div
+      className={`inline-block align-middle text-sm border rounded-[4px] mr-1 px-2 ${colorSwatches[color]}`}
+    >
       {label}
     </div>
   );

@@ -12,7 +12,7 @@ const Cell: React.FC<DefaultCellComponentProps> = (props) => {
   return (
     <div className="flex flex-row">
       <div
-        className={`w-5 mr-4 overflow-hidden border rounded-[4px] bg-[${colorHex}]`}
+        className={`w-5 mr-4 border border-solid border-white rounded-[4px] bg-[${colorHex}]`}
       ></div>
       <div>{cellData}</div>
     </div>

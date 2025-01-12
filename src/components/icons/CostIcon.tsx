@@ -7,7 +7,7 @@ const CostIcon = React.forwardRef<SVGSVGElement, IconProps>(
     <svg
       ref={ref}
       {...props}
-      className={cn('relative flex-shrink size-4', className)}
+      className={cn('relative flex-shrink size-5 align-text-bottom', className)}
       width="300"
       height="300"
       viewBox="0 0 300 300"
