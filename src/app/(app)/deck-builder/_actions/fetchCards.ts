@@ -18,11 +18,7 @@ export async function fetchCards(
 
   return {
     // cards: cards.docs,
-    cards: Array(60).fill(null).map((_, index) => ({
-      ...cards.docs[0],
-      set_index: index,
-      name: `${cards.docs[0].name} ${index}`,
-    })),
+    cards: cards.docs,
     hasMore: cards.hasNextPage,
   };
 }
