@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { Card } from '@/payload-types';
+import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import {
   FixedToolbarFeature,
   lexicalEditor,
@@ -35,78 +36,6 @@ export const Cards: CollectionConfig = {
         readOnly: true,
         position: 'sidebar',
       },
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          label: 'Card Type',
-          name: 'type',
-          type: 'select',
-          hasMany: false,
-          options: [
-            'Unit',
-            'Champion',
-            'Legend',
-            'Spell',
-            'Battlefield',
-            'Gear',
-            'Rune',
-          ],
-          required: true,
-        },
-        {
-          name: 'rune',
-          type: 'select',
-          hasMany: true,
-          options: ['Calm', 'Chaos', 'Fury', 'Mental', 'Order', 'Physical'],
-          admin: {
-            condition: (data) => !!data.type && data.type !== 'Battlefield',
-          },
-          validate: (value, { data }) => {
-            const card = data as Card;
-            if (card.type === 'Battlefield') return true;
-            if (!value || value.length === 0)
-              return 'Please select at least one';
-            if (value.length > 2) return 'Please select at most 2';
-            return true;
-          },
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'name',
-          type: 'text',
-          label: 'Card Name',
-          required: true,
-        },
-        {
-          name: 'subtitle',
-          type: 'text',
-          admin: {
-            condition: (data) => data.type === 'Champion',
-          },
-        },
-        {
-          name: 'character',
-          type: 'relationship',
-          admin: {
-            condition: (data) => CHARACTER_TYPES.includes(data.type),
-          },
-          relationTo: 'characters',
-          hasMany: false,
-        },
-        {
-          name: 'might',
-          type: 'number',
-          admin: {
-            condition: (data) => COMBAT_TYPES.includes(data.type),
-          },
-        },
-      ],
     },
     {
       name: 'cost',
@@ -147,37 +76,124 @@ export const Cards: CollectionConfig = {
       ],
     },
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'set_index',
-          label: 'Set Number',
-          type: 'number',
-          required: true,
-        },
-        {
-          name: 'set',
-          type: 'relationship',
-          relationTo: 'sets',
-          hasMany: false,
-          required: true,
-        },
-        {
-          name: 'rarity',
-          type: 'select',
-          options: [
-            'White Circle',
-            'Green Triangle',
-            'Purple Diamond',
-            'Golden Pentagon',
-          ],
-          required: true,
-        },
-      ],
-    },
-    {
       type: 'tabs',
       tabs: [
+        {
+          label: 'Details',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  label: 'Card Type',
+                  name: 'type',
+                  type: 'select',
+                  hasMany: false,
+                  options: [
+                    'Unit',
+                    'Champion',
+                    'Legend',
+                    'Spell',
+                    'Battlefield',
+                    'Gear',
+                    'Rune',
+                  ],
+                  required: true,
+                },
+                {
+                  name: 'rune',
+                  type: 'select',
+                  hasMany: true,
+                  options: [
+                    'Calm',
+                    'Chaos',
+                    'Fury',
+                    'Mental',
+                    'Order',
+                    'Physical',
+                  ],
+                  admin: {
+                    condition: (data) =>
+                      !!data.type && data.type !== 'Battlefield',
+                  },
+                  validate: (value, { data }) => {
+                    const card = data as Card;
+                    if (card.type === 'Battlefield') return true;
+                    if (!value || value.length === 0)
+                      return 'Please select at least one';
+                    if (value.length > 2) return 'Please select at most 2';
+                    return true;
+                  },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'name',
+                  type: 'text',
+                  label: 'Card Name',
+                  required: true,
+                },
+                {
+                  name: 'subtitle',
+                  type: 'text',
+                  admin: {
+                    condition: (data) => data.type === 'Champion',
+                  },
+                },
+                {
+                  name: 'character',
+                  type: 'relationship',
+                  admin: {
+                    condition: (data) => CHARACTER_TYPES.includes(data.type),
+                  },
+                  relationTo: 'characters',
+                  hasMany: false,
+                },
+                {
+                  name: 'might',
+                  type: 'number',
+                  admin: {
+                    condition: (data) => COMBAT_TYPES.includes(data.type),
+                  },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'set_index',
+                  label: 'Set Number',
+                  type: 'number',
+                  required: true,
+                },
+                {
+                  name: 'set',
+                  type: 'relationship',
+                  relationTo: 'sets',
+                  hasMany: false,
+                  required: true,
+                },
+                {
+                  name: 'rarity',
+                  type: 'select',
+                  options: [
+                    'None',
+                    'White Circle',
+                    'Green Triangle',
+                    'Purple Diamond',
+                    'Golden Pentagon',
+                    'Promo',
+                  ],
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
         {
           label: 'Art',
           fields: [
@@ -227,6 +243,8 @@ export const Cards: CollectionConfig = {
                 features: ({ defaultFeatures }) => [
                   ...defaultFeatures,
                   FixedToolbarFeature(),
+                  PrettyIconsFeature(),
+                  //PrettyKeywordsFeature(),
                 ],
               }),
             },

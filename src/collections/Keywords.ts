@@ -3,10 +3,12 @@ import type { CollectionConfig } from 'payload';
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { KeywordTypes } from '@/utils/types/keywords.types';
 import {
   FixedToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
+import updateKeywordType from './hooks/updateKeywordType';
 
 export const Keywords: CollectionConfig = {
   slug: 'keywords',
@@ -23,12 +25,41 @@ export const Keywords: CollectionConfig = {
   },
   fields: [
     {
-      name: 'keyword',
-      type: 'text',
+      type: 'row',
+      fields: [
+        {
+          name: 'keyword',
+          type: 'text',
+        },
+        {
+          name: 'type',
+          type: 'select',
+          label: 'Keyword Type',
+          options: KeywordTypes,
+          hooks: {
+            beforeChange: [updateKeywordType],
+          },
+        },
+      ],
     },
     {
       type: 'row',
       fields: [
+        {
+          name: 'position',
+          type: 'select',
+          options: [
+            {
+              label: 'Before Abilities',
+              value: 'prefix',
+            },
+            {
+              label: 'After Abilities',
+              value: 'suffix',
+            },
+          ],
+          defaultValue: 'prefix',
+        },
         {
           name: 'color',
           type: 'select',
@@ -61,6 +92,14 @@ export const Keywords: CollectionConfig = {
             {
               label: 'Physical Orange',
               value: '#ba7152',
+            },
+            {
+              label: 'Timing Grey',
+              value: '#536878',
+            },
+            {
+              label: 'Trigger Gold',
+              value: '#8F7236',
             },
           ],
         },

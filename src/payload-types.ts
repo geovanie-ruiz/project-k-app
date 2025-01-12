@@ -197,12 +197,6 @@ export interface Artist {
 export interface Card {
   id: number;
   full_card_name?: string | null;
-  type: 'Unit' | 'Champion' | 'Legend' | 'Spell' | 'Battlefield' | 'Gear' | 'Rune';
-  rune?: ('Calm' | 'Chaos' | 'Fury' | 'Mental' | 'Order' | 'Physical')[] | null;
-  name: string;
-  subtitle?: string | null;
-  character?: (number | null) | Character;
-  might?: number | null;
   /**
    * Exhaust Rune(s)
    */
@@ -216,9 +210,15 @@ export interface Card {
         id?: string | null;
       }[]
     | null;
+  type: 'Unit' | 'Champion' | 'Legend' | 'Spell' | 'Battlefield' | 'Gear' | 'Rune';
+  rune?: ('Calm' | 'Chaos' | 'Fury' | 'Mental' | 'Order' | 'Physical')[] | null;
+  name: string;
+  subtitle?: string | null;
+  character?: (number | null) | Character;
+  might?: number | null;
   set_index: number;
   set: number | Set;
-  rarity: 'White Circle' | 'Green Triangle' | 'Purple Diamond' | 'Golden Pentagon';
+  rarity: 'None' | 'White Circle' | 'Green Triangle' | 'Purple Diamond' | 'Golden Pentagon' | 'Promo';
   artist?: (number | null) | Artist;
   card_art?: (number | null) | Media;
   keywords?: (number | Keyword)[] | null;
@@ -279,7 +279,9 @@ export interface Set {
 export interface Keyword {
   id: number;
   keyword?: string | null;
-  color?: ('#699667' | '#835b86' | '#a74e56' | '#566f94' | '#ab972c' | '#ba7152') | null;
+  type?: ('Effect' | 'Timing' | 'Trigger') | null;
+  position?: ('prefix' | 'suffix') | null;
+  color?: ('#699667' | '#835b86' | '#a74e56' | '#566f94' | '#ab972c' | '#ba7152' | '#536878' | '#8F7236') | null;
   reminder_text?: {
     root: {
       type: string;
@@ -304,6 +306,7 @@ export interface Keyword {
  */
 export interface Tag {
   id: number;
+  region?: boolean | null;
   tag?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -568,12 +571,6 @@ export interface ArtistsSelect<T extends boolean = true> {
  */
 export interface CardsSelect<T extends boolean = true> {
   full_card_name?: T;
-  type?: T;
-  rune?: T;
-  name?: T;
-  subtitle?: T;
-  character?: T;
-  might?: T;
   cost?: T;
   recycle?:
     | T
@@ -581,6 +578,12 @@ export interface CardsSelect<T extends boolean = true> {
         rune?: T;
         id?: T;
       };
+  type?: T;
+  rune?: T;
+  name?: T;
+  subtitle?: T;
+  character?: T;
+  might?: T;
   set_index?: T;
   set?: T;
   rarity?: T;
@@ -616,6 +619,8 @@ export interface CharactersSelect<T extends boolean = true> {
  */
 export interface KeywordsSelect<T extends boolean = true> {
   keyword?: T;
+  type?: T;
+  position?: T;
   color?: T;
   reminder_text?: T;
   updatedAt?: T;
@@ -692,6 +697,7 @@ export interface SpoilersSelect<T extends boolean = true> {
  * via the `definition` "tags_select".
  */
 export interface TagsSelect<T extends boolean = true> {
+  region?: T;
   tag?: T;
   updatedAt?: T;
   createdAt?: T;

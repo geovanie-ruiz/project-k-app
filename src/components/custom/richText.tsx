@@ -6,7 +6,7 @@ import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import {
   JSXConvertersFunction,
   LinkJSXConverter,
-  RichText as RichTextWithoutBlocks,
+  RichText,
 } from '@payloadcms/richtext-lexical/react';
 
 import Icon from '@/components/icons/ComponentIcon';
@@ -39,17 +39,47 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({
   },
 });
 
+const inlineConverters: JSXConvertersFunction<NodeTypes> = ({
+  defaultConverters,
+}) => ({
+  ...defaultConverters,
+  ...LinkJSXConverter({ internalDocToHref }),
+  paragraph: ({ node, nodesToJSX }) => {
+    const children = nodesToJSX({ nodes: node.children });
+    if (!children.length) {
+      return <span></span>;
+    }
+    return <span className="inline leading-8">{children}</span>;
+  },
+  prettyIcon: ({ node }) => {
+    const props = {
+      value: node.value,
+      complex: node.complex,
+      colored: node.colored,
+      className: 'inline-block align-middle',
+    };
+    return <Icon iconType={node.icon} iconProps={props} />;
+  },
+});
+
 type Props = {
   data: SerializedEditorState;
+  enableInline?: boolean;
   enableGutter?: boolean;
   enableProse?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props;
+export default function RichTextViewer(props: Props) {
+  const {
+    className,
+    enableInline = false,
+    enableProse = true,
+    enableGutter = true,
+    ...rest
+  } = props;
   return (
-    <RichTextWithoutBlocks
-      converters={jsxConverters}
+    <RichText
+      converters={enableInline ? inlineConverters : jsxConverters}
       className={cn(
         {
           'container ': enableGutter,

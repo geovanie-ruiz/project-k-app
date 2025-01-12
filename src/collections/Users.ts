@@ -10,7 +10,7 @@ export const Users: CollectionConfig = {
   admin: {
     group: 'Content',
     useAsTitle: 'username',
-    hidden: ({ user }) => user.role !== 'admin',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   auth: {
     disableLocalStrategy: true,
@@ -32,11 +32,12 @@ export const Users: CollectionConfig = {
               },
             },
           });
+          if (usersQuery.docs.length === 0) return { user: null };
           const result: AuthStrategyResult = {
             user: {
               ...usersQuery.docs[0],
-              username: usersQuery.docs[0].username || undefined,
-              email: usersQuery.docs[0].email || undefined,
+              username: usersQuery.docs[0]?.username || undefined,
+              email: usersQuery.docs[0]?.email || undefined,
               collection: 'users',
             },
           };
