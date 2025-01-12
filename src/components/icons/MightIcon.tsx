@@ -7,7 +7,7 @@ const MightIcon = React.forwardRef<SVGSVGElement, IconProps>(
     <svg
       ref={ref}
       {...props}
-      className={cn('relative flex-shrink size-6', className)}
+      className={cn('relative flex-shrink size-4', className)}
       width="300"
       height="300"
       viewBox="0 0 300 300"

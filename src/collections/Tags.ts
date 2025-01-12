@@ -17,8 +17,19 @@ export const Tags: CollectionConfig = {
   },
   fields: [
     {
-      name: 'tag',
-      type: 'text',
+      type: 'row',
+      fields: [
+        {
+          name: 'region',
+          type: 'checkbox',
+          label: 'Is Region',
+          defaultValue: false,
+        },
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
     },
   ],
 };

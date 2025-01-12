@@ -11,8 +11,8 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "payload:types": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload generate:types",
-    "supabase:types": "node ./supabase/generate.js"
+    "payload": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload",
+    "payload:types": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload generate:types"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.9.6",
