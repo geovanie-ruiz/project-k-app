@@ -57,6 +57,15 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        shine: {
+          '0%': { left: '-75%' },
+          '100%': { left: '125%' },
+        },
+      },
+      animation: {
+        shine: 'shine 0.75s',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

@@ -82,7 +82,7 @@ export function NavBar() {
                     Card Library
                   </Link>
                   <Link
-                    href="#"
+                    href="/deck-builder"
                     className="text-sm font-medium hover:underline underline-offset-4"
                     onClick={() => setSheetOpen(false)}
                   >
@@ -110,7 +110,11 @@ export function NavBar() {
               currentPathname={pathname}
             />
             <NavLink url="#" label="Card Library" currentPathname={pathname} />
-            <NavLink url="#" label="Deck Builder" currentPathname={pathname} />
+            <NavLink
+              url="/deck-builder"
+              label="Deck Builder"
+              currentPathname={pathname}
+            />
             <NavLink url="#" label="Events" currentPathname={pathname} />
           </nav>
           <div className="flex items-center justify-center min-w-32 gap-4">
