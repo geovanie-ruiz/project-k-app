@@ -238,6 +238,21 @@ export interface Card {
     };
     [k: string]: unknown;
   } | null;
+  falvor?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -592,6 +607,7 @@ export interface CardsSelect<T extends boolean = true> {
   keywords?: T;
   tags?: T;
   abilities?: T;
+  falvor?: T;
   updatedAt?: T;
   createdAt?: T;
 }

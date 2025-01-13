@@ -10,9 +10,26 @@ import {
 } from '@payloadcms/richtext-lexical/react';
 
 import Icon from '@/components/icons/ComponentIcon';
+import { SerializedPrettyIconNode } from '@/utils/lexical/features/pretty-icons/client/nodes/PrettyIconNode';
+import { SerializedPrettyKeywordNode } from '@/utils/lexical/features/pretty-keywords/client/nodes/PrettyKeywordNode';
 import { cn } from '@/utils/utils';
+import Keyword from './keyword';
 
 type NodeTypes = DefaultNodeTypes;
+
+const prettyIcon = ({ node }: { node: SerializedPrettyIconNode }) => {
+  const props = {
+    value: node.value,
+    complex: node.complex,
+    colored: node.colored,
+    className: 'inline-block align-middle',
+  };
+  return <Icon iconType={node.icon} iconProps={props} />;
+};
+
+const prettyKeyword = ({ node }: { node: SerializedPrettyKeywordNode }) => (
+  <Keyword label={node.keyword} color={node.color} />
+);
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!;
@@ -28,15 +45,8 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({
 }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
-  prettyIcon: ({ node }) => {
-    const props = {
-      value: node.value,
-      complex: node.complex,
-      colored: node.colored,
-      className: 'inline-block align-middle',
-    };
-    return <Icon iconType={node.icon} iconProps={props} />;
-  },
+  prettyIcon,
+  prettyKeyword,
 });
 
 const inlineConverters: JSXConvertersFunction<NodeTypes> = ({
@@ -51,15 +61,8 @@ const inlineConverters: JSXConvertersFunction<NodeTypes> = ({
     }
     return <span className="inline leading-8">{children}</span>;
   },
-  prettyIcon: ({ node }) => {
-    const props = {
-      value: node.value,
-      complex: node.complex,
-      colored: node.colored,
-      className: 'inline-block align-middle',
-    };
-    return <Icon iconType={node.icon} iconProps={props} />;
-  },
+  prettyIcon,
+  prettyKeyword,
 });
 
 type Props = {

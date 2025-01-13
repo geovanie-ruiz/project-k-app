@@ -4,6 +4,7 @@ import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { Card } from '@/payload-types';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import {
   FixedToolbarFeature,
   lexicalEditor,
@@ -244,7 +245,23 @@ export const Cards: CollectionConfig = {
                   ...defaultFeatures,
                   FixedToolbarFeature(),
                   PrettyIconsFeature(),
-                  //PrettyKeywordsFeature(),
+                  PrettyKeywordsFeature(),
+                ],
+              }),
+            },
+          ],
+        },
+        {
+          label: 'Flavor',
+          fields: [
+            {
+              name: 'falvor',
+              label: 'Flavor Text',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures,
+                  FixedToolbarFeature(),
                 ],
               }),
             },

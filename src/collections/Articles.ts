@@ -4,6 +4,7 @@ import { isAdminAuthorOrPublished } from '@/access/isAdminAuthorOrPublished';
 import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isCollaborator } from '@/access/isCollaborator';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import {
   FixedToolbarFeature,
   lexicalEditor,
@@ -118,6 +119,7 @@ export const Articles: CollectionConfig = {
                   ...defaultFeatures,
                   FixedToolbarFeature(),
                   PrettyIconsFeature(),
+                  PrettyKeywordsFeature(),
                 ],
               }),
             },
