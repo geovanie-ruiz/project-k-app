@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { fetchCards } from '../_actions/fetchCards';
 
-export const CARDS_PER_PAGE = 10;
+export const CARDS_PER_PAGE = 300;
 
 interface CardsListProps {
   filters: {

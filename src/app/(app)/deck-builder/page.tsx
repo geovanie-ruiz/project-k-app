@@ -116,6 +116,30 @@ export default function DeckBuilderPage() {
           `${(card.set as Set).set_code}-${card.set_index}`
       );
 
+      // Define capacity rules
+      const capacityRules = {
+        legend: { maxCards: 1, maxCopies: 1 },
+        battlefields: { maxCards: 3, maxCopies: 1 },
+        mainDeck: { maxCards: 40, maxCopies: 3 },
+        runeDeck: { maxCards: 12, maxCopies: Infinity },
+      };
+
+      const { maxCards, maxCopies } = capacityRules[targetSection];
+
+      // Calculate total card count in the section
+      const totalCardCount = section.reduce((sum, c) => sum + c.quantity, 0);
+
+      // Check maximum capacity for the section
+      if (totalCardCount >= maxCards) {
+        return prevDeck; // Return unchanged deck
+      }
+
+      // Check maximum copies of a card
+      if (existingCard && existingCard.quantity >= maxCopies) {
+        return prevDeck; // Return unchanged deck
+      }
+
+      // Add or update the card in the section
       if (existingCard) {
         // Increment quantity if card already exists
         return {
@@ -202,16 +226,20 @@ export default function DeckBuilderPage() {
     // Serialize and encode the deck
     const compactDeck = {
       l: deck.legend.map(
-        (c) => `${(c.card.set as Set).set_code}-${c.card.set_index}`
+        (c) =>
+          `${(c.card.set as Set).set_code}-${c.card.set_index};${c.quantity}`
       ),
       b: deck.battlefields.map(
-        (c) => `${(c.card.set as Set).set_code}-${c.card.set_index}`
+        (c) =>
+          `${(c.card.set as Set).set_code}-${c.card.set_index};${c.quantity}`
       ),
       r: deck.runeDeck.map(
-        (c) => `${(c.card.set as Set).set_code}-${c.card.set_index}`
+        (c) =>
+          `${(c.card.set as Set).set_code}-${c.card.set_index};${c.quantity}`
       ),
       m: deck.mainDeck.map(
-        (c) => `${(c.card.set as Set).set_code}-${c.card.set_index}`
+        (c) =>
+          `${(c.card.set as Set).set_code}-${c.card.set_index};${c.quantity}`
       ),
     };
     console.log('Compact deck:', compactDeck);

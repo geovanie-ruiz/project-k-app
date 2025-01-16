@@ -18,6 +18,8 @@ async function getDeckFromHash(hash: string): Promise<EditDeckList> {
       throw new Error('Invalid deck hash');
     }
 
+    console.log('Decompressed:', decompressed);
+    // TODO - Validate the deck structure
     const deck = JSON.parse(decompressed) as EditDeckList;
 
     // Ensure all required properties exist
@@ -40,7 +42,6 @@ export default async function DeckViewPage({ params }: DeckViewPageProps) {
 
   try {
     const { deckhash } = await params;
-    console.log(deckhash);
     deck = await getDeckFromHash(deckhash);
   } catch (error) {
     notFound();
@@ -49,7 +50,7 @@ export default async function DeckViewPage({ params }: DeckViewPageProps) {
   return (
     <div className="container mx-auto py-8 px-4">
       <Card className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Shared Public Deck</h1>
+        <h1 className="text-2xl font-bold mb-6">Shared Deck</h1>
         <DeckViewer deck={deck} />
       </Card>
     </div>

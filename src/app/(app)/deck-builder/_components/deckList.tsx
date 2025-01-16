@@ -19,22 +19,44 @@ const runeColors: Record<string, string> = {
 export function DeckList({ deck, removeCardFromDeck }: DeckListProps) {
   const renderDeckSection = (title: string, cards: DeckListCard[]) => (
     <div className="space-y-2">
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+      <h3 className="text-lg font-semibold mb-2">
+        {title} - {cards.reduce((sum, { quantity }) => sum + quantity, 0)}
+      </h3>
       <ul className="space-y-1">
         {cards.map(({ card, quantity }) => {
-          const borderColor =
+          // Generate the gradient
+          const gradient =
             card.rune && card.rune.length > 0
-              ? (runeColors[card.rune[0]] ?? 'gray')
+              ? card.rune.length === 1
+                ? (runeColors[card.rune[0]] ?? 'gray') // Single color
+                : `linear-gradient(45deg, ${card.rune
+                    .slice(0, 2) // Take at most 2 runes
+                    .map((r) => runeColors[r] ?? 'gray')
+                    .join(', ')})` // Gradient for multiple runes
               : 'gray';
+
           return (
             <li
               key={`${(card.set as Set).set_code}-${card.set_index}`}
-              className="flex justify-between items-center p-2 border rounded-lg cursor-pointer hover:bg-primary/10 h-9"
+              className="relative flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-primary/10 h-9"
               onClick={() => removeCardFromDeck(card)}
-              style={{ borderColor }}
             >
               <span>{card.name}</span>
-              <span className="text-gray-500">x{quantity}</span>
+              <span>x{quantity}</span>
+              {/* Gradient Border */}
+              <div
+                className="absolute inset-0 -z-10 rounded-lg"
+                style={{
+                  background: gradient,
+                  maskImage:
+                    'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                  WebkitMaskImage:
+                    'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                  maskComposite: 'exclude',
+                  WebkitMaskComposite: 'exclude',
+                  padding: '2px',
+                }}
+              ></div>
             </li>
           );
         })}

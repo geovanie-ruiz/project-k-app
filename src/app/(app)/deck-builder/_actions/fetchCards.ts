@@ -5,16 +5,18 @@ import config from '@/payload.config';
 import { getPayload } from 'payload';
 
 export async function fetchCards(
+  page: number = 1,
+  pageSize: number = 10
 ): Promise<{ cards: Card[]; hasMore: boolean }> {
   const payload = await getPayload({ config });
 
   const cards = await payload.find({
     collection: 'cards',
     sort: ['set', 'set_index'],
+    limit: pageSize,
+    page: page,
     depth: 2,
   });
-
-  console.log(cards.docs[0]);
 
   return {
     // cards: cards.docs,
