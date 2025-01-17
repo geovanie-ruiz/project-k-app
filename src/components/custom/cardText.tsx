@@ -92,7 +92,7 @@ export default function CardText({
           {'('}
           {prefixText.map((text, index, { length }) => {
             return (
-              <>
+              <span key={length}>
                 <RichTextViewer
                   className="inline"
                   key={index}
@@ -102,46 +102,45 @@ export default function CardText({
                   enableProse={false}
                 />
                 {index !== length - 1 && <span className="mr-1"></span>}
-              </>
+              </span>
             );
           })}
           {')'}
+          <br />
         </>
       )}
 
-      <div>
-        {cardText && (
-          <RichTextViewer
-            className="inline mr-1"
-            data={cardText}
-            enableInline={true}
-            enableGutter={false}
-            enableProse={false}
-          />
-        )}
+      {cardText && (
+        <RichTextViewer
+          className="inline mr-1"
+          data={cardText}
+          enableInline={true}
+          enableGutter={false}
+          enableProse={false}
+        />
+      )}
 
-        {showReminders && suffixText.length > 0 && (
-          <span>
-            <span>{'('}</span>
-            {suffixText.map((text, index, { length }) => {
-              return (
-                <>
-                  <RichTextViewer
-                    className="inline"
-                    key={index}
-                    data={text}
-                    enableInline={true}
-                    enableGutter={false}
-                    enableProse={false}
-                  />
-                  {index !== length - 1 && <span className="mr-1"></span>}
-                </>
-              );
-            })}
-            <span>{')'}</span>
-          </span>
-        )}
-      </div>
+      {showReminders && suffixText.length > 0 && (
+        <span>
+          <span>{'('}</span>
+          {suffixText.map((text, index, { length }) => {
+            return (
+              <span key={index}>
+                <RichTextViewer
+                  className="inline"
+                  key={index}
+                  data={text}
+                  enableInline={true}
+                  enableGutter={false}
+                  enableProse={false}
+                />
+                {index !== length - 1 && <span className="mr-1"></span>}
+              </span>
+            );
+          })}
+          <span>{')'}</span>
+        </span>
+      )}
     </div>
   );
 }

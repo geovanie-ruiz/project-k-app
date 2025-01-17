@@ -113,7 +113,7 @@ The site is hosted on Vercel. This shouldn't really be an issue until you're rea
 
 ## Cloudinary
 
-Images are currently being hosted via Cloudinary. The `cloudinary-nextjs` library makes integrating with the CDN easy and performant. Instead of using Next.js <Image /> components, we'll be using <CldImage /> instead. Same benefits but the former is integrated with Vercel image delivery, and the latter with Cloudinary. So it's a great replacement.
+Images are currently being hosted via Cloudinary. The `cloudinary-nextjs` library makes integrating with the CDN easy and performant. Instead of using Next.js \<Image /> components, we'll be using \<CldImage /> instead. Same benefits but the former is integrated with Vercel image delivery, and the latter with Cloudinary. So it's a great replacement.
 
 Eventually static and uploaded files will be hosted locally when running in development. But for now, be mindful that media resources are being pulled down from Cloudinary.
 

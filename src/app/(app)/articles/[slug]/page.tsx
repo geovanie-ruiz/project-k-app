@@ -1,14 +1,16 @@
 import { notFound } from 'next/navigation';
 import { getPayload } from 'payload';
 
-import type { Article as ArticleType } from '@/payload-types';
+import type { CreatorProfiles, Media, User } from '@/payload-types';
 
 import config from '@/payload.config';
 import { RefreshRouteOnSave } from './RefreshRouteOnSave';
 
 import RichText from '@/components/custom/richText';
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { ArticleHero } from './_components/hero';
+import { cache } from 'react';
+import { AlsoBy } from './_components/alsoBy';
+import { ArticleHero, HeroProps } from './_components/hero';
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config });
@@ -35,6 +37,12 @@ type ArticleViewProps = {
   searchParams: Promise<{ preview: boolean }>;
 };
 
+type AuthorInfo = {
+  authorId: number;
+  authorName: string;
+  links: CreatorProfiles;
+};
+
 export default async function ArticleView({
   params,
   searchParams,
@@ -42,47 +50,116 @@ export default async function ArticleView({
   const { slug = '' } = await params;
   const { preview } = await searchParams;
 
-  const payload = await getPayload({ config });
-  const article = await payload.find({
-    collection: 'articles',
-    draft: preview,
-    limit: 1,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  });
+  const article = await queryArticleBySlug({ slug, preview });
 
-  if (article.totalDocs === 0) return notFound();
+  if (!article) return notFound();
 
-  const data = article.docs?.[0] as ArticleType;
-  const articleContent = data.content as SerializedEditorState;
+  const {
+    authorId,
+    authorName,
+    links: authorLinks,
+  } = await getAuthor(article?.author);
+
+  const heroProps: HeroProps = {
+    title: article.title,
+    excerpt: article.excerpt,
+    author: authorName,
+    publishedDate: article?.publishedAt ?? '',
+    heroImage: article.coverImage as Media,
+    links: authorLinks,
+  };
+
+  const alsoBy = await queryRelatedByAuthorId({ slug, authorId, preview });
+
+  const articleContent = article.content as SerializedEditorState;
 
   return (
-    <article>
+    <article id={`article-${article.id}`}>
       <RefreshRouteOnSave />
 
-      <ArticleHero article={data} />
+      <ArticleHero {...heroProps} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText
-            className="max-w-[48rem] mx-auto"
-            data={articleContent}
-            enableGutter={false}
-          />
+      <RichText
+        className="max-w-[48rem] mx-auto"
+        data={articleContent}
+        enableGutter={false}
+      />
 
-          {/* {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter(
-                (post) => typeof post === 'object'
-              )}
-            />
-          )} */}
-        </div>
-      </div>
+      <AlsoBy authorName={authorName ?? ''} articles={alsoBy} />
     </article>
   );
 }
+
+const getAuthorById = async (authorId: number) => {
+  const payload = await getPayload({ config });
+  const article = await payload.findByID({
+    collection: 'users',
+    id: authorId,
+  });
+  return article || null;
+};
+
+const getAuthor = async (
+  author: number | User | null | undefined
+): Promise<AuthorInfo> => {
+  const authorInfo: AuthorInfo = { authorId: -1, authorName: '', links: [] };
+  if (!author) return authorInfo;
+  if (typeof author === 'number') {
+    const user = await getAuthorById(author);
+    authorInfo.authorId = author;
+    authorInfo.authorName = user?.author_name ?? user.username!;
+    authorInfo.links = user?.links || [];
+  } else {
+    authorInfo.authorId = author.id;
+    authorInfo.authorName = author?.author_name ?? author.username!;
+    authorInfo.links = author?.links || [];
+  }
+
+  return authorInfo;
+};
+
+const queryRelatedByAuthorId = cache(
+  async ({
+    slug,
+    authorId,
+    preview,
+  }: {
+    slug: string;
+    authorId: number;
+    preview: boolean;
+  }) => {
+    const payload = await getPayload({ config });
+    const articlesAlsoBy = await payload.find({
+      collection: 'articles',
+      draft: preview,
+      where: {
+        slug: {
+          not_equals: slug,
+        },
+        author: {
+          equals: authorId,
+        },
+      },
+      sort: '-publishedAt',
+      limit: 3,
+    });
+    return articlesAlsoBy.docs;
+  }
+);
+
+const queryArticleBySlug = cache(
+  async ({ slug, preview }: { slug: string; preview: boolean }) => {
+    const payload = await getPayload({ config });
+    const article = await payload.find({
+      collection: 'articles',
+      draft: preview,
+      limit: 1,
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+    });
+    return article.docs?.[0] || null;
+  }
+);

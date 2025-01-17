@@ -1,16 +1,16 @@
 import { createNode, createServerFeature } from '@payloadcms/richtext-lexical';
-import { PrettyIconNode } from '../client/nodes/PrettyIconNode';
+import { PrettyKeywordNode } from '../client/nodes/PrettyKeywordNode';
 import { MarkdownTransformer } from '../markdownTransformer';
 
-export const PrettyIconsFeature = createServerFeature({
+export const PrettyKeywordsFeature = createServerFeature({
   feature: {
-    ClientFeature: '@/utils/lexical/features/pretty-icons/client',
+    ClientFeature: '@/utils/lexical/features/pretty-keywords/client',
     markdownTransformers: [MarkdownTransformer],
     nodes: [
       createNode({
-        node: PrettyIconNode,
+        node: PrettyKeywordNode,
       }),
     ],
   },
-  key: 'prettyIcons',
+  key: 'prettyKeywords',
 });

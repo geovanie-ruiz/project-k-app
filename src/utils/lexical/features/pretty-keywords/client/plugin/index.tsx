@@ -1,6 +1,5 @@
 'use client';
 
-import { ICON_KEYS } from '@/components/icons/ComponentIcon';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   LexicalTypeaheadMenuPlugin,
@@ -12,38 +11,28 @@ import { $getSelection, $isRangeSelection, TextNode } from 'lexical';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import {
-  $createPrettyIconNode,
-  PrettyIconNodeProps,
-} from '../nodes/PrettyIconNode';
+import { $createPrettyKeywordNode } from '../nodes/PrettyKeywordNode';
 
-export interface Icon {
-  description: string;
-  icon: ICON_KEYS;
-  category: 'Rune Type' | 'Card Type' | 'Rules Indicator';
-  tags: string[];
-  complex?: boolean;
-  colored?: boolean;
-  value?: number;
+export interface Keyword {
+  keyword: string;
+  color: string;
+  label: string;
 }
 
-class IconOption extends MenuOption {
-  title: ICON_KEYS;
-  keywords: Array<string>;
+class KeywordOption extends MenuOption {
+  keyword: string;
+  color: string;
+  label: string;
 
-  constructor(
-    title: ICON_KEYS,
-    options: {
-      keywords?: Array<string>;
-    }
-  ) {
-    super(title);
-    this.title = title;
-    this.keywords = options.keywords || [];
+  constructor(keyword: string, color: string, label: string) {
+    super(keyword);
+    this.keyword = keyword;
+    this.color = color;
+    this.label = label;
   }
 }
 
-function IconMenuItem({
+function KeywordMenuItem({
   index,
   isSelected,
   onClick,
@@ -54,7 +43,7 @@ function IconMenuItem({
   isSelected: boolean;
   onClick: () => void;
   onMouseEnter: () => void;
-  option: IconOption;
+  option: KeywordOption;
 }) {
   let className = 'item';
   if (isSelected) {
@@ -72,76 +61,51 @@ function IconMenuItem({
       onMouseEnter={onMouseEnter}
       onClick={onClick}
     >
-      <span className="text">{option.title}</span>
+      <span className="text">{option.label}</span>
     </li>
   );
 }
 
-const MAX_ICON_SUGGESTION_COUNT = 10;
+const MAX_KEYWORD_SUGGESTION_COUNT = 10;
 
-export const getIconProps = (icon: ICON_KEYS): PrettyIconNodeProps => {
-  const iconParts = icon.split('_');
-  const valueStr = icon.match(/(\d+)/)?.pop();
-  const flagStr = iconParts.length > 1 ? iconParts[1] : '';
-  const isComplex = JSON.stringify(
-    flagStr === 'complex' || flagStr === 'complete'
-  );
-  const isColored = JSON.stringify(
-    flagStr === 'color' || flagStr === 'complete'
-  );
-
-  return {
-    icon: icon,
-    value: valueStr && JSON.parse(valueStr),
-    complex: isComplex,
-    colored: isColored,
-  };
-};
-
-export default function PrettyIconPlugin() {
+export const PrettyKeywordPlugin = () => {
   const [editor] = useLexicalComposerContext();
   const [queryString, setQueryString] = useState<string | null>(null);
-  const [icons, setIcons] = useState<Icon[]>([]);
+  const [keywords, setKeywords] = useState<Keyword[]>([]);
 
   useEffect(() => {
-    import('../utils/icon-list').then((file) => setIcons(file.default));
+    import('../utils/keyword-list').then((file) => setKeywords(file.default));
   }, []);
 
-  const iconOptions = useMemo(
+  const keywordOptions = useMemo(
     () =>
-      icons != null
-        ? icons.map(
-            ({ icon, tags }) =>
-              new IconOption(icon, {
-                keywords: [...tags],
-              })
+      keywords != null
+        ? keywords.map(
+            ({ keyword, color, label }) =>
+              new KeywordOption(keyword, color, label)
           )
         : [],
-    [icons]
+    [keywords]
   );
 
-  const checkForTriggerMatch = useBasicTypeaheadTriggerMatch(':', {
+  const checkForTriggerMatch = useBasicTypeaheadTriggerMatch('[', {
     minLength: 0,
   });
 
-  const options: Array<IconOption> = useMemo(() => {
-    return iconOptions
-      .filter((option: IconOption) => {
+  const options: Array<KeywordOption> = useMemo(() => {
+    return keywordOptions
+      .filter((option: KeywordOption | undefined) => {
+        if (!option) return keywordOptions;
         return queryString != null
-          ? new RegExp(queryString, 'gi').exec(option.title) ||
-            option.keywords != null
-            ? option.keywords.some((keyword: string) =>
-                new RegExp(queryString, 'gi').exec(keyword)
-              )
-            : false
-          : iconOptions;
+          ? new RegExp(queryString, 'gi').exec(option.keyword)
+          : keywordOptions;
       })
-      .slice(0, MAX_ICON_SUGGESTION_COUNT);
-  }, [iconOptions, queryString]);
+      .slice(0, MAX_KEYWORD_SUGGESTION_COUNT);
+  }, [keywordOptions, queryString]);
 
   const onSelectOption = useCallback(
     (
-      selectedOption: IconOption,
+      selectedOption: KeywordOption,
       nodeToRemove: TextNode | null,
       closeMenu: () => void
     ) => {
@@ -156,10 +120,11 @@ export default function PrettyIconPlugin() {
           nodeToRemove.remove();
         }
 
-        const iconProps = getIconProps(selectedOption.title);
-
-        selection.insertNodes([$createPrettyIconNode(iconProps)]);
-
+        const node = $createPrettyKeywordNode({
+          keyword: selectedOption.label,
+          color: selectedOption.color,
+        });
+        selection.insertNodes([node]);
         closeMenu();
       });
     },
@@ -184,8 +149,8 @@ export default function PrettyIconPlugin() {
           ? ReactDOM.createPortal(
               <div className="typeahead-popover icon-menu data-popover">
                 <ul>
-                  {options.map((option: IconOption, index) => (
-                    <IconMenuItem
+                  {options.map((option: KeywordOption, index) => (
+                    <KeywordMenuItem
                       index={index}
                       isSelected={selectedIndex === index}
                       onClick={() => {
@@ -207,4 +172,4 @@ export default function PrettyIconPlugin() {
       }}
     />
   );
-}
+};

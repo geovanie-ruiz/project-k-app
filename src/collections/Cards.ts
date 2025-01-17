@@ -4,10 +4,13 @@ import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { Card } from '@/payload-types';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
+import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import {
   FixedToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
+import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 
 const COMBAT_TYPES = ['Unit', 'Champion'];
 const RULES_TYPES = ['Rune', 'Battlefield', 'Legend'];
@@ -244,7 +247,30 @@ export const Cards: CollectionConfig = {
                   ...defaultFeatures,
                   FixedToolbarFeature(),
                   PrettyIconsFeature(),
-                  //PrettyKeywordsFeature(),
+                  PrettyKeywordsFeature(),
+                ],
+              }),
+            },
+            {
+              name: 'abilities_text',
+              type: 'text',
+              admin: {
+                hidden: true,
+              },
+            },
+          ],
+        },
+        {
+          label: 'Flavor',
+          fields: [
+            {
+              name: 'flavor',
+              label: 'Flavor Text',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures,
+                  FixedToolbarFeature(),
                 ],
               }),
             },
@@ -271,6 +297,19 @@ export const Cards: CollectionConfig = {
         return {
           ...data,
           full_card_name,
+        };
+      },
+      async ({ data, req }) => {
+        if (!data.abilities) return { ...data };
+
+        const convertedAbilities = await lexicalToPlaintext(
+          data.abilities as SerializedEditorState,
+          req.payload.config
+        );
+
+        return {
+          ...data,
+          abilities_text: convertedAbilities,
         };
       },
     ],
