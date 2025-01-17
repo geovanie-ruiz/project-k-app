@@ -89,7 +89,7 @@ const isYoutube = (url: string) => {
   return hostname.toLowerCase().includes('youtube.com');
 };
 
-export default function SocialLink({ id, url, site }: SocialLink) {
+export default function SocialLink({ url, site }: SocialLink) {
   if (!url || !site) return;
   if (!isUrl(url)) return;
 

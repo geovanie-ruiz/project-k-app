@@ -57,7 +57,13 @@ export const ArticleHero: React.FC<HeroProps> = ({
         {links && links.length > 0 && (
           <div className="grid grid-flow-col gap-4">
             {links.map((link, index) => {
-              return <SocialLink key={`social-${index}`} {...link} />;
+              return (
+                <SocialLink
+                  key={`social-${link?.id || index}`}
+                  url={link.url}
+                  site={link.site}
+                />
+              );
             })}
           </div>
         )}
