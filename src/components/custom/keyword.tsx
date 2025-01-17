@@ -20,10 +20,10 @@ export const colorSwatches: Swatch = {
 
 export default function KeywordBadge({ label, color }: KeywordProps) {
   return (
-    <div
+    <span
       className={`inline-block align-middle text-sm border rounded-[4px] mr-1 px-2 ${colorSwatches[color]}`}
     >
       {label}
-    </div>
+    </span>
   );
 }

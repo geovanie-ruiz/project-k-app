@@ -12,22 +12,19 @@
  */
 export type CreatorProfiles =
   | {
-      site?:
-        | (
-            | 'Blog'
-            | 'Discord'
-            | 'Instagram'
-            | 'Mobalytics'
-            | 'OP.GG'
-            | 'Podcast'
-            | 'TCGplayer'
-            | 'TikTok'
-            | 'Twitch'
-            | 'Twitter (X)'
-            | 'YouTube'
-          )
-        | null;
-      url?: string | null;
+      site:
+        | 'Blog'
+        | 'Discord'
+        | 'Instagram'
+        | 'Mobalytics'
+        | 'OP.GG'
+        | 'Podcast'
+        | 'TCGplayer'
+        | 'TikTok'
+        | 'Twitch'
+        | 'Twitter (X)'
+        | 'YouTube';
+      url: string;
       id?: string | null;
     }[]
   | null;
@@ -113,10 +110,14 @@ export interface Article {
   id: number;
   title: string;
   tags: (number | Category)[];
-  author?: (number | null) | User;
+  author: number | User;
   slug?: string | null;
   publishedAt?: string | null;
   coverImage: number | Media;
+  /**
+   * Short summary of the article content.
+   */
+  excerpt: string;
   content: {
     root: {
       type: string;
@@ -238,7 +239,8 @@ export interface Card {
     };
     [k: string]: unknown;
   } | null;
-  falvor?: {
+  abilities_text?: string | null;
+  flavor?: {
     root: {
       type: string;
       children: {
@@ -566,6 +568,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   slug?: T;
   publishedAt?: T;
   coverImage?: T;
+  excerpt?: T;
   content?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -607,7 +610,8 @@ export interface CardsSelect<T extends boolean = true> {
   keywords?: T;
   tags?: T;
   abilities?: T;
-  falvor?: T;
+  abilities_text?: T;
+  flavor?: T;
   updatedAt?: T;
   createdAt?: T;
 }

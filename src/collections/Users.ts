@@ -129,6 +129,7 @@ export const Users: CollectionConfig = {
             'YouTube',
           ],
           hasMany: false,
+          required: true,
         },
         {
           name: 'url',
@@ -150,6 +151,7 @@ export const Users: CollectionConfig = {
             if (!!urlPattern.test(url)) return true;
             return 'Please enter a valid URL';
           },
+          required: true,
         },
       ],
     },

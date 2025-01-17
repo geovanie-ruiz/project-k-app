@@ -51,8 +51,9 @@ export const Articles: CollectionConfig = {
         readOnly: true,
         position: 'sidebar',
       },
+      required: true,
       hooks: {
-        beforeChange: [
+        beforeValidate: [
           ({ value, operation, req }) => {
             if (operation === 'create') {
               return req.user?.id;
@@ -110,6 +111,14 @@ export const Articles: CollectionConfig = {
         {
           label: 'Content',
           fields: [
+            {
+              name: 'excerpt',
+              type: 'textarea',
+              required: true,
+              admin: {
+                description: 'Short summary of the article content.',
+              },
+            },
             {
               name: 'content',
               type: 'richText',

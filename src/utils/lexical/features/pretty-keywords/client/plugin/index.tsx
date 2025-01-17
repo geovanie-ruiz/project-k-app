@@ -75,7 +75,7 @@ export const PrettyKeywordPlugin = () => {
 
   useEffect(() => {
     import('../utils/keyword-list').then((file) => setKeywords(file.default));
-  }, [keywords]);
+  }, []);
 
   const keywordOptions = useMemo(
     () =>

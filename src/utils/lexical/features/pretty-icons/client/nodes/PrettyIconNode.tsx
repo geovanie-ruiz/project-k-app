@@ -157,7 +157,7 @@ export class PrettyIconNode extends DecoratorNode<React.JSX.Element> {
   }
 
   getTextContent(): string {
-    return `DAVID! ${this.__icon}`;
+    return `${this.__icon}`;
   }
 
   getIcon(): ICON_KEYS {
