@@ -31,13 +31,17 @@ const prettyKeyword = ({ node }: { node: SerializedPrettyKeywordNode }) => (
   <Keyword label={node.keyword} color={node.color} />
 );
 
-const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
+const internalDocToHref = ({
+  linkNode,
+}: {
+  linkNode: SerializedLinkNode;
+}): string => {
   const { value, relationTo } = linkNode.fields.doc!;
   if (typeof value !== 'object') {
     throw new Error('Expected value to be an object');
   }
   const slug = value.slug;
-  return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`;
+  return relationTo === 'articles' ? `/articles/${slug}` : `/${slug}`;
 };
 
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({

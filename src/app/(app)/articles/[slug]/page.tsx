@@ -67,6 +67,7 @@ export default async function ArticleView({
     publishedDate: article?.publishedAt ?? '',
     heroImage: article.coverImage as Media,
     links: authorLinks,
+    categories: article.tags,
   };
 
   const alsoBy = await queryRelatedByAuthorId({ slug, authorId, preview });

@@ -17,8 +17,7 @@ import {
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
-import { isDarkTheme } from '@/utils/utils';
-import clsx from 'clsx';
+import { cn, isDarkTheme } from '@/utils/utils';
 
 import { isACollaborator, normalizeClerkRole } from '@/utils/types/roles.types';
 import { useState } from 'react';
@@ -68,6 +67,13 @@ export function NavBar() {
                   </Link>
                   <hr />
                   <Link
+                    href="/articles"
+                    className="text-sm font-medium hover:underline underline-offset-4"
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    Articles
+                  </Link>
+                  <Link
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4"
                     onClick={() => setSheetOpen(false)}
@@ -104,6 +110,11 @@ export function NavBar() {
             </Link>
           </div>
           <nav className="hidden md:flex justify-evenly gap-4">
+            <NavLink
+              url="/articles"
+              label="Articles"
+              currentPathname={pathname}
+            />
             <NavLink
               url="/spoilers"
               label="Spoilers"
@@ -184,10 +195,11 @@ function NavLink(props: NavItem) {
   return (
     <Link
       href={props.url}
-      className={clsx(
-        'font-medium flex items-center text-sm transition-colors hover:underline',
+      className={cn(
+        'text-muted-foreground font-medium flex items-center text-sm transition-colors hover:text-primary',
         {
-          'text-accent-foreground': props.currentPathname === props.url,
+          underline: props.currentPathname === props.url,
+          'text-primary': props.currentPathname === props.url,
         }
       )}
     >

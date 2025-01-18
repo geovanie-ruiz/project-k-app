@@ -28,7 +28,6 @@ export async function lexicalToPlaintext(
     FixedToolbarFeature(),
     PrettyKeywordsFeature(),
   ];
-  console.log(editorConfig.features[0]);
 
   const sanitizedConfig = await sanitizeServerEditorConfig(
     editorConfig,
