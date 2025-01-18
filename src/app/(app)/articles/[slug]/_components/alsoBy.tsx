@@ -1,9 +1,19 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Article, Media } from '@/payload-types';
+import { Article, Category, Media } from '@/payload-types';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
+import { TagList } from '../../../../../components/custom/tagList';
+
+const categoriesToTags = (categories: (number | Category)[]): string[] => {
+  return categories
+    .map((category) => {
+      if (typeof category === 'number') return '';
+      return `${category.title}`;
+    })
+    .filter((tag) => tag !== '');
+};
 
 export const AlsoBy = ({
   authorName,
@@ -44,6 +54,7 @@ export const AlsoBy = ({
               >
                 Read more
               </Link>
+              <TagList tags={categoriesToTags(article.tags)} />
             </CardContent>
           </Card>
         ))}
