@@ -8,29 +8,8 @@ import { RefreshRouteOnSave } from './RefreshRouteOnSave';
 
 import RichText from '@/components/custom/richText';
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { cache } from 'react';
 import { AlsoBy } from './_components/alsoBy';
 import { ArticleHero, HeroProps } from './_components/hero';
-
-export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const articles = await payload.find({
-    collection: 'articles',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  });
-
-  const params = articles.docs.map(({ slug }) => {
-    return { slug };
-  });
-
-  return params;
-}
 
 type ArticleViewProps = {
   params: Promise<{ slug: string }>;
@@ -119,48 +98,50 @@ const getAuthor = async (
   return authorInfo;
 };
 
-const queryRelatedByAuthorId = cache(
-  async ({
-    slug,
-    authorId,
-    preview,
-  }: {
-    slug: string;
-    authorId: number;
-    preview: boolean;
-  }) => {
-    const payload = await getPayload({ config });
-    const articlesAlsoBy = await payload.find({
-      collection: 'articles',
-      draft: preview,
-      where: {
-        slug: {
-          not_equals: slug,
-        },
-        author: {
-          equals: authorId,
-        },
+const queryRelatedByAuthorId = async ({
+  slug,
+  authorId,
+  preview,
+}: {
+  slug: string;
+  authorId: number;
+  preview: boolean;
+}) => {
+  const payload = await getPayload({ config });
+  const articlesAlsoBy = await payload.find({
+    collection: 'articles',
+    draft: preview,
+    where: {
+      slug: {
+        not_equals: slug,
       },
-      sort: '-publishedAt',
-      limit: 3,
-    });
-    return articlesAlsoBy.docs;
-  }
-);
+      author: {
+        equals: authorId,
+      },
+    },
+    sort: '-publishedAt',
+    limit: 3,
+  });
+  return articlesAlsoBy.docs;
+};
 
-const queryArticleBySlug = cache(
-  async ({ slug, preview }: { slug: string; preview: boolean }) => {
-    const payload = await getPayload({ config });
-    const article = await payload.find({
-      collection: 'articles',
-      draft: preview,
-      limit: 1,
-      where: {
-        slug: {
-          equals: slug,
-        },
+const queryArticleBySlug = async ({
+  slug,
+  preview,
+}: {
+  slug: string;
+  preview: boolean;
+}) => {
+  const payload = await getPayload({ config });
+  const article = await payload.find({
+    collection: 'articles',
+    draft: preview,
+    limit: 1,
+    where: {
+      slug: {
+        equals: slug,
       },
-    });
-    return article.docs?.[0] || null;
-  }
-);
+    },
+  });
+  return article.docs?.[0] || null;
+};
