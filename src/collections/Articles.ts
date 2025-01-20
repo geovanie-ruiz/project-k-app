@@ -25,8 +25,8 @@ export const Articles: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'category', 'updated_at'],
     livePreview: {
-      url: ({ req, data }) => {
-        return `${req.protocol}//${req.host}/articles/${data.slug}?preview=true`;
+      url: ({ data }) => {
+        return `${process.env.NEXT_PUBLIC_PAYLOAD_URL}/articles/${data.slug}?preview=true`;
       },
     },
   },
