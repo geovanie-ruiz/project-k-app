@@ -3,8 +3,11 @@ import type { CollectionConfig } from 'payload';
 import { isAdminAuthorOrPublic } from '@/access/isAdminAuthorOrPublic';
 import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isAuthenticated } from '@/access/isAuthenticated';
+import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import {
   FixedToolbarFeature,
+  HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import ShortUniqueId from 'short-unique-id';
@@ -45,6 +48,7 @@ export const Decks: CollectionConfig = {
       type: 'text',
       admin: {
         position: 'sidebar',
+        readOnly: true,
       },
       defaultValue: () => {
         const uid = new ShortUniqueId({ length: 18 });
@@ -60,6 +64,16 @@ export const Decks: CollectionConfig = {
         position: 'sidebar',
       },
       defaultValue: false,
+    },
+    {
+      name: 'likes',
+      label: 'Likes',
+      type: 'number',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      defaultValue: 0,
     },
     {
       name: 'tags',
@@ -87,6 +101,11 @@ export const Decks: CollectionConfig = {
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
           FixedToolbarFeature(),
+          HeadingFeature({
+            enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+          }),
+          PrettyIconsFeature(),
+          PrettyKeywordsFeature(),
         ],
       }),
     },

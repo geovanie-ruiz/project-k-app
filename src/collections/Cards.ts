@@ -8,6 +8,7 @@ import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/
 import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import {
   FixedToolbarFeature,
+  HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
@@ -246,6 +247,9 @@ export const Cards: CollectionConfig = {
                 features: ({ defaultFeatures }) => [
                   ...defaultFeatures,
                   FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+                  }),
                   PrettyIconsFeature(),
                   PrettyKeywordsFeature(),
                 ],
@@ -266,13 +270,7 @@ export const Cards: CollectionConfig = {
             {
               name: 'flavor',
               label: 'Flavor Text',
-              type: 'richText',
-              editor: lexicalEditor({
-                features: ({ defaultFeatures }) => [
-                  ...defaultFeatures,
-                  FixedToolbarFeature(),
-                ],
-              }),
+              type: 'textarea',
             },
           ],
         },

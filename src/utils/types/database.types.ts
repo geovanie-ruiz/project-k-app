@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       _articles_v: {
@@ -21,11 +46,11 @@ export type Database = {
             | Database["public"]["Enums"]["enum__articles_v_version_status"]
             | null
           version_author_id: number | null
-          version_category: string | null
           version_content: Json | null
           version_cover_image_id: number | null
           version_created_at: string | null
-          version_published_date: string | null
+          version_excerpt: string | null
+          version_published_at: string | null
           version_slug: string | null
           version_title: string | null
           version_updated_at: string | null
@@ -41,11 +66,11 @@ export type Database = {
             | Database["public"]["Enums"]["enum__articles_v_version_status"]
             | null
           version_author_id?: number | null
-          version_category?: string | null
           version_content?: Json | null
           version_cover_image_id?: number | null
           version_created_at?: string | null
-          version_published_date?: string | null
+          version_excerpt?: string | null
+          version_published_at?: string | null
           version_slug?: string | null
           version_title?: string | null
           version_updated_at?: string | null
@@ -61,11 +86,11 @@ export type Database = {
             | Database["public"]["Enums"]["enum__articles_v_version_status"]
             | null
           version_author_id?: number | null
-          version_category?: string | null
           version_content?: Json | null
           version_cover_image_id?: number | null
           version_created_at?: string | null
-          version_published_date?: string | null
+          version_excerpt?: string | null
+          version_published_at?: string | null
           version_slug?: string | null
           version_title?: string | null
           version_updated_at?: string | null
@@ -94,16 +119,55 @@ export type Database = {
           },
         ]
       }
+      _articles_v_rels: {
+        Row: {
+          categories_id: number | null
+          id: number
+          order: number | null
+          parent_id: number
+          path: string
+        }
+        Insert: {
+          categories_id?: number | null
+          id?: number
+          order?: number | null
+          parent_id: number
+          path: string
+        }
+        Update: {
+          categories_id?: number | null
+          id?: number
+          order?: number | null
+          parent_id?: number
+          path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "_articles_v_rels_categories_fk"
+            columns: ["categories_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "_articles_v_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "_articles_v"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       articles: {
         Row: {
           _status: Database["public"]["Enums"]["enum_articles_status"] | null
           author_id: number | null
-          category: string | null
           content: Json | null
           cover_image_id: number | null
           created_at: string
+          excerpt: string | null
           id: number
-          published_date: string | null
+          published_at: string | null
           slug: string | null
           title: string | null
           updated_at: string
@@ -111,12 +175,12 @@ export type Database = {
         Insert: {
           _status?: Database["public"]["Enums"]["enum_articles_status"] | null
           author_id?: number | null
-          category?: string | null
           content?: Json | null
           cover_image_id?: number | null
           created_at?: string
+          excerpt?: string | null
           id?: number
-          published_date?: string | null
+          published_at?: string | null
           slug?: string | null
           title?: string | null
           updated_at?: string
@@ -124,12 +188,12 @@ export type Database = {
         Update: {
           _status?: Database["public"]["Enums"]["enum_articles_status"] | null
           author_id?: number | null
-          category?: string | null
           content?: Json | null
           cover_image_id?: number | null
           created_at?: string
+          excerpt?: string | null
           id?: number
-          published_date?: string | null
+          published_at?: string | null
           slug?: string | null
           title?: string | null
           updated_at?: string
@@ -151,10 +215,615 @@ export type Database = {
           },
         ]
       }
+      articles_rels: {
+        Row: {
+          categories_id: number | null
+          id: number
+          order: number | null
+          parent_id: number
+          path: string
+        }
+        Insert: {
+          categories_id?: number | null
+          id?: number
+          order?: number | null
+          parent_id: number
+          path: string
+        }
+        Update: {
+          categories_id?: number | null
+          id?: number
+          order?: number | null
+          parent_id?: number
+          path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_rels_categories_fk"
+            columns: ["categories_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "articles_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      artists: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      card_collection: {
+        Row: {
+          created_at: string
+          id: number
+          owner_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          owner_id: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          owner_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_collection_owner_id_users_id_fk"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      card_collection_sets: {
+        Row: {
+          _order: number
+          _parent_id: number
+          completion: string | null
+          id: string
+          set_id: number | null
+        }
+        Insert: {
+          _order: number
+          _parent_id: number
+          completion?: string | null
+          id: string
+          set_id?: number | null
+        }
+        Update: {
+          _order?: number
+          _parent_id?: number
+          completion?: string | null
+          id?: string
+          set_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_collection_sets_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "card_collection"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "card_collection_sets_set_id_sets_id_fk"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      card_collection_sets_cards: {
+        Row: {
+          _order: number
+          _parent_id: string
+          card_id: number | null
+          foil: number | null
+          id: string
+          normal: number | null
+        }
+        Insert: {
+          _order: number
+          _parent_id: string
+          card_id?: number | null
+          foil?: number | null
+          id: string
+          normal?: number | null
+        }
+        Update: {
+          _order?: number
+          _parent_id?: string
+          card_id?: number | null
+          foil?: number | null
+          id?: string
+          normal?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_collection_sets_cards_card_id_cards_id_fk"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "card_collection_sets_cards_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "card_collection_sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cards: {
+        Row: {
+          abilities: Json | null
+          abilities_text: string | null
+          artist_id: number | null
+          card_art_id: number | null
+          card_name_vector: unknown | null
+          character_id: number | null
+          cost: number | null
+          created_at: string
+          flavor: Json | null
+          full_card_name: string | null
+          id: number
+          might: number | null
+          name: string
+          rarity: Database["public"]["Enums"]["enum_cards_rarity"]
+          set_id: number
+          set_index: number
+          subtitle: string | null
+          type: Database["public"]["Enums"]["enum_cards_type"]
+          updated_at: string
+        }
+        Insert: {
+          abilities?: Json | null
+          abilities_text?: string | null
+          artist_id?: number | null
+          card_art_id?: number | null
+          card_name_vector?: unknown | null
+          character_id?: number | null
+          cost?: number | null
+          created_at?: string
+          flavor?: Json | null
+          full_card_name?: string | null
+          id?: number
+          might?: number | null
+          name: string
+          rarity: Database["public"]["Enums"]["enum_cards_rarity"]
+          set_id: number
+          set_index: number
+          subtitle?: string | null
+          type: Database["public"]["Enums"]["enum_cards_type"]
+          updated_at?: string
+        }
+        Update: {
+          abilities?: Json | null
+          abilities_text?: string | null
+          artist_id?: number | null
+          card_art_id?: number | null
+          card_name_vector?: unknown | null
+          character_id?: number | null
+          cost?: number | null
+          created_at?: string
+          flavor?: Json | null
+          full_card_name?: string | null
+          id?: number
+          might?: number | null
+          name?: string
+          rarity?: Database["public"]["Enums"]["enum_cards_rarity"]
+          set_id?: number
+          set_index?: number
+          subtitle?: string | null
+          type?: Database["public"]["Enums"]["enum_cards_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_artist_id_artists_id_fk"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_card_art_id_media_id_fk"
+            columns: ["card_art_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_character_id_characters_id_fk"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_set_id_sets_id_fk"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cards_recycle: {
+        Row: {
+          _order: number
+          _parent_id: number
+          id: string
+          rune: Database["public"]["Enums"]["enum_cards_recycle_rune"] | null
+        }
+        Insert: {
+          _order: number
+          _parent_id: number
+          id: string
+          rune?: Database["public"]["Enums"]["enum_cards_recycle_rune"] | null
+        }
+        Update: {
+          _order?: number
+          _parent_id?: number
+          id?: string
+          rune?: Database["public"]["Enums"]["enum_cards_recycle_rune"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_recycle_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cards_rels: {
+        Row: {
+          id: number
+          keywords_id: number | null
+          order: number | null
+          parent_id: number
+          path: string
+          tags_id: number | null
+        }
+        Insert: {
+          id?: number
+          keywords_id?: number | null
+          order?: number | null
+          parent_id: number
+          path: string
+          tags_id?: number | null
+        }
+        Update: {
+          id?: number
+          keywords_id?: number | null
+          order?: number | null
+          parent_id?: number
+          path?: string
+          tags_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_rels_keywords_fk"
+            columns: ["keywords_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_rels_tags_fk"
+            columns: ["tags_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cards_rune: {
+        Row: {
+          id: number
+          order: number
+          parent_id: number
+          value: Database["public"]["Enums"]["enum_cards_rune"] | null
+        }
+        Insert: {
+          id?: number
+          order: number
+          parent_id: number
+          value?: Database["public"]["Enums"]["enum_cards_rune"] | null
+        }
+        Update: {
+          id?: number
+          order?: number
+          parent_id?: number
+          value?: Database["public"]["Enums"]["enum_cards_rune"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_rune_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      characters: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      decks: {
+        Row: {
+          author_id: number
+          created_at: string
+          guide: Json | null
+          id: number
+          name: string
+          public: boolean | null
+          slug: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id: number
+          created_at?: string
+          guide?: Json | null
+          id?: number
+          name: string
+          public?: boolean | null
+          slug?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: number
+          created_at?: string
+          guide?: Json | null
+          id?: number
+          name?: string
+          public?: boolean | null
+          slug?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decks_author_id_users_id_fk"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      decks_cardlist: {
+        Row: {
+          _order: number
+          _parent_id: number
+          card_id: number | null
+          id: string
+          quantity: number | null
+        }
+        Insert: {
+          _order: number
+          _parent_id: number
+          card_id?: number | null
+          id: string
+          quantity?: number | null
+        }
+        Update: {
+          _order?: number
+          _parent_id?: number
+          card_id?: number | null
+          id?: string
+          quantity?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decks_cardlist_card_id_cards_id_fk"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "decks_cardlist_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      decks_highlights: {
+        Row: {
+          _order: number
+          _parent_id: number
+          highlight_id: number | null
+          id: string
+        }
+        Insert: {
+          _order: number
+          _parent_id: number
+          highlight_id?: number | null
+          id: string
+        }
+        Update: {
+          _order?: number
+          _parent_id?: number
+          highlight_id?: number | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decks_highlights_highlight_id_cards_id_fk"
+            columns: ["highlight_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "decks_highlights_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      decks_rels: {
+        Row: {
+          id: number
+          order: number | null
+          parent_id: number
+          path: string
+          tags_id: number | null
+        }
+        Insert: {
+          id?: number
+          order?: number | null
+          parent_id: number
+          path: string
+          tags_id?: number | null
+        }
+        Update: {
+          id?: number
+          order?: number | null
+          parent_id?: number
+          path?: string
+          tags_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decks_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "decks_rels_tags_fk"
+            columns: ["tags_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      keywords: {
+        Row: {
+          color: Database["public"]["Enums"]["enum_keywords_color"] | null
+          created_at: string
+          id: number
+          keyword: string | null
+          position: Database["public"]["Enums"]["enum_keywords_position"] | null
+          reminder_text: Json | null
+          type: Database["public"]["Enums"]["enum_keywords_type"] | null
+          updated_at: string
+        }
+        Insert: {
+          color?: Database["public"]["Enums"]["enum_keywords_color"] | null
+          created_at?: string
+          id?: number
+          keyword?: string | null
+          position?:
+            | Database["public"]["Enums"]["enum_keywords_position"]
+            | null
+          reminder_text?: Json | null
+          type?: Database["public"]["Enums"]["enum_keywords_type"] | null
+          updated_at?: string
+        }
+        Update: {
+          color?: Database["public"]["Enums"]["enum_keywords_color"] | null
+          created_at?: string
+          id?: number
+          keyword?: string | null
+          position?:
+            | Database["public"]["Enums"]["enum_keywords_position"]
+            | null
+          reminder_text?: Json | null
+          type?: Database["public"]["Enums"]["enum_keywords_type"] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       media: {
         Row: {
           alt: string
-          cloudflare_id: string | null
           created_at: string
           filename: string | null
           filesize: number | null
@@ -170,7 +839,6 @@ export type Database = {
         }
         Insert: {
           alt: string
-          cloudflare_id?: string | null
           created_at?: string
           filename?: string | null
           filesize?: number | null
@@ -186,7 +854,6 @@ export type Database = {
         }
         Update: {
           alt?: string
-          cloudflare_id?: string | null
           created_at?: string
           filename?: string | null
           filesize?: number | null
@@ -226,29 +893,59 @@ export type Database = {
       payload_locked_documents_rels: {
         Row: {
           articles_id: number | null
+          artists_id: number | null
+          card_collection_id: number | null
+          cards_id: number | null
+          categories_id: number | null
+          characters_id: number | null
+          decks_id: number | null
           id: number
+          keywords_id: number | null
           media_id: number | null
           order: number | null
           parent_id: number
           path: string
+          sets_id: number | null
+          spoilers_id: number | null
+          tags_id: number | null
           users_id: number | null
         }
         Insert: {
           articles_id?: number | null
+          artists_id?: number | null
+          card_collection_id?: number | null
+          cards_id?: number | null
+          categories_id?: number | null
+          characters_id?: number | null
+          decks_id?: number | null
           id?: number
+          keywords_id?: number | null
           media_id?: number | null
           order?: number | null
           parent_id: number
           path: string
+          sets_id?: number | null
+          spoilers_id?: number | null
+          tags_id?: number | null
           users_id?: number | null
         }
         Update: {
           articles_id?: number | null
+          artists_id?: number | null
+          card_collection_id?: number | null
+          cards_id?: number | null
+          categories_id?: number | null
+          characters_id?: number | null
+          decks_id?: number | null
           id?: number
+          keywords_id?: number | null
           media_id?: number | null
           order?: number | null
           parent_id?: number
           path?: string
+          sets_id?: number | null
+          spoilers_id?: number | null
+          tags_id?: number | null
           users_id?: number | null
         }
         Relationships: [
@@ -257,6 +954,55 @@ export type Database = {
             columns: ["articles_id"]
             isOneToOne: false
             referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_artists_fk"
+            columns: ["artists_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_card_collection_fk"
+            columns: ["card_collection_id"]
+            isOneToOne: false
+            referencedRelation: "card_collection"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_cards_fk"
+            columns: ["cards_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_categories_fk"
+            columns: ["categories_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_characters_fk"
+            columns: ["characters_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_decks_fk"
+            columns: ["decks_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_keywords_fk"
+            columns: ["keywords_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
             referencedColumns: ["id"]
           },
           {
@@ -271,6 +1017,27 @@ export type Database = {
             columns: ["parent_id"]
             isOneToOne: false
             referencedRelation: "payload_locked_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_sets_fk"
+            columns: ["sets_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_spoilers_fk"
+            columns: ["spoilers_id"]
+            isOneToOne: false
+            referencedRelation: "spoilers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_tags_fk"
+            columns: ["tags_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
             referencedColumns: ["id"]
           },
           {
@@ -369,8 +1136,293 @@ export type Database = {
           },
         ]
       }
+      sets: {
+        Row: {
+          collectible: number | null
+          created_at: string
+          id: number
+          key_art_id: number | null
+          name: string
+          released_at: string | null
+          set_code: string | null
+          total: number | null
+          updated_at: string
+        }
+        Insert: {
+          collectible?: number | null
+          created_at?: string
+          id?: number
+          key_art_id?: number | null
+          name: string
+          released_at?: string | null
+          set_code?: string | null
+          total?: number | null
+          updated_at?: string
+        }
+        Update: {
+          collectible?: number | null
+          created_at?: string
+          id?: number
+          key_art_id?: number | null
+          name?: string
+          released_at?: string | null
+          set_code?: string | null
+          total?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sets_key_art_id_media_id_fk"
+            columns: ["key_art_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spoilers: {
+        Row: {
+          abilities: Json | null
+          artist_id: number | null
+          card_art_id: number | null
+          card_id: number | null
+          character_id: number | null
+          cost: number | null
+          created_at: string
+          description: string | null
+          id: number
+          might: number | null
+          name: string | null
+          rarity: Database["public"]["Enums"]["enum_spoilers_rarity"] | null
+          set_id: number | null
+          set_index: number | null
+          source_description: string
+          source_url: string
+          subtitle: string | null
+          title: string
+          type: Database["public"]["Enums"]["enum_spoilers_type"] | null
+          updated_at: string
+        }
+        Insert: {
+          abilities?: Json | null
+          artist_id?: number | null
+          card_art_id?: number | null
+          card_id?: number | null
+          character_id?: number | null
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          might?: number | null
+          name?: string | null
+          rarity?: Database["public"]["Enums"]["enum_spoilers_rarity"] | null
+          set_id?: number | null
+          set_index?: number | null
+          source_description: string
+          source_url: string
+          subtitle?: string | null
+          title: string
+          type?: Database["public"]["Enums"]["enum_spoilers_type"] | null
+          updated_at?: string
+        }
+        Update: {
+          abilities?: Json | null
+          artist_id?: number | null
+          card_art_id?: number | null
+          card_id?: number | null
+          character_id?: number | null
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          might?: number | null
+          name?: string | null
+          rarity?: Database["public"]["Enums"]["enum_spoilers_rarity"] | null
+          set_id?: number | null
+          set_index?: number | null
+          source_description?: string
+          source_url?: string
+          subtitle?: string | null
+          title?: string
+          type?: Database["public"]["Enums"]["enum_spoilers_type"] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spoilers_artist_id_artists_id_fk"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spoilers_card_art_id_media_id_fk"
+            columns: ["card_art_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spoilers_card_id_cards_id_fk"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spoilers_character_id_characters_id_fk"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spoilers_set_id_sets_id_fk"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spoilers_recycle: {
+        Row: {
+          _order: number
+          _parent_id: number
+          id: string
+          rune: Database["public"]["Enums"]["enum_spoilers_recycle_rune"] | null
+        }
+        Insert: {
+          _order: number
+          _parent_id: number
+          id: string
+          rune?:
+            | Database["public"]["Enums"]["enum_spoilers_recycle_rune"]
+            | null
+        }
+        Update: {
+          _order?: number
+          _parent_id?: number
+          id?: string
+          rune?:
+            | Database["public"]["Enums"]["enum_spoilers_recycle_rune"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spoilers_recycle_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "spoilers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spoilers_rels: {
+        Row: {
+          id: number
+          keywords_id: number | null
+          order: number | null
+          parent_id: number
+          path: string
+          tags_id: number | null
+        }
+        Insert: {
+          id?: number
+          keywords_id?: number | null
+          order?: number | null
+          parent_id: number
+          path: string
+          tags_id?: number | null
+        }
+        Update: {
+          id?: number
+          keywords_id?: number | null
+          order?: number | null
+          parent_id?: number
+          path?: string
+          tags_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spoilers_rels_keywords_fk"
+            columns: ["keywords_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spoilers_rels_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "spoilers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spoilers_rels_tags_fk"
+            columns: ["tags_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spoilers_rune: {
+        Row: {
+          id: number
+          order: number
+          parent_id: number
+          value: Database["public"]["Enums"]["enum_spoilers_rune"] | null
+        }
+        Insert: {
+          id?: number
+          order: number
+          parent_id: number
+          value?: Database["public"]["Enums"]["enum_spoilers_rune"] | null
+        }
+        Update: {
+          id?: number
+          order?: number
+          parent_id?: number
+          value?: Database["public"]["Enums"]["enum_spoilers_rune"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spoilers_rune_parent_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "spoilers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tags: {
+        Row: {
+          created_at: string
+          id: number
+          region: boolean | null
+          tag: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          region?: boolean | null
+          tag?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          region?: boolean | null
+          tag?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
+          author_name: string | null
           clerk_id: string | null
           created_at: string
           email: string | null
@@ -380,6 +1432,7 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          author_name?: string | null
           clerk_id?: string | null
           created_at?: string
           email?: string | null
@@ -389,6 +1442,7 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          author_name?: string | null
           clerk_id?: string | null
           created_at?: string
           email?: string | null
@@ -398,6 +1452,38 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
+      }
+      users_links: {
+        Row: {
+          _order: number
+          _parent_id: number
+          id: string
+          site: Database["public"]["Enums"]["enum_users_links_site"]
+          url: string
+        }
+        Insert: {
+          _order: number
+          _parent_id: number
+          id: string
+          site: Database["public"]["Enums"]["enum_users_links_site"]
+          url: string
+        }
+        Update: {
+          _order?: number
+          _parent_id?: number
+          id?: string
+          site?: Database["public"]["Enums"]["enum_users_links_site"]
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_links_parent_id_fk"
+            columns: ["_parent_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -409,6 +1495,87 @@ export type Database = {
     Enums: {
       enum__articles_v_version_status: "draft" | "published"
       enum_articles_status: "draft" | "published"
+      enum_cards_rarity:
+        | "None"
+        | "White Circle"
+        | "Green Triangle"
+        | "Purple Diamond"
+        | "Golden Pentagon"
+        | "Promo"
+      enum_cards_recycle_rune:
+        | "Any"
+        | "Calm"
+        | "Chaos"
+        | "Fury"
+        | "Mental"
+        | "Order"
+        | "Physical"
+      enum_cards_rune:
+        | "Calm"
+        | "Chaos"
+        | "Fury"
+        | "Mental"
+        | "Order"
+        | "Physical"
+      enum_cards_type:
+        | "Unit"
+        | "Champion"
+        | "Legend"
+        | "Spell"
+        | "Battlefield"
+        | "Gear"
+        | "Rune"
+      enum_keywords_color:
+        | "#699667"
+        | "#835b86"
+        | "#a74e56"
+        | "#566f94"
+        | "#ab972c"
+        | "#ba7152"
+        | "#536878"
+        | "#8F7236"
+      enum_keywords_position: "prefix" | "suffix"
+      enum_keywords_type: "Effect" | "Timing" | "Trigger"
+      enum_spoilers_rarity:
+        | "White Circle"
+        | "Green Triangle"
+        | "Purple Diamond"
+        | "Golden Pentagon"
+      enum_spoilers_recycle_rune:
+        | "Any"
+        | "Calm"
+        | "Chaos"
+        | "Fury"
+        | "Mental"
+        | "Order"
+        | "Physical"
+      enum_spoilers_rune:
+        | "Calm"
+        | "Chaos"
+        | "Fury"
+        | "Mental"
+        | "Order"
+        | "Physical"
+      enum_spoilers_type:
+        | "Unit"
+        | "Champion"
+        | "Legend"
+        | "Spell"
+        | "Battlefield"
+        | "Gear"
+        | "Rune"
+      enum_users_links_site:
+        | "Blog"
+        | "Discord"
+        | "Instagram"
+        | "Mobalytics"
+        | "OP.GG"
+        | "Podcast"
+        | "TCGplayer"
+        | "TikTok"
+        | "Twitch"
+        | "Twitter (X)"
+        | "YouTube"
       enum_users_role: "admin" | "creator" | "user"
     }
     CompositeTypes: {
@@ -513,3 +1680,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
