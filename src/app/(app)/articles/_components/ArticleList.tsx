@@ -119,7 +119,7 @@ export function ArticleList() {
       </div>
       {isLoading && (
         <p className="text-center text-muted-foreground py-4">
-          Loading more spoilers...
+          Loading more articles...
         </p>
       )}
       {hasMore && !isLoading && (

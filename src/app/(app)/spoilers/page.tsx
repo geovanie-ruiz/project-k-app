@@ -1,3 +1,5 @@
+import { MetaProps, PageMeta, generateMeta } from '@/utils/opengraph';
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { SpoilerList } from './_components/SpoilerList';
 
@@ -16,4 +18,16 @@ export default async function Spoilers() {
       </Suspense>
     </div>
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageMeta: PageMeta = {
+    type: 'website',
+    title: 'Spoilers',
+    description: 'List of card spoilers for Project K.',
+  };
+  const metaProps: MetaProps = {
+    page: pageMeta,
+  };
+  return generateMeta(metaProps);
 }

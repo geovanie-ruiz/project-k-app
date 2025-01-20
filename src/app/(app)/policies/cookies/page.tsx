@@ -1,3 +1,6 @@
+import { MetaProps, PageMeta, generateMeta } from '@/utils/opengraph';
+import { Metadata } from 'next';
+
 export default async function Cookies() {
   return (
     <div>
@@ -37,4 +40,16 @@ export default async function Cookies() {
       </div>
     </div>
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageMeta: PageMeta = {
+    type: 'website',
+    title: 'Cookie Policy',
+    description: "Policy copy detailing the site's cookie use.",
+  };
+  const metaProps: MetaProps = {
+    page: pageMeta,
+  };
+  return generateMeta(metaProps);
 }
