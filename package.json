@@ -7,11 +7,12 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
+    "payload": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload",
+    "vercel-build": "payload migrate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "payload": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload",
     "payload:types": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload generate:types"
   },
   "dependencies": {
