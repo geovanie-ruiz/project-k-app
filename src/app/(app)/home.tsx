@@ -49,6 +49,23 @@ export default function Home() {
             <Link href="https://project-k-cardmaker.vercel.app" target="_blank">
               Or Make Your Own Cards
             </Link>
+            <Link
+              href="https://testflight.apple.com/join/6jAjxWDF"
+              target="_blank"
+            >
+              Or Join the ProjectK Companion Beta
+            </Link>
+            <div>
+              <span>Or try one of the digital clients</span>
+              <div className="flex flex-col">
+                <Link href="https://discord.gg/cKqHWCV42P" target="_blank">
+                  Rune Battlegrounds Discord
+                </Link>
+                <Link href="https://discord.gg/F4StJwvpwc" target="_blank">
+                  Pixelborn Discord
+                </Link>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

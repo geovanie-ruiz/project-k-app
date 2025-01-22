@@ -2,8 +2,11 @@ import type { CollectionConfig } from 'payload';
 
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
+import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import {
   FixedToolbarFeature,
+  HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 
@@ -210,6 +213,11 @@ export const Spoilers: CollectionConfig = {
                 features: ({ defaultFeatures }) => [
                   ...defaultFeatures,
                   FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+                  }),
+                  PrettyIconsFeature(),
+                  PrettyKeywordsFeature(),
                 ],
               }),
             },

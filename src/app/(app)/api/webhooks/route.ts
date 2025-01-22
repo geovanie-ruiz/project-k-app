@@ -1,4 +1,4 @@
-import { selectClient } from '@/utils/supabase/selectClient';
+import { createSupabaseServiceClient } from '@/utils/supabase/createSupabaseServiceClient';
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 import { Webhook } from 'svix';
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
   // If user is created in Clerk, create them in Payload
   // Set default role in Payload, and update public metadata in Clerk
   if (evt.type === 'user.created') {
-    const supabase = await selectClient({ serviceConnection: true });
+    const supabase = createSupabaseServiceClient();
 
     const { id, username } = evt.data;
     const email = evt.data.email_addresses.find(
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     const { id, deleted } = evt.data;
 
     if (deleted && id) {
-      const supabase = await selectClient({ serviceConnection: true });
+      const supabase = createSupabaseServiceClient();
 
       const { error } = await supabase
         .from('users')
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
 
   // If user is updated in Clerk, update them in Payload
   if (evt.type === 'user.updated') {
-    const supabase = await selectClient({ serviceConnection: true });
+    const supabase = createSupabaseServiceClient();
 
     const { id, username } = evt.data;
     const email = evt.data.email_addresses.find(

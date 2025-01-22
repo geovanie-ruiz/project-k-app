@@ -7,11 +7,12 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
+    "payload": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload",
+    "vercel-build": "payload migrate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "payload": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload",
     "payload:types": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload generate:types"
   },
   "dependencies": {
@@ -35,6 +36,7 @@
     "@supabase/supabase-js": "^2.47.10",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.6.1",
     "@vercel/speed-insights": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.5.1",
@@ -54,7 +56,8 @@
     "simple-icons": "^14.2.0",
     "svix": "^1.44.0",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -69,7 +72,7 @@
     "eslint-config-next": "15.0.4",
     "jest": "^29.7.0",
     "postcss": "^8.4.49",
-    "supabase": "^2.1.1",
+    "supabase": "^2.6.8",
     "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"

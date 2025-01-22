@@ -3,9 +3,11 @@ import type { CollectionConfig } from 'payload';
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import { KeywordTypes } from '@/utils/types/keywords.types';
 import {
   FixedToolbarFeature,
+  HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import updateKeywordType from './hooks/updateKeywordType';
@@ -124,7 +126,11 @@ export const Keywords: CollectionConfig = {
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
           FixedToolbarFeature(),
+          HeadingFeature({
+            enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+          }),
           PrettyIconsFeature(),
+          PrettyKeywordsFeature(),
         ],
       }),
     },
