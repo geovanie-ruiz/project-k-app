@@ -18,6 +18,7 @@ import { Tags } from './collections/Tags';
 import { Users } from './collections/Users';
 import { ArticlesTableExpansion } from './schemaHooks/articles';
 import { CardsTableExpansion } from './schemaHooks/cards';
+import { DecksTableExpansion } from './schemaHooks/decks';
 import { cloudinaryStorage } from './utils/cloudinary';
 
 const filename = fileURLToPath(import.meta.url);
@@ -74,7 +75,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
-    afterSchemaInit: [CardsTableExpansion, ArticlesTableExpansion],
+    afterSchemaInit: [
+      CardsTableExpansion,
+      ArticlesTableExpansion,
+      DecksTableExpansion,
+    ],
   }),
   plugins: [
     cloudinaryStorage({

@@ -15,7 +15,7 @@ export const ArticlesTableExpansion: PostgresSchemaHook = ({
         dimensions: 3,
       }).generatedAlwaysAs(
         (): SQL =>
-          sql`to_tsvector('english', ${schema.tables.cards.title} || ' ' || ${schema.tables.cards.excerpt})`
+          sql`to_tsvector('english', ${schema.tables.articles.title} || ' ' || ${schema.tables.articles.excerpt})`
       ),
     },
     extraConfig: (table) => ({

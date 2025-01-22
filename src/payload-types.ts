@@ -240,21 +240,7 @@ export interface Card {
     [k: string]: unknown;
   } | null;
   abilities_text?: string | null;
-  flavor?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  flavor?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -276,11 +262,11 @@ export interface Set {
   id: number;
   name: string;
   releasedAt?: string | null;
-  set_code?: string | null;
+  set_code: string;
   /**
    * The published card total for the set
    */
-  total?: number | null;
+  total: number;
   /**
    * The true card total for the set
    */
@@ -395,8 +381,13 @@ export interface Deck {
   author: number | User;
   name: string;
   slug?: string | null;
-  public?: boolean | null;
+  public: boolean;
+  likes: number;
   tags?: (number | Tag)[] | null;
+  /**
+   * Brief description of the deck's win condition.
+   */
+  preview: string;
   highlights?:
     | {
         highlight?: (number | null) | Card;
@@ -754,7 +745,9 @@ export interface DecksSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   public?: T;
+  likes?: T;
   tags?: T;
+  preview?: T;
   highlights?:
     | T
     | {

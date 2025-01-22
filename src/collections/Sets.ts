@@ -39,10 +39,12 @@ export const Sets: CollectionConfig = {
           name: 'set_code',
           type: 'text',
           label: 'Set Code',
+          required: true,
         },
         {
           name: 'total',
           type: 'number',
+          required: true,
           admin: {
             description: 'The published card total for the set',
           },

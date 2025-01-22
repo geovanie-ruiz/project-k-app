@@ -161,6 +161,7 @@ export type Database = {
       articles: {
         Row: {
           _status: Database["public"]["Enums"]["enum_articles_status"] | null
+          article_search_vector: unknown | null
           author_id: number | null
           content: Json | null
           cover_image_id: number | null
@@ -174,6 +175,7 @@ export type Database = {
         }
         Insert: {
           _status?: Database["public"]["Enums"]["enum_articles_status"] | null
+          article_search_vector?: unknown | null
           author_id?: number | null
           content?: Json | null
           cover_image_id?: number | null
@@ -187,6 +189,7 @@ export type Database = {
         }
         Update: {
           _status?: Database["public"]["Enums"]["enum_articles_status"] | null
+          article_search_vector?: unknown | null
           author_id?: number | null
           content?: Json | null
           cover_image_id?: number | null
@@ -391,11 +394,13 @@ export type Database = {
           abilities_text: string | null
           artist_id: number | null
           card_art_id: number | null
+          card_name_text_vector: unknown | null
           card_name_vector: unknown | null
+          card_text_vector: unknown | null
           character_id: number | null
           cost: number | null
           created_at: string
-          flavor: Json | null
+          flavor: string | null
           full_card_name: string | null
           id: number
           might: number | null
@@ -412,11 +417,13 @@ export type Database = {
           abilities_text?: string | null
           artist_id?: number | null
           card_art_id?: number | null
+          card_name_text_vector?: unknown | null
           card_name_vector?: unknown | null
+          card_text_vector?: unknown | null
           character_id?: number | null
           cost?: number | null
           created_at?: string
-          flavor?: Json | null
+          flavor?: string | null
           full_card_name?: string | null
           id?: number
           might?: number | null
@@ -433,11 +440,13 @@ export type Database = {
           abilities_text?: string | null
           artist_id?: number | null
           card_art_id?: number | null
+          card_name_text_vector?: unknown | null
           card_name_vector?: unknown | null
+          card_text_vector?: unknown | null
           character_id?: number | null
           cost?: number | null
           created_at?: string
-          flavor?: Json | null
+          flavor?: string | null
           full_card_name?: string | null
           id?: number
           might?: number | null
@@ -633,9 +642,12 @@ export type Database = {
         Row: {
           author_id: number
           created_at: string
+          deck_name_vector: unknown | null
           guide: Json | null
           id: number
+          likes: number | null
           name: string
+          preview: string
           public: boolean | null
           slug: string | null
           updated_at: string
@@ -643,9 +655,12 @@ export type Database = {
         Insert: {
           author_id: number
           created_at?: string
+          deck_name_vector?: unknown | null
           guide?: Json | null
           id?: number
+          likes?: number | null
           name: string
+          preview: string
           public?: boolean | null
           slug?: string | null
           updated_at?: string
@@ -653,9 +668,12 @@ export type Database = {
         Update: {
           author_id?: number
           created_at?: string
+          deck_name_vector?: unknown | null
           guide?: Json | null
           id?: number
+          likes?: number | null
           name?: string
+          preview?: string
           public?: boolean | null
           slug?: string | null
           updated_at?: string
@@ -1144,7 +1162,7 @@ export type Database = {
           key_art_id: number | null
           name: string
           released_at: string | null
-          set_code: string | null
+          set_code: string
           total: number | null
           updated_at: string
         }
@@ -1155,7 +1173,7 @@ export type Database = {
           key_art_id?: number | null
           name: string
           released_at?: string | null
-          set_code?: string | null
+          set_code: string
           total?: number | null
           updated_at?: string
         }
@@ -1166,7 +1184,7 @@ export type Database = {
           key_art_id?: number | null
           name?: string
           released_at?: string | null
-          set_code?: string | null
+          set_code?: string
           total?: number | null
           updated_at?: string
         }
