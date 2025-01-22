@@ -261,6 +261,7 @@ export const Cards: CollectionConfig = {
               admin: {
                 hidden: true,
               },
+              defaultValue: '',
             },
           ],
         },
