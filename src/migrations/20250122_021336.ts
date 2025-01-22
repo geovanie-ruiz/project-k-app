@@ -1,6 +1,6 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateDownArgs, MigrateUpArgs, sql } from '@payloadcms/db-postgres';
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "cards" ALTER COLUMN "flavor" SET DATA TYPE varchar;
   ALTER TABLE "sets" ALTER COLUMN "set_code" SET NOT NULL;
@@ -17,10 +17,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "cards_name_search_idx" ON "cards" USING gin ("card_name_vector");
   CREATE INDEX IF NOT EXISTS "cards_card_text_search_idx" ON "cards" USING gin ("card_text_vector");
   CREATE INDEX IF NOT EXISTS "cards_card_name_text_search_idx" ON "cards" USING gin ("card_name_text_vector");
-  CREATE INDEX IF NOT EXISTS "decks_name_search_idx" ON "decks" USING gin ("deck_name_vector");`)
+  CREATE INDEX IF NOT EXISTS "decks_name_search_idx" ON "decks" USING gin ("deck_name_vector");`);
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    DROP INDEX IF EXISTS "articles_search_idx";
   DROP INDEX IF EXISTS "cards_name_search_idx";
@@ -37,5 +37,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   ALTER TABLE "cards" DROP COLUMN IF EXISTS "card_name_text_vector";
   ALTER TABLE "decks" DROP COLUMN IF EXISTS "likes";
   ALTER TABLE "decks" DROP COLUMN IF EXISTS "preview";
-  ALTER TABLE "decks" DROP COLUMN IF EXISTS "deck_name_vector";`)
+  ALTER TABLE "decks" DROP COLUMN IF EXISTS "deck_name_vector";`);
 }

@@ -53,8 +53,19 @@ export default function Home() {
               href="https://testflight.apple.com/join/6jAjxWDF"
               target="_blank"
             >
-              Or Test the iOS App
+              Or Join the ProjectK Companion Beta
             </Link>
+            <div>
+              <span>Or try one of the digital clients</span>
+              <div className="flex flex-col">
+                <Link href="https://discord.gg/cKqHWCV42P" target="_blank">
+                  Rune Battlegrounds Discord
+                </Link>
+                <Link href="https://discord.gg/F4StJwvpwc" target="_blank">
+                  Pixelborn Discord
+                </Link>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
