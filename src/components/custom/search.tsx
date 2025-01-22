@@ -64,7 +64,9 @@ export const Search: React.FC = () => {
   }, 700);
 
   const handleClose = () => {
-    action('');
+    startTransition(() => {
+      action('');
+    });
     setSearchStarted(false);
     setIsOpen(false);
   };

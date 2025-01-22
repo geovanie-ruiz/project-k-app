@@ -61,22 +61,22 @@ const getAuthor = async (
 const queryRelatedByAuthorId = async ({
   slug,
   authorId,
-  preview,
 }: {
   slug: string;
   authorId: number;
-  preview: boolean;
 }) => {
   const payload = await getPayload({ config });
   const articlesAlsoBy = await payload.find({
     collection: 'articles',
-    draft: preview,
     where: {
       slug: {
         not_equals: slug,
       },
       author: {
         equals: authorId,
+      },
+      _status: {
+        equals: 'published',
       },
     },
     sort: '-publishedAt',
@@ -148,7 +148,7 @@ export default async function ArticleView({
     categories: article.tags,
   };
 
-  const alsoBy = await queryRelatedByAuthorId({ slug, authorId, preview });
+  const alsoBy = await queryRelatedByAuthorId({ slug, authorId });
 
   const articleContent = article.content as SerializedEditorState;
 
