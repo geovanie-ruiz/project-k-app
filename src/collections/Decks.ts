@@ -3,8 +3,11 @@ import type { CollectionConfig } from 'payload';
 import { isAdminAuthorOrPublic } from '@/access/isAdminAuthorOrPublic';
 import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isAuthenticated } from '@/access/isAuthenticated';
+import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import {
   FixedToolbarFeature,
+  HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import ShortUniqueId from 'short-unique-id';
@@ -45,6 +48,7 @@ export const Decks: CollectionConfig = {
       type: 'text',
       admin: {
         position: 'sidebar',
+        readOnly: true,
       },
       defaultValue: () => {
         const uid = new ShortUniqueId({ length: 18 });
@@ -60,6 +64,18 @@ export const Decks: CollectionConfig = {
         position: 'sidebar',
       },
       defaultValue: false,
+      required: true,
+    },
+    {
+      name: 'likes',
+      label: 'Likes',
+      type: 'number',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      defaultValue: 0,
+      required: true,
     },
     {
       name: 'tags',
@@ -68,41 +84,75 @@ export const Decks: CollectionConfig = {
       hasMany: true,
     },
     {
-      name: 'highlights',
-      type: 'array',
-      maxRows: 3,
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          name: 'highlight',
-          type: 'relationship',
-          relationTo: 'cards',
-          hasMany: false,
-        },
-      ],
-    },
-    {
-      name: 'guide',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures,
-          FixedToolbarFeature(),
-        ],
-      }),
-    },
-    {
-      name: 'cardlist',
-      type: 'array',
-      fields: [
-        {
-          name: 'card',
-          type: 'relationship',
-          relationTo: 'cards',
-          hasMany: false,
+          label: 'Overview',
+          fields: [
+            {
+              name: 'preview',
+              type: 'textarea',
+              label: 'Deck Preview',
+              required: true,
+              admin: {
+                description: `Brief description of the deck's win condition.`,
+              },
+            },
+            {
+              name: 'highlights',
+              type: 'array',
+              maxRows: 3,
+              fields: [
+                {
+                  name: 'highlight',
+                  type: 'relationship',
+                  relationTo: 'cards',
+                  hasMany: false,
+                },
+              ],
+            },
+          ],
         },
         {
-          name: 'quantity',
-          type: 'number',
+          label: 'Guide',
+          fields: [
+            {
+              name: 'guide',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures,
+                  FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+                  }),
+                  PrettyIconsFeature(),
+                  PrettyKeywordsFeature(),
+                ],
+              }),
+            },
+          ],
+        },
+        {
+          label: 'List',
+          fields: [
+            {
+              name: 'cardlist',
+              type: 'array',
+              fields: [
+                {
+                  name: 'card',
+                  type: 'relationship',
+                  relationTo: 'cards',
+                  hasMany: false,
+                },
+                {
+                  name: 'quantity',
+                  type: 'number',
+                },
+              ],
+            },
+          ],
         },
       ],
     },

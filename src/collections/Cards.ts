@@ -4,10 +4,14 @@ import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { Card } from '@/payload-types';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
+import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
+import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import {
   FixedToolbarFeature,
+  HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
+import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 
 const COMBAT_TYPES = ['Unit', 'Champion'];
 const RULES_TYPES = ['Rune', 'Battlefield', 'Legend'];
@@ -243,10 +247,31 @@ export const Cards: CollectionConfig = {
                 features: ({ defaultFeatures }) => [
                   ...defaultFeatures,
                   FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+                  }),
                   PrettyIconsFeature(),
-                  //PrettyKeywordsFeature(),
+                  PrettyKeywordsFeature(),
                 ],
               }),
+            },
+            {
+              name: 'abilities_text',
+              type: 'text',
+              admin: {
+                hidden: true,
+              },
+              defaultValue: '',
+            },
+          ],
+        },
+        {
+          label: 'Flavor',
+          fields: [
+            {
+              name: 'flavor',
+              label: 'Flavor Text',
+              type: 'textarea',
             },
           ],
         },
@@ -271,6 +296,19 @@ export const Cards: CollectionConfig = {
         return {
           ...data,
           full_card_name,
+        };
+      },
+      async ({ data, req }) => {
+        if (!data.abilities) return { ...data };
+
+        const convertedAbilities = await lexicalToPlaintext(
+          data.abilities as SerializedEditorState,
+          req.payload.config
+        );
+
+        return {
+          ...data,
+          abilities_text: convertedAbilities,
         };
       },
     ],

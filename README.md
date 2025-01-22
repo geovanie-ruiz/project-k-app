@@ -21,9 +21,15 @@ For the local database, you'll want to ensure docker is installed. I prefer dock
 - MacOS `brew install --cask Docker`
 - Windows [Docker Desktop Installer](https://docs.docker.com/desktop/setup/install/windows-install/)
 
-Once Docker of your preferred flavor is installed, run `docker compose up` to build the postgres container. The database will not require an authenticated user.
+Once Docker of your preferred flavor is installed, run `npx supabase start` to build the local instance of supabase. Once this process is completed you will be given a list of integration details. This can be accessed from Studio as well.
 
-Add the database URI to your .env file: DATABASE_URI=postgresql://postgres@localhost:5432/two_runes
+Add the database details to your .env file:
+
+```bash
+DATABASE_URI=postgresql://postgres:postgres@127.0.0.1:54322/postgres
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+SUPABASE_SERVICE_ROLE_KEY={service_role_key}
+```
 
 Your .env should also include variables for Payload, Clerk, Sentry, and Cloudinary or running the app will not work.
 
@@ -63,29 +69,39 @@ When ran locally, Payload will automatically update the database schema. Changes
 
 ### Migrations
 
-### Make migrations
+#### Make migrations
 
 `npm run payload migrate:create`
 
-### Migrate
+#### Migrate
 
 `npm run payload migrate`
 
-### Check migration status
+#### Check migration status
 
 `npm run payload migrate:status`
 
-### Revert to fresh database
+#### Revert to fresh database
 
 This will drop all entities from the local database and will re-run all the migrations.
 
 `npm run payload migrate:fresh`
 
-### Generate payload types
+### Typescript
+
+#### Generate payload types
 
 For typescript to recognize payload types, you may need to generate a types file:
 
 `npm run payload:types`
+
+This command must be ran after making changes to collections to ensure payload definitions are current.
+
+#### Generate db schema
+
+For development involving the db schema, the drizzle schema may need to be generated to ensure type safety:
+
+`npx payload generate:db-schema`
 
 ## Learn More
 
@@ -101,19 +117,25 @@ To learn more about Payload CMS, take a look at the following resources:
 
 ## Clerk
 
-Authentication is provided by Clerk. Without a Clerk account you will not be able to access the Payload CMS admin panel, nor any content that requires authentication. Locally you will be connected to the development instance of Clerk. Once you create an account, reach out to Geo to have your account elevated to admin.
+Authentication is provided by Clerk. Without a Clerk account you will not be able to access the Payload CMS admin panel, nor any content that requires authentication. Locally you will be connected to the development instance of Clerk. Once you create an account, reach out to @geovanie-ruiz to have your account elevated to admin.
 
 ## Supabase
 
-Preview and production databases are hosted on supabase. If you need to access those environments, reach out to Geo to be added to the team. However, seats are limited.
+Preview and production databases are hosted on supabase. If you need to access those environments, reach out to @geovanie-ruiz to be added to the team. However, seats are limited.
+
+The development environment uses a local instance of supabase. Access to preview and production should only be needed in the case of troubleshooting or replication.
 
 ## Vercel
 
-The site is hosted on Vercel. This shouldn't really be an issue until you're ready to deploy. Currently there is only 1 extra seat on the team we'll need to hand around to whomever is pushing a lot of commits. Otherwise all PRs should be created by Geo so that automated deployment can kick off.
+The site is hosted on Vercel.
+
+### Deployments
+
+Vercel is hooked to Github which makes it so that only certain developers can trigger deployments automatically. After work is merged in, a developer with a Vercel seat will need to manually trigger a deployment.
 
 ## Cloudinary
 
-Images are currently being hosted via Cloudinary. The `cloudinary-nextjs` library makes integrating with the CDN easy and performant. Instead of using Next.js <Image /> components, we'll be using <CldImage /> instead. Same benefits but the former is integrated with Vercel image delivery, and the latter with Cloudinary. So it's a great replacement.
+Images are currently being hosted via Cloudinary. The `cloudinary-nextjs` library makes integrating with the CDN easy and performant. Instead of using Next.js \<Image /> components, we'll be using \<CldImage /> instead. Same benefits but the former is integrated with Vercel image delivery, and the latter with Cloudinary. So it's a great replacement.
 
 Eventually static and uploaded files will be hosted locally when running in development. But for now, be mindful that media resources are being pulled down from Cloudinary.
 
@@ -121,7 +143,7 @@ Eventually static and uploaded files will be hosted locally when running in deve
 
 Sentry is the tool we're using for observability. Eventually we'll get some integration with a proper issue tracker like JIRA but for now the interface provides plenty of insight for the level of issues we're seeing in production. That is to say, we've had one issue and it's been resolved.
 
-Access is limited so work with Geo to be added to the team.
+Access is limited so work with @geovanie-ruiz to be added to the team.
 
 ## Design
 
@@ -134,4 +156,4 @@ To learn more about this CSS framework and the component library we're using, pl
 
 ### Figma
 
-Figma is currently being managed by Metal. Get with him to be added to the figma file.
+Figma is currently being managed by @JDMetal. Get with him to be added to the figma file.

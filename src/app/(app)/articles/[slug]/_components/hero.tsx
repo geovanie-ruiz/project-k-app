@@ -1,76 +1,86 @@
 'use client';
 
-import { formatDateTime } from '@/utils/utils';
-import React from 'react';
-
-import type { Article, User } from '@/payload-types';
-
+import SocialLink from '@/components/custom/socialsLink';
+import { Category, CreatorProfiles, Media } from '@/payload-types';
+import { showDateTitle } from '@/utils/utils';
 import { CldImage } from 'next-cloudinary';
+import React from 'react';
+import { TagList } from '../../../../../components/custom/tagList';
+import { ArticleBreadcrumb } from './breadcrumb';
 
-export const ArticleHero: React.FC<{
-  article: Article;
-}> = ({ article }) => {
-  const { tags, coverImage, author, publishedAt, title } = article;
+export type HeroProps = {
+  title: string;
+  excerpt: string;
+  author: string;
+  publishedDate?: string;
+  heroImage: Media;
+  links: CreatorProfiles;
+  categories: (number | Category)[];
+};
 
-  const authorName = (author as User).author_name ?? (author as User).username;
+const formatPublishedDate = (date: string | undefined) => {
+  if (!date) return 'Draft Article';
 
+  return `Published on ${showDateTitle(date)}`;
+};
+
+export const ArticleHero: React.FC<HeroProps> = ({
+  title,
+  excerpt,
+  author,
+  publishedDate,
+  heroImage,
+  links,
+  categories,
+}) => {
+  const tags = categories
+    .map((category) => {
+      if (typeof category === 'number') return '';
+      return `${category.title}`;
+    })
+    .filter((tag) => tag !== '');
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {tags?.map((tag, index) => {
-              if (typeof tag === 'object' && tag !== null) {
-                const label = tag.title || 'Nameless Tag';
-                const isLast = index === tags.length - 1;
-
-                return (
-                  <React.Fragment key={index}>
-                    {label}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
-                );
-              }
-              return null;
-            })}
-          </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {authorName && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{authorName}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>
-                  {formatDateTime(publishedAt)}
-                </time>
-              </div>
-            )}
-          </div>
-        </div>
+    <div className="w-full mb-8">
+      <ArticleBreadcrumb title={title} />
+      <div className="relative w-full aspect-[16/9] max-w-5xl mx-auto overflow-hidden">
+        <CldImage
+          src={heroImage.filename!}
+          alt={title}
+          width={1920}
+          height={1080}
+          crop="fill"
+          gravity="auto"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 87vw, 1200px"
+          className="rounded-lg object-cover"
+          priority
+        />
       </div>
-      <div className="min-h-[80vh] select-none">
-        {coverImage && typeof coverImage !== 'number' && (
-          <CldImage
-            src={coverImage.filename!}
-            alt={coverImage.alt || ''}
-            fill
-            className="object-contain rounded-md"
-          />
-        )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
+      <div className="max-w-3xl mx-auto px-4 mt-8">
+        <h1 className="text-4xl font-bold mb-4">{title}</h1>
+        <p className="text-xl mb-6">{excerpt}</p>
+        <div className="flex flex-col gap-6 md:flex-row justify-between">
+          <div className="flex flex-col md:flex-row">
+            <span className="font-semibold">{`By ${author}`}</span>
+            <span className="mx-2 max-sm:hidden">·</span>
+            <span className="text-muted-foreground">
+              {formatPublishedDate(publishedDate)}
+            </span>
+          </div>
+          {links && links.length > 0 && (
+            <div className="grid grid-flow-col gap-4">
+              {links.map((link, index) => {
+                return (
+                  <SocialLink
+                    key={`social-${link?.id || index}`}
+                    url={link.url}
+                    site={link.site}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <TagList tags={tags} />
       </div>
     </div>
   );

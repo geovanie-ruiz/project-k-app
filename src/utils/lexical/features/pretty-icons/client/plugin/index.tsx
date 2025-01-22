@@ -182,11 +182,10 @@ export default function PrettyIconPlugin() {
 
         return anchorElementRef.current && options.length
           ? ReactDOM.createPortal(
-              <div className="typeahead-popover icon-menu">
+              <div className="typeahead-popover icon-menu data-popover">
                 <ul>
                   {options.map((option: IconOption, index) => (
                     <IconMenuItem
-                      key={option.key}
                       index={index}
                       isSelected={selectedIndex === index}
                       onClick={() => {
@@ -197,6 +196,7 @@ export default function PrettyIconPlugin() {
                         setHighlightedIndex(index);
                       }}
                       option={option}
+                      key={option.key}
                     />
                   ))}
                 </ul>
