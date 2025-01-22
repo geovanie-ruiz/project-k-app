@@ -6,8 +6,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "users_links" ALTER COLUMN "url" SET NOT NULL;
   ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "excerpt" varchar;
   ALTER TABLE "_articles_v" ADD COLUMN IF NOT EXISTS "version_excerpt" varchar;
-  ALTER TABLE "cards" ADD COLUMN "abilities_text" varchar;
-  ALTER TABLE "cards" ADD COLUMN "flavor" jsonb;`);
+  ALTER TABLE "cards" ADD COLUMN IF NOT EXISTS "abilities_text" varchar;
+  ALTER TABLE "cards" ADD COLUMN IF NOT EXISTS "flavor" jsonb;`);
 }
 
 export async function down({ db }: MigrateDownArgs): Promise<void> {
