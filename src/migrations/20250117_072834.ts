@@ -4,8 +4,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "users_links" ALTER COLUMN "site" SET NOT NULL;
   ALTER TABLE "users_links" ALTER COLUMN "url" SET NOT NULL;
-  ALTER TABLE "articles" ADD COLUMN "excerpt" varchar;
-  ALTER TABLE "_articles_v" ADD COLUMN "version_excerpt" varchar;
+  ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "excerpt" varchar;
+  ALTER TABLE "_articles_v" ADD COLUMN IF NOT EXISTS "version_excerpt" varchar;
   ALTER TABLE "cards" ADD COLUMN "abilities_text" varchar;
   ALTER TABLE "cards" ADD COLUMN "flavor" jsonb;`);
 }
