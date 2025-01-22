@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,23 +13,19 @@ import { Input } from '@/components/ui/input';
 import { searchContent, type SearchResult } from '@/utils/search';
 import { Search as SearchIcon } from 'lucide-react';
 import Link from 'next/link';
-import { startTransition, useActionState, useState } from 'react';
+import { startTransition, useActionState, useEffect, useState } from 'react';
 
 import { useDebouncedCallback } from 'use-debounce';
 
 type SearchResultsProps = {
   results: SearchResult[];
   onClose: () => void;
-  searchStarted: boolean;
+  searching: boolean;
 };
 
-const SearchResults = ({
-  results,
-  onClose,
-  searchStarted,
-}: SearchResultsProps) => (
+const SearchResults = ({ results, onClose, searching }: SearchResultsProps) => (
   <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-    {searchStarted && results.length === 0 && <p>No results found.</p>}
+    {searching && results.length === 0 && <p>No results found.</p>}
     {results.length > 0 &&
       results.map((item) => (
         <div key={item.id} className="border-b pb-2">
@@ -50,14 +47,15 @@ const SearchResults = ({
 
 export const Search: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchStarted, setSearchStarted] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const [state, action, isPending] = useActionState<SearchResult[], string>(
     searchContent,
     []
   );
 
   const handleInputChange = useDebouncedCallback((term: string) => {
-    setSearchStarted(term !== '');
+    setIsSearching(term !== '' && term.length >= 3);
     startTransition(() => {
       action(term);
     });
@@ -67,9 +65,17 @@ export const Search: React.FC = () => {
     startTransition(() => {
       action('');
     });
-    setSearchStarted(false);
+    setIsSearching(false);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (state.length === 0 && isPending) {
+      setShowResults(false);
+    } else {
+      setShowResults(true);
+    }
+  }, [state, isPending]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -81,7 +87,10 @@ export const Search: React.FC = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Site Search</DialogTitle>
+          <DialogTitle>Search 2Runes.gg</DialogTitle>
+          <DialogDescription>
+            Search cards, decks, and articles across the site.
+          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <Input
@@ -89,12 +98,12 @@ export const Search: React.FC = () => {
             placeholder="Search cards, decks and articles..."
             onChange={(e) => handleInputChange(e.target.value)}
           />
-          {isPending && <p>Searching...</p>}
-          {state && (
+          {isPending && isSearching && <p>Searching...</p>}
+          {showResults && (
             <SearchResults
               results={state}
               onClose={handleClose}
-              searchStarted={searchStarted}
+              searching={isSearching}
             />
           )}
         </div>

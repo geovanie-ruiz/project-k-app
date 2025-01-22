@@ -45,6 +45,7 @@ export const searchContent = async (
   term: string
 ): Promise<SearchResult[]> => {
   if (term.trim() === '') return [];
+  if (term.length < 3) return prevState;
 
   const client = createBrowserAnonClient();
 
