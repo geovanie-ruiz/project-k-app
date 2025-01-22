@@ -49,6 +49,12 @@ export default function Home() {
             <Link href="https://project-k-cardmaker.vercel.app" target="_blank">
               Or Make Your Own Cards
             </Link>
+            <Link
+              href="https://testflight.apple.com/join/6jAjxWDF"
+              target="_blank"
+            >
+              Or Test the iOS App
+            </Link>
           </div>
         </CardContent>
       </Card>

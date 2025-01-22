@@ -87,3 +87,14 @@ export function formatDateTime(timestamp: string): string {
 
   return `${MM}/${DD}/${YYYY} ${HH}:${MinMin} ${AMPM}`;
 }
+
+export function formatSetId(
+  setCode: string,
+  setTotal: number,
+  setIndex: number
+): string {
+  // assume index is padded to set digit length
+  const indexLength = setTotal.toString().length;
+  const paddedIndex = setIndex.toString().padStart(indexLength, '0');
+  return `${setCode}-${paddedIndex}/${setTotal}`;
+}

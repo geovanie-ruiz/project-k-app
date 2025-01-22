@@ -24,6 +24,7 @@ import { useState } from 'react';
 import LogoIcon from '../icons/2RunesLogo';
 import ProfileIcon from '../icons/CreatorProfile';
 import PayloadIcon from '../icons/PayloadCMS';
+import { Search } from './search';
 
 interface MenuProps {
   className: string;
@@ -125,6 +126,7 @@ export function NavBar() {
             <NavLink url="#" label="Events" currentPathname={pathname} />
           </nav>
           <div className="flex items-center justify-center min-w-32 gap-4">
+            <Search />
             <ThemeToggle />
             <SignedOut>
               <SignInButton />
