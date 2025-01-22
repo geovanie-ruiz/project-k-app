@@ -5,7 +5,13 @@ import { usePathname } from 'next/navigation';
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 import {
   SignInButton,
@@ -46,31 +52,64 @@ export function NavBar() {
   const isCollaborator = !!userRole && isACollaborator(userRole);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav
+      role="navigation"
+      aria-label="Main navigation"
+      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+    >
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-[65px] items-center">
           <div className="flex items-center justify-center min-w-32 gap-4">
-            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <Sheet
+              open={sheetOpen}
+              onOpenChange={setSheetOpen}
+              aria-modal="true"
+              aria-labelledby="nav-menu-title"
+            >
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="md:hidden">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="md:hidden"
+                  aria-expanded={sheetOpen}
+                  aria-controls="navigation-menu"
+                  aria-label="Toggle navigation menu"
+                >
                   <MenuIcon className="h-6 w-6" />
                   <span className="sr-only">Toggle navigation menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left">
-                <div className="grid gap-6 p-6">
+              <SheetContent
+                side="left"
+                id="navigation-menu"
+                aria-label="Site Navigation"
+              >
+                <SheetTitle>2Runes.gg</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Site navigation menu
+                </SheetDescription>
+                <div
+                  className="grid gap-6 p-6"
+                  role="navigation"
+                  aria-labelledby="sheet-title"
+                >
+                  <Search />
+                  <hr role="seperator" aria-orientation="horizontal" />
                   <Link
                     href="/"
                     className="text-sm font-medium hover:underline underline-offset-4"
                     onClick={() => setSheetOpen(false)}
+                    role="menuitem"
+                    aria-current={pathname === '/' ? 'page' : undefined}
                   >
-                    <h1>2Runes.gg</h1>
+                    Home
                   </Link>
-                  <hr />
                   <Link
                     href="/articles"
                     className="text-sm font-medium hover:underline underline-offset-4"
                     onClick={() => setSheetOpen(false)}
+                    role="menuitem"
+                    aria-current={pathname === '/articles' ? 'page' : undefined}
                   >
                     Articles
                   </Link>
@@ -78,6 +117,8 @@ export function NavBar() {
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4"
                     onClick={() => setSheetOpen(false)}
+                    role="menuitem"
+                    aria-current={pathname === '/spoilers' ? 'page' : undefined}
                   >
                     Spoilers
                   </Link>
@@ -126,7 +167,9 @@ export function NavBar() {
             <NavLink url="#" label="Events" currentPathname={pathname} />
           </nav>
           <div className="flex items-center justify-center min-w-32 gap-4">
-            <Search />
+            <div className="max-sm:hidden">
+              <Search />
+            </div>
             <ThemeToggle />
             <SignedOut>
               <SignInButton />
@@ -204,6 +247,9 @@ function NavLink(props: NavItem) {
           'text-primary': props.currentPathname === props.url,
         }
       )}
+      role="menuitem"
+      aria-current={props.currentPathname === props.url ? 'page' : undefined}
+      aria-label={`Navigate to ${props.label}`}
     >
       {props.label}
     </Link>

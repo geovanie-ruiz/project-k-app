@@ -13,6 +13,11 @@ export async function fetchArticles(
 
   const articles = await payload.find({
     collection: 'articles',
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
     sort: ['-publishedAt', 'title'],
     limit: pageSize,
     page: page,
