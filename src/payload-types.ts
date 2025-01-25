@@ -14,17 +14,28 @@ export type CreatorProfiles =
   | {
       site:
         | 'Blog'
+        | 'Bluesky'
         | 'Discord'
-        | 'Instagram'
         | 'Mobalytics'
         | 'OP.GG'
         | 'Podcast'
         | 'TCGplayer'
         | 'TikTok'
         | 'Twitch'
-        | 'Twitter (X)'
         | 'YouTube';
       url: string;
+      id?: string | null;
+    }[]
+  | null;
+/**
+ * Recycle Rune(s)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Recycle".
+ */
+export type Recycle =
+  | {
+      rune?: ('Any' | 'Calm' | 'Chaos' | 'Fury' | 'Mental' | 'Order' | 'Physical') | null;
       id?: string | null;
     }[]
   | null;
@@ -202,15 +213,8 @@ export interface Card {
    * Exhaust Rune(s)
    */
   cost?: number | null;
-  /**
-   * Recycle Rune(s)
-   */
-  recycle?:
-    | {
-        rune?: ('Any' | 'Calm' | 'Chaos' | 'Fury' | 'Mental' | 'Order' | 'Physical') | null;
-        id?: string | null;
-      }[]
-    | null;
+  recycle?: Recycle;
+  recycle_serial?: string | null;
   type: 'Unit' | 'Champion' | 'Legend' | 'Spell' | 'Battlefield' | 'Gear' | 'Rune';
   rune?: ('Calm' | 'Chaos' | 'Fury' | 'Mental' | 'Order' | 'Physical')[] | null;
   name: string;
@@ -271,6 +275,10 @@ export interface Set {
    * The true card total for the set
    */
   collectible?: number | null;
+  /**
+   * A brief description of the set
+   */
+  description?: string | null;
   key_art?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
@@ -581,12 +589,8 @@ export interface ArtistsSelect<T extends boolean = true> {
 export interface CardsSelect<T extends boolean = true> {
   full_card_name?: T;
   cost?: T;
-  recycle?:
-    | T
-    | {
-        rune?: T;
-        id?: T;
-      };
+  recycle?: T | RecycleSelect<T>;
+  recycle_serial?: T;
   type?: T;
   rune?: T;
   name?: T;
@@ -605,6 +609,14 @@ export interface CardsSelect<T extends boolean = true> {
   flavor?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Recycle_select".
+ */
+export interface RecycleSelect<T extends boolean = true> {
+  rune?: T;
+  id?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -665,6 +677,7 @@ export interface SetsSelect<T extends boolean = true> {
   set_code?: T;
   total?: T;
   collectible?: T;
+  description?: T;
   key_art?: T;
   updatedAt?: T;
   createdAt?: T;
