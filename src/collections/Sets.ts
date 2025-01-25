@@ -40,6 +40,16 @@ export const Sets: CollectionConfig = {
           type: 'text',
           label: 'Set Code',
           required: true,
+          hooks: {
+            beforeChange: [
+              ({ value }) => {
+                if (value) {
+                  value = value.toLowerCase();
+                }
+                return value;
+              },
+            ],
+          },
         },
         {
           name: 'total',
@@ -57,6 +67,14 @@ export const Sets: CollectionConfig = {
           },
         },
       ],
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'description',
+      admin: {
+        description: 'A brief description of the set',
+      },
     },
     {
       name: 'key_art',

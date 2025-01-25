@@ -2,21 +2,26 @@ import type { CollectionConfig } from 'payload';
 
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
-import { Card } from '@/payload-types';
+import { Card, Recycle } from '@/payload-types';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
 import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
+import {
+  ALL_RUNE_TYPES,
+  CARD_TYPES,
+  CHARACTER_TYPES,
+  COMBAT_TYPES,
+  RARITIES,
+  RULES_TYPES,
+  RUNE_TYPES,
+  SIMPLE_TYPES,
+} from '@/utils/types/cards.types';
 import {
   FixedToolbarFeature,
   HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-
-const COMBAT_TYPES = ['Unit', 'Champion'];
-const RULES_TYPES = ['Rune', 'Battlefield', 'Legend'];
-const CHARACTER_TYPES = ['Legend', 'Spell'];
-const SIMPLE_TYPES = ['Rune', 'Battlefield'];
 
 export const Cards: CollectionConfig = {
   slug: 'cards',
@@ -62,22 +67,23 @@ export const Cards: CollectionConfig = {
         position: 'sidebar',
         condition: (data) => !RULES_TYPES.includes(data.type),
       },
+      interfaceName: 'Recycle',
       fields: [
         {
           name: 'rune',
           type: 'select',
           hasMany: false,
-          options: [
-            'Any',
-            'Calm',
-            'Chaos',
-            'Fury',
-            'Mental',
-            'Order',
-            'Physical',
-          ],
+          options: ALL_RUNE_TYPES,
         },
       ],
+    },
+    {
+      name: 'recycle_serial',
+      type: 'text',
+      admin: {
+        readOnly: true,
+        hidden: true,
+      },
     },
     {
       type: 'tabs',
@@ -93,29 +99,14 @@ export const Cards: CollectionConfig = {
                   name: 'type',
                   type: 'select',
                   hasMany: false,
-                  options: [
-                    'Unit',
-                    'Champion',
-                    'Legend',
-                    'Spell',
-                    'Battlefield',
-                    'Gear',
-                    'Rune',
-                  ],
+                  options: CARD_TYPES,
                   required: true,
                 },
                 {
                   name: 'rune',
                   type: 'select',
                   hasMany: true,
-                  options: [
-                    'Calm',
-                    'Chaos',
-                    'Fury',
-                    'Mental',
-                    'Order',
-                    'Physical',
-                  ],
+                  options: RUNE_TYPES,
                   admin: {
                     condition: (data) =>
                       !!data.type && data.type !== 'Battlefield',
@@ -184,14 +175,7 @@ export const Cards: CollectionConfig = {
                 {
                   name: 'rarity',
                   type: 'select',
-                  options: [
-                    'None',
-                    'White Circle',
-                    'Green Triangle',
-                    'Purple Diamond',
-                    'Golden Pentagon',
-                    'Promo',
-                  ],
+                  options: RARITIES,
                   required: true,
                 },
               ],
@@ -309,6 +293,17 @@ export const Cards: CollectionConfig = {
         return {
           ...data,
           abilities_text: convertedAbilities,
+        };
+      },
+      async ({ data }) => {
+        const recycle: Recycle = data.recycle;
+        if (!recycle || recycle.length === 0) return { ...data };
+        const runes = recycle.map(
+          (rune) => rune?.rune?.at(0)?.toLowerCase() || ''
+        );
+        return {
+          ...data,
+          recycle_serial: runes.filter((rune) => rune !== '').join(''),
         };
       },
     ],
