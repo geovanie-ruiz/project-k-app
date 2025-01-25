@@ -1,12 +1,11 @@
 'use client';
 
-import SocialLink from '@/components/custom/socialsLink';
+import SocialLink, { SupportedSocials } from '@/components/custom/socialsLink';
 import { Category, CreatorProfiles, Media } from '@/payload-types';
 import { showDateTitle } from '@/utils/utils';
 import { CldImage } from 'next-cloudinary';
 import React from 'react';
 import { TagList } from '../../../../../components/custom/tagList';
-import { ArticleBreadcrumb } from './breadcrumb';
 
 export type HeroProps = {
   title: string;
@@ -41,7 +40,6 @@ export const ArticleHero: React.FC<HeroProps> = ({
     .filter((tag) => tag !== '');
   return (
     <div className="w-full mb-8">
-      <ArticleBreadcrumb title={title} />
       <div className="relative w-full aspect-[16/9] max-w-5xl mx-auto overflow-hidden">
         <CldImage
           src={heroImage.filename!}
@@ -73,7 +71,7 @@ export const ArticleHero: React.FC<HeroProps> = ({
                   <SocialLink
                     key={`social-${link?.id || index}`}
                     url={link.url}
-                    site={link.site}
+                    site={link.site as SupportedSocials}
                   />
                 );
               })}
