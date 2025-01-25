@@ -1,4 +1,5 @@
 import { isAdminOrSelf } from '@/access/isAdminOrSelf';
+import { SOCIALS } from '@/components/custom/socialsLink';
 import { checkRole } from '@/utils/roles';
 import { isACollaborator } from '@/utils/types/roles.types';
 import { auth } from '@clerk/nextjs/server';
@@ -115,19 +116,7 @@ export const Users: CollectionConfig = {
         {
           name: 'site',
           type: 'select',
-          options: [
-            'Blog',
-            'Discord',
-            'Instagram',
-            'Mobalytics',
-            'OP.GG',
-            'Podcast',
-            'TCGplayer',
-            'TikTok',
-            'Twitch',
-            'Twitter (X)',
-            'YouTube',
-          ],
+          options: SOCIALS,
           hasMany: false,
           required: true,
         },

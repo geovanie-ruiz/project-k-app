@@ -406,6 +406,7 @@ export type Database = {
           might: number | null
           name: string
           rarity: Database["public"]["Enums"]["enum_cards_rarity"]
+          recycle_serial: string | null
           set_id: number
           set_index: number
           subtitle: string | null
@@ -429,6 +430,7 @@ export type Database = {
           might?: number | null
           name: string
           rarity: Database["public"]["Enums"]["enum_cards_rarity"]
+          recycle_serial?: string | null
           set_id: number
           set_index: number
           subtitle?: string | null
@@ -452,6 +454,7 @@ export type Database = {
           might?: number | null
           name?: string
           rarity?: Database["public"]["Enums"]["enum_cards_rarity"]
+          recycle_serial?: string | null
           set_id?: number
           set_index?: number
           subtitle?: string | null
@@ -645,10 +648,10 @@ export type Database = {
           deck_name_vector: unknown | null
           guide: Json | null
           id: number
-          likes: number | null
+          likes: number
           name: string
           preview: string
-          public: boolean | null
+          public: boolean
           slug: string | null
           updated_at: string
         }
@@ -658,10 +661,10 @@ export type Database = {
           deck_name_vector?: unknown | null
           guide?: Json | null
           id?: number
-          likes?: number | null
+          likes?: number
           name: string
           preview: string
-          public?: boolean | null
+          public?: boolean
           slug?: string | null
           updated_at?: string
         }
@@ -671,10 +674,10 @@ export type Database = {
           deck_name_vector?: unknown | null
           guide?: Json | null
           id?: number
-          likes?: number | null
+          likes?: number
           name?: string
           preview?: string
-          public?: boolean | null
+          public?: boolean
           slug?: string | null
           updated_at?: string
         }
@@ -1158,34 +1161,37 @@ export type Database = {
         Row: {
           collectible: number | null
           created_at: string
+          description: string | null
           id: number
           key_art_id: number | null
           name: string
           released_at: string | null
           set_code: string
-          total: number | null
+          total: number
           updated_at: string
         }
         Insert: {
           collectible?: number | null
           created_at?: string
+          description?: string | null
           id?: number
           key_art_id?: number | null
           name: string
           released_at?: string | null
           set_code: string
-          total?: number | null
+          total: number
           updated_at?: string
         }
         Update: {
           collectible?: number | null
           created_at?: string
+          description?: string | null
           id?: number
           key_art_id?: number | null
           name?: string
           released_at?: string | null
           set_code?: string
-          total?: number | null
+          total?: number
           updated_at?: string
         }
         Relationships: [
@@ -1584,15 +1590,15 @@ export type Database = {
         | "Rune"
       enum_users_links_site:
         | "Blog"
+        | "Bluesky"
         | "Discord"
-        | "Instagram"
         | "Mobalytics"
         | "OP.GG"
+        | "Pixelfed"
         | "Podcast"
         | "TCGplayer"
         | "TikTok"
         | "Twitch"
-        | "Twitter (X)"
         | "YouTube"
       enum_users_role: "admin" | "creator" | "user"
     }
