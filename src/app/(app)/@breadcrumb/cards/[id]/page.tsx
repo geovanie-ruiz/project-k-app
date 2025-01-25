@@ -1,4 +1,5 @@
-import { CardViewProps, queryCardById } from '@/app/(app)/cards/[id]/page';
+import { queryCardById } from '@/app/(app)/cards/[id]/_actions/queryCardById';
+import { CardViewProps } from '@/app/(app)/cards/[id]/page';
 import {
   Breadcrumb,
   BreadcrumbItem,

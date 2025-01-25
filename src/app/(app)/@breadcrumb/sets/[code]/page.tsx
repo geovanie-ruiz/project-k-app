@@ -1,4 +1,5 @@
-import { querySetByCode, SetViewProps } from '@/app/(app)/sets/[code]/page';
+import { querySetByCode } from '@/app/(app)/sets/[code]/_actions/querySetByCode';
+import { SetViewProps } from '@/app/(app)/sets/[code]/page';
 import {
   Breadcrumb,
   BreadcrumbItem,

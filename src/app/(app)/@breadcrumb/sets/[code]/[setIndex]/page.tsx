@@ -1,8 +1,6 @@
-import {
-  CardSetViewProps,
-  queryCardBySetIndex,
-} from '@/app/(app)/sets/[code]/[setIndex]/page';
-import { querySetByCode } from '@/app/(app)/sets/[code]/page';
+import { queryCardBySetIndex } from '@/app/(app)/sets/[code]/[setIndex]/_actions/queryCardBySetIndex';
+import { CardSetViewProps } from '@/app/(app)/sets/[code]/[setIndex]/page';
+import { querySetByCode } from '@/app/(app)/sets/[code]/_actions/querySetByCode';
 import {
   Breadcrumb,
   BreadcrumbItem,
