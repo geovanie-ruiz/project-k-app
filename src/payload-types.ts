@@ -47,17 +47,18 @@ export interface Config {
   collections: {
     articles: Article;
     artists: Artist;
+    'card-collection': CardCollection;
     cards: Card;
     categories: Category;
     characters: Character;
+    events: Event;
+    decks: Deck;
     keywords: Keyword;
     media: Media;
     sets: Set;
     spoilers: Spoiler;
     tags: Tag;
     users: User;
-    decks: Deck;
-    'card-collection': CardCollection;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -66,17 +67,18 @@ export interface Config {
   collectionsSelect: {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     artists: ArtistsSelect<false> | ArtistsSelect<true>;
+    'card-collection': CardCollectionSelect<false> | CardCollectionSelect<true>;
     cards: CardsSelect<false> | CardsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     characters: CharactersSelect<false> | CharactersSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
+    decks: DecksSelect<false> | DecksSelect<true>;
     keywords: KeywordsSelect<false> | KeywordsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     sets: SetsSelect<false> | SetsSelect<true>;
     spoilers: SpoilersSelect<false> | SpoilersSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    decks: DecksSelect<false> | DecksSelect<true>;
-    'card-collection': CardCollectionSelect<false> | CardCollectionSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -121,6 +123,7 @@ export interface Article {
   id: number;
   title: string;
   tags: (number | Category)[];
+  author_name: string;
   author: number | User;
   slug?: string | null;
   publishedAt?: string | null;
@@ -204,6 +207,59 @@ export interface Artist {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "card-collection".
+ */
+export interface CardCollection {
+  id: number;
+  owner: number | User;
+  sets?:
+    | {
+        set?: (number | null) | Set;
+        cards?:
+          | {
+              card?: (number | null) | Card;
+              normal?: number | null;
+              foil?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * (Field only updates on manual page reload; known issue)
+         */
+        completion?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sets".
+ */
+export interface Set {
+  id: number;
+  name: string;
+  releasedAt?: string | null;
+  set_code: string;
+  /**
+   * The published card total for the set
+   */
+  total: number;
+  /**
+   * The true card total for the set
+   */
+  collectible?: number | null;
+  /**
+   * A brief description of the set
+   */
+  description?: string | null;
+  key_art?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cards".
  */
 export interface Card {
@@ -260,31 +316,6 @@ export interface Character {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sets".
- */
-export interface Set {
-  id: number;
-  name: string;
-  releasedAt?: string | null;
-  set_code: string;
-  /**
-   * The published card total for the set
-   */
-  total: number;
-  /**
-   * The true card total for the set
-   */
-  collectible?: number | null;
-  /**
-   * A brief description of the set
-   */
-  description?: string | null;
-  key_art?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "keywords".
  */
 export interface Keyword {
@@ -319,6 +350,79 @@ export interface Tag {
   id: number;
   region?: boolean | null;
   tag?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  contributor: number | User;
+  /**
+   * Events must be approved before appearing on the community calendar.
+   */
+  approved?: boolean | null;
+  title: string;
+  start_date: string;
+  end_date: string;
+  type:
+    | 'Community Event'
+    | 'National Tournament'
+    | 'Pre-Release'
+    | 'Regional Tournament'
+    | 'Release'
+    | 'Special Event'
+    | 'World Tournament';
+  description: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "decks".
+ */
+export interface Deck {
+  id: number;
+  author: number | User;
+  name: string;
+  slug?: string | null;
+  public: boolean;
+  likes: number;
+  tags?: (number | Tag)[] | null;
+  /**
+   * Brief description of the deck's win condition.
+   */
+  preview: string;
+  highlights?:
+    | {
+        highlight?: (number | null) | Card;
+        id?: string | null;
+      }[]
+    | null;
+  guide?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cardlist?:
+    | {
+        card?: (number | null) | Card;
+        quantity?: number | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -382,81 +486,6 @@ export interface Spoiler {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "decks".
- */
-export interface Deck {
-  id: number;
-  author: number | User;
-  name: string;
-  slug?: string | null;
-  public: boolean;
-  likes: number;
-  tags?: (number | Tag)[] | null;
-  /**
-   * Brief description of the deck's win condition.
-   */
-  preview: string;
-  highlights?:
-    | {
-        highlight?: (number | null) | Card;
-        id?: string | null;
-      }[]
-    | null;
-  guide?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  cardlist?:
-    | {
-        card?: (number | null) | Card;
-        quantity?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "card-collection".
- */
-export interface CardCollection {
-  id: number;
-  owner: number | User;
-  sets?:
-    | {
-        set?: (number | null) | Set;
-        cards?:
-          | {
-              card?: (number | null) | Card;
-              normal?: number | null;
-              foil?: number | null;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * (Field only updates on manual page reload; known issue)
-         */
-        completion?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -471,6 +500,10 @@ export interface PayloadLockedDocument {
         value: number | Artist;
       } | null)
     | ({
+        relationTo: 'card-collection';
+        value: number | CardCollection;
+      } | null)
+    | ({
         relationTo: 'cards';
         value: number | Card;
       } | null)
@@ -481,6 +514,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'characters';
         value: number | Character;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'decks';
+        value: number | Deck;
       } | null)
     | ({
         relationTo: 'keywords';
@@ -505,14 +546,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
-      } | null)
-    | ({
-        relationTo: 'decks';
-        value: number | Deck;
-      } | null)
-    | ({
-        relationTo: 'card-collection';
-        value: number | CardCollection;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -563,6 +596,7 @@ export interface PayloadMigration {
 export interface ArticlesSelect<T extends boolean = true> {
   title?: T;
   tags?: T;
+  author_name?: T;
   author?: T;
   slug?: T;
   publishedAt?: T;
@@ -579,6 +613,30 @@ export interface ArticlesSelect<T extends boolean = true> {
  */
 export interface ArtistsSelect<T extends boolean = true> {
   name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "card-collection_select".
+ */
+export interface CardCollectionSelect<T extends boolean = true> {
+  owner?: T;
+  sets?:
+    | T
+    | {
+        set?: T;
+        cards?:
+          | T
+          | {
+              card?: T;
+              normal?: T;
+              foil?: T;
+              id?: T;
+            };
+        completion?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -633,6 +691,50 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface CharactersSelect<T extends boolean = true> {
   name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  contributor?: T;
+  approved?: T;
+  title?: T;
+  start_date?: T;
+  end_date?: T;
+  type?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "decks_select".
+ */
+export interface DecksSelect<T extends boolean = true> {
+  author?: T;
+  name?: T;
+  slug?: T;
+  public?: T;
+  likes?: T;
+  tags?: T;
+  preview?: T;
+  highlights?:
+    | T
+    | {
+        highlight?: T;
+        id?: T;
+      };
+  guide?: T;
+  cardlist?:
+    | T
+    | {
+        card?: T;
+        quantity?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -748,59 +850,6 @@ export interface CreatorProfilesSelect<T extends boolean = true> {
   site?: T;
   url?: T;
   id?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "decks_select".
- */
-export interface DecksSelect<T extends boolean = true> {
-  author?: T;
-  name?: T;
-  slug?: T;
-  public?: T;
-  likes?: T;
-  tags?: T;
-  preview?: T;
-  highlights?:
-    | T
-    | {
-        highlight?: T;
-        id?: T;
-      };
-  guide?: T;
-  cardlist?:
-    | T
-    | {
-        card?: T;
-        quantity?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "card-collection_select".
- */
-export interface CardCollectionSelect<T extends boolean = true> {
-  owner?: T;
-  sets?:
-    | T
-    | {
-        set?: T;
-        cards?:
-          | T
-          | {
-              card?: T;
-              normal?: T;
-              foil?: T;
-              id?: T;
-            };
-        completion?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
