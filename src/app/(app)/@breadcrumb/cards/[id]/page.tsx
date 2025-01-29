@@ -1,5 +1,6 @@
 import { queryCardById } from '@/app/(app)/cards/[id]/_actions/queryCardById';
 import { CardViewProps } from '@/app/(app)/cards/[id]/page';
+import RuneIcon from '@/components/icons/RuneIcon';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Home } from 'lucide-react';
 
 export default async function BreadcrumbSlot({ params }: CardViewProps) {
   const { id = 0 } = await params;
@@ -19,7 +19,7 @@ export default async function BreadcrumbSlot({ params }: CardViewProps) {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
-            <Home />
+            <RuneIcon />
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

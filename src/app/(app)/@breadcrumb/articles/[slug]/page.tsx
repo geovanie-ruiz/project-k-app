@@ -1,3 +1,4 @@
+import RuneIcon from '@/components/icons/RuneIcon';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +9,6 @@ import {
 } from '@/components/ui/breadcrumb';
 
 import config from '@/payload.config';
-import { Home } from 'lucide-react';
 import { getPayload } from 'payload';
 
 const queryArticleTitleBySlug = async ({ slug }: { slug: string }) => {
@@ -41,7 +41,7 @@ export default async function BreadcrumbSlot({
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
-            <Home />
+            <RuneIcon />
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

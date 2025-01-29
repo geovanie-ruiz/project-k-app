@@ -26,7 +26,6 @@ type ArticleViewProps = {
 
 type AuthorInfo = {
   authorId: number;
-  authorName: string;
   links: CreatorProfiles;
 };
 
@@ -42,16 +41,14 @@ const getAuthorById = async (authorId: number) => {
 const getAuthor = async (
   author: number | User | null | undefined
 ): Promise<AuthorInfo> => {
-  const authorInfo: AuthorInfo = { authorId: -1, authorName: '', links: [] };
+  const authorInfo: AuthorInfo = { authorId: -1, links: [] };
   if (!author) return authorInfo;
   if (typeof author === 'number') {
     const user = await getAuthorById(author);
     authorInfo.authorId = author;
-    authorInfo.authorName = user?.author_name ?? user.username!;
     authorInfo.links = user?.links || [];
   } else {
     authorInfo.authorId = author.id;
-    authorInfo.authorName = author?.author_name ?? author.username!;
     authorInfo.links = author?.links || [];
   }
 
@@ -132,16 +129,12 @@ export default async function ArticleView({
 
   if (!article) return notFound();
 
-  const {
-    authorId,
-    authorName,
-    links: authorLinks,
-  } = await getAuthor(article?.author);
+  const { authorId, links: authorLinks } = await getAuthor(article?.author);
 
   const heroProps: HeroProps = {
     title: article.title,
     excerpt: article.excerpt,
-    author: authorName,
+    author: article.author_name,
     publishedDate: article?.publishedAt ?? '',
     heroImage: article.coverImage as Media,
     links: authorLinks,
@@ -164,7 +157,7 @@ export default async function ArticleView({
         enableGutter={false}
       />
 
-      <AlsoBy authorName={authorName ?? ''} articles={alsoBy} />
+      <AlsoBy authorName={article.author_name} articles={alsoBy} />
     </article>
   );
 }
@@ -175,7 +168,6 @@ export async function generateMetadata({
   const { slug = '' } = await params;
 
   const article = await queryArticleBySlug({ slug, preview: false });
-  const { authorName } = await getAuthor(article?.author);
   const imagePublicId = await getPublicId(article.coverImage);
 
   let pageMeta: PageMeta = {
@@ -183,7 +175,7 @@ export async function generateMetadata({
     title: article.title,
     description: article.excerpt,
     image: imagePublicId,
-    authors: authorName,
+    authors: article.author_name,
     tags: article.tags
       .map((tag) => {
         if (typeof tag === 'number') return '';
