@@ -5,6 +5,7 @@ import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isAuthenticated } from '@/access/isAuthenticated';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
+import { checkRole } from '@/utils/roles';
 import {
   FixedToolbarFeature,
   HeadingFeature,
@@ -32,6 +33,9 @@ export const Decks: CollectionConfig = {
       relationTo: 'users',
       required: true,
       hasMany: false,
+      access: {
+        read: () => checkRole('admin'),
+      },
       admin: {
         readOnly: true,
       },
