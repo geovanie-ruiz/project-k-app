@@ -46,6 +46,7 @@ export type Database = {
             | Database["public"]["Enums"]["enum__articles_v_version_status"]
             | null
           version_author_id: number | null
+          version_author_name: string | null
           version_content: Json | null
           version_cover_image_id: number | null
           version_created_at: string | null
@@ -66,6 +67,7 @@ export type Database = {
             | Database["public"]["Enums"]["enum__articles_v_version_status"]
             | null
           version_author_id?: number | null
+          version_author_name?: string | null
           version_content?: Json | null
           version_cover_image_id?: number | null
           version_created_at?: string | null
@@ -86,6 +88,7 @@ export type Database = {
             | Database["public"]["Enums"]["enum__articles_v_version_status"]
             | null
           version_author_id?: number | null
+          version_author_name?: string | null
           version_content?: Json | null
           version_cover_image_id?: number | null
           version_created_at?: string | null
@@ -163,6 +166,7 @@ export type Database = {
           _status: Database["public"]["Enums"]["enum_articles_status"] | null
           article_search_vector: unknown | null
           author_id: number | null
+          author_name: string | null
           content: Json | null
           cover_image_id: number | null
           created_at: string
@@ -177,6 +181,7 @@ export type Database = {
           _status?: Database["public"]["Enums"]["enum_articles_status"] | null
           article_search_vector?: unknown | null
           author_id?: number | null
+          author_name?: string | null
           content?: Json | null
           cover_image_id?: number | null
           created_at?: string
@@ -191,6 +196,7 @@ export type Database = {
           _status?: Database["public"]["Enums"]["enum_articles_status"] | null
           article_search_vector?: unknown | null
           author_id?: number | null
+          author_name?: string | null
           content?: Json | null
           cover_image_id?: number | null
           created_at?: string
@@ -805,6 +811,53 @@ export type Database = {
           },
         ]
       }
+      events: {
+        Row: {
+          approved: boolean | null
+          contributor_id: number
+          created_at: string
+          description: string
+          end_date: string
+          id: number
+          start_date: string
+          title: string
+          type: Database["public"]["Enums"]["enum_events_type"]
+          updated_at: string
+        }
+        Insert: {
+          approved?: boolean | null
+          contributor_id: number
+          created_at?: string
+          description: string
+          end_date: string
+          id?: number
+          start_date: string
+          title: string
+          type: Database["public"]["Enums"]["enum_events_type"]
+          updated_at?: string
+        }
+        Update: {
+          approved?: boolean | null
+          contributor_id?: number
+          created_at?: string
+          description?: string
+          end_date?: string
+          id?: number
+          start_date?: string
+          title?: string
+          type?: Database["public"]["Enums"]["enum_events_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_contributor_id_users_id_fk"
+            columns: ["contributor_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       keywords: {
         Row: {
           color: Database["public"]["Enums"]["enum_keywords_color"] | null
@@ -920,6 +973,7 @@ export type Database = {
           categories_id: number | null
           characters_id: number | null
           decks_id: number | null
+          events_id: number | null
           id: number
           keywords_id: number | null
           media_id: number | null
@@ -939,6 +993,7 @@ export type Database = {
           categories_id?: number | null
           characters_id?: number | null
           decks_id?: number | null
+          events_id?: number | null
           id?: number
           keywords_id?: number | null
           media_id?: number | null
@@ -958,6 +1013,7 @@ export type Database = {
           categories_id?: number | null
           characters_id?: number | null
           decks_id?: number | null
+          events_id?: number | null
           id?: number
           keywords_id?: number | null
           media_id?: number | null
@@ -1017,6 +1073,13 @@ export type Database = {
             columns: ["decks_id"]
             isOneToOne: false
             referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payload_locked_documents_rels_events_fk"
+            columns: ["events_id"]
+            isOneToOne: false
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
           {
@@ -1549,6 +1612,14 @@ export type Database = {
         | "Battlefield"
         | "Gear"
         | "Rune"
+      enum_events_type:
+        | "Community Event"
+        | "National Tournament"
+        | "Pre-Release"
+        | "Regional Tournament"
+        | "Release"
+        | "Special Event"
+        | "World Tournament"
       enum_keywords_color:
         | "#699667"
         | "#835b86"
@@ -1594,7 +1665,6 @@ export type Database = {
         | "Discord"
         | "Mobalytics"
         | "OP.GG"
-        | "Pixelfed"
         | "Podcast"
         | "TCGplayer"
         | "TikTok"

@@ -1,6 +1,7 @@
 import { queryCardBySetIndex } from '@/app/(app)/sets/[code]/[setIndex]/_actions/queryCardBySetIndex';
 import { CardSetViewProps } from '@/app/(app)/sets/[code]/[setIndex]/page';
 import { querySetByCode } from '@/app/(app)/sets/[code]/_actions/querySetByCode';
+import RuneIcon from '@/components/icons/RuneIcon';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +10,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Home } from 'lucide-react';
 
 export default async function BreadcrumbSlot({ params }: CardSetViewProps) {
   const { code = '', setIndex = 0 } = await params;
@@ -21,7 +21,7 @@ export default async function BreadcrumbSlot({ params }: CardSetViewProps) {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
-            <Home />
+            <RuneIcon />
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

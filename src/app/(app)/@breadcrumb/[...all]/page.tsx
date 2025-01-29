@@ -1,3 +1,4 @@
+import RuneIcon from '@/components/icons/RuneIcon';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,7 +7,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Home } from 'lucide-react';
 import React, { type ReactElement } from 'react';
 
 type BreadcrumbSlotProps = {
@@ -46,11 +46,11 @@ export default async function BreadcrumbSlot({ params }: BreadcrumbSlotProps) {
   }
 
   return (
-    <Breadcrumb className="mb-4 px-4 max-w-5xl mx-auto">
+    <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
-            <Home />
+            <RuneIcon />
           </BreadcrumbLink>
         </BreadcrumbItem>
         {breadcrumbItems}

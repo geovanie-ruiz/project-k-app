@@ -1,5 +1,6 @@
 import { querySetByCode } from '@/app/(app)/sets/[code]/_actions/querySetByCode';
 import { SetViewProps } from '@/app/(app)/sets/[code]/page';
+import RuneIcon from '@/components/icons/RuneIcon';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Home } from 'lucide-react';
 
 export default async function BreadcrumbSlot({ params }: SetViewProps) {
   const { code = '' } = await params;
@@ -19,7 +19,7 @@ export default async function BreadcrumbSlot({ params }: SetViewProps) {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
-            <Home />
+            <RuneIcon />
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

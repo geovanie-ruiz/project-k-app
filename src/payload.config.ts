@@ -10,6 +10,7 @@ import { Cards } from './collections/Cards';
 import { Categories } from './collections/Categories';
 import { Characters } from './collections/Characters';
 import { Decks } from './collections/Decks';
+import { CommunityEvents } from './collections/Events';
 import { Keywords } from './collections/Keywords';
 import { Media } from './collections/Media';
 import { Sets } from './collections/Sets';
@@ -55,17 +56,18 @@ export default buildConfig({
   collections: [
     Articles,
     Artists,
+    CardCollection,
     Cards,
     Categories,
     Characters,
+    CommunityEvents,
+    Decks,
     Keywords,
     Media,
     Sets,
     Spoilers,
     Tags,
     Users,
-    Decks,
-    CardCollection,
   ],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

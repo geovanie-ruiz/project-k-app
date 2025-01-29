@@ -60,6 +60,9 @@ export const Users: CollectionConfig = {
     {
       name: 'email',
       type: 'email',
+      access: {
+        read: () => false,
+      },
       admin: {
         position: 'sidebar',
         readOnly: true,
@@ -76,7 +79,13 @@ export const Users: CollectionConfig = {
     {
       name: 'clerk_id',
       type: 'text',
-      hidden: true,
+      access: {
+        read: () => false,
+      },
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
     },
     {
       name: 'role',

@@ -1,6 +1,7 @@
 'use client';
 
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
+import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { isDarkTheme } from '@/utils/utils';
 import { CldImage } from 'next-cloudinary';
@@ -42,27 +43,47 @@ export default function Home() {
               </CardItem>
             </CardBody>
           </CardContainer>
-          <div className="flex items-center justify-center flex-col gap-4">
-            <Link href="https://discord.com/invite/n7hgcgbvpG" target="_blank">
-              Join us on Discord
-            </Link>
-            <Link href="https://project-k-cardmaker.vercel.app" target="_blank">
-              Or Make Your Own Cards
-            </Link>
+          <div className="grid grid-cols-1 gap-4">
             <Link
-              href="https://testflight.apple.com/join/6jAjxWDF"
+              href="https://discord.com/invite/n7hgcgbvpG"
+              className={buttonVariants({ variant: 'outline' })}
               target="_blank"
             >
-              Or Join the ProjectK Companion Beta
+              Join us on Discord
             </Link>
+
+            <Link
+              href="https://project-k-cardmaker.vercel.app"
+              className={buttonVariants({ variant: 'outline' })}
+              target="_blank"
+            >
+              Or Make Your Own Cards
+            </Link>
+
+            <Link
+              href="https://apps.apple.com/us/app/projectk-companion/id6740396103"
+              className={buttonVariants({ variant: 'outline' })}
+              target="_blank"
+            >
+              Or Get the Project K Companion
+            </Link>
+
             <div>
               <span>Or try one of the digital clients</span>
-              <div className="flex flex-col">
-                <Link href="https://discord.gg/cKqHWCV42P" target="_blank">
-                  Rune Battlegrounds Discord
+              <div className="flex flex-row justify-center gap-8">
+                <Link
+                  href="https://discord.gg/cKqHWCV42P"
+                  className={buttonVariants({ variant: 'outline' })}
+                  target="_blank"
+                >
+                  Rune Battlegrounds
                 </Link>
-                <Link href="https://discord.gg/F4StJwvpwc" target="_blank">
-                  Pixelborn Discord
+                <Link
+                  href="https://discord.gg/F4StJwvpwc"
+                  className={buttonVariants({ variant: 'outline' })}
+                  target="_blank"
+                >
+                  Pixelborn
                 </Link>
               </div>
             </div>
