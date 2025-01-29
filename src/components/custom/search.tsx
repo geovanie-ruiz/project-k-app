@@ -55,7 +55,7 @@ export const Search: React.FC = () => {
   );
 
   const handleInputChange = useDebouncedCallback((term: string) => {
-    setIsSearching(term !== '' && term.length >= 3);
+    setIsSearching(term !== '' && term.length >= 2);
     startTransition(() => {
       action(term);
     });

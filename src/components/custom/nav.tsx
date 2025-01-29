@@ -128,7 +128,7 @@ const SheetMenu = ({ pathname, sheetOpen, setSheetOpen }: SheetMenuProps) => {
             className="text-sm font-medium hover:underline underline-offset-4 py-4"
             onClick={() => setSheetOpen(false)}
             role="menuitem"
-            aria-current={pathname === '/' ? 'page' : undefined}
+            aria-current={pathname === '/'}
           >
             Home
           </Link>
@@ -137,7 +137,7 @@ const SheetMenu = ({ pathname, sheetOpen, setSheetOpen }: SheetMenuProps) => {
             className="text-sm font-medium hover:underline underline-offset-4 py-4"
             onClick={() => setSheetOpen(false)}
             role="menuitem"
-            aria-current={pathname === '/articles' ? 'page' : undefined}
+            aria-current={pathname === '/articles'}
           >
             Articles
           </Link>
@@ -152,6 +152,8 @@ const SheetMenu = ({ pathname, sheetOpen, setSheetOpen }: SheetMenuProps) => {
                     href="/cards"
                     className="text-sm font-medium hover:underline underline-offset-4 py-4"
                     onClick={() => setSheetOpen(false)}
+                    role="menuitem"
+                    aria-current={pathname === '/cards'}
                   >
                     Card Browser
                   </Link>
@@ -160,6 +162,8 @@ const SheetMenu = ({ pathname, sheetOpen, setSheetOpen }: SheetMenuProps) => {
                     href="/sets"
                     className="text-sm font-medium hover:underline underline-offset-4 py-4"
                     onClick={() => setSheetOpen(false)}
+                    role="menuitem"
+                    aria-current={pathname === '/sets'}
                   >
                     Set List
                   </Link>
@@ -168,6 +172,8 @@ const SheetMenu = ({ pathname, sheetOpen, setSheetOpen }: SheetMenuProps) => {
                     href="/spoilers"
                     className="text-sm font-medium hover:underline underline-offset-4 pt-4"
                     onClick={() => setSheetOpen(false)}
+                    role="menuitem"
+                    aria-current={pathname === '/spoilers'}
                   >
                     Spoilers
                   </Link>
@@ -186,6 +192,15 @@ const SheetMenu = ({ pathname, sheetOpen, setSheetOpen }: SheetMenuProps) => {
             href="#"
             className="text-sm font-medium hover:underline underline-offset-4 py-4"
             onClick={() => setSheetOpen(false)}
+          >
+            Collection
+          </Link>
+          <Link
+            href="/events"
+            className="text-sm font-medium hover:underline underline-offset-4 py-4"
+            onClick={() => setSheetOpen(false)}
+            role="menuitem"
+            aria-current={pathname === '/events'}
           >
             Events
           </Link>
@@ -280,6 +295,9 @@ const Navbar = ({ pathname }: { pathname: string }) => {
         <NavigationMenuItem>
           <NavLink url="#" label="Collection" currentPathname={pathname} />
         </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavLink url="/events" label="Events" currentPathname={pathname} />
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
@@ -296,8 +314,8 @@ export function NavBar() {
   return (
     <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-[65px] items-center">
-          <div className="flex items-center justify-center basis-1/3 gap-4">
+        <div className="flex justify-between h-[65px]">
+          <div className="flex items-center justify-start gap-4">
             <SheetMenu
               pathname={pathname}
               sheetOpen={sheetOpen}
@@ -307,11 +325,11 @@ export function NavBar() {
               <LogoIcon className="w-[60px] h-[38px]" />
               <span className="sr-only">Two Runes</span>
             </Link>
+            <div className="hidden md:block">
+              <Navbar pathname={pathname} />
+            </div>
           </div>
-          <div className="hidden md:flex basis-1/3">
-            <Navbar pathname={pathname} />
-          </div>
-          <div className="flex items-center justify-center basis-1/3 gap-4">
+          <div className="flex items-center justify-end basis-1/3 gap-4">
             <div className="max-sm:hidden">
               <Search />
             </div>
