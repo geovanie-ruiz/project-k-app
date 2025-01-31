@@ -1,7 +1,6 @@
 'use server';
 
 import { EventType, ParsedEvent } from '@/utils/types/events.types';
-import { revalidatePath } from 'next/cache';
 
 import config from '@/payload.config';
 import { currentUser } from '@clerk/nextjs/server';
@@ -11,6 +10,7 @@ import { eventSchema } from '@/utils/zod/eventSchema';
 import { EventFormState } from '../_forms/types';
 
 import { Event } from '@/payload-types';
+import { revalidatePath } from 'next/cache';
 
 const parseEvent = (event: Event): ParsedEvent => {
   return {
@@ -70,8 +70,6 @@ export async function createEvent(
     },
   });
 
-  revalidatePath('/events');
-
   return {
     success: true,
     event: newEvent,
@@ -118,9 +116,7 @@ export async function getFilteredEvents(
     limit: -1,
   });
 
-  const parsedEvents = events.docs.map(parseEvent);
-  console.log('[Geo] events', parsedEvents.length);
-  return parsedEvents;
+  return events.docs.map(parseEvent);
 }
 
 export async function editEvent(
@@ -161,10 +157,9 @@ export async function editEvent(
       end_date: data.endDate.toDateString(),
       type: data.eventType,
       description: data.description,
+      approved: false,
     },
   });
-
-  revalidatePath('/events');
 
   return {
     success: true,
@@ -178,6 +173,8 @@ export async function deleteEvent(eventId: number) {
     collection: 'events',
     id: eventId,
   });
+
   revalidatePath('/events');
+
   return { success: !!result };
 }
