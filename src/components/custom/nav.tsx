@@ -290,7 +290,11 @@ const Navbar = ({ pathname }: { pathname: string }) => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavLink url="#" label="Deck Builder" currentPathname={pathname} />
+          <NavLink
+            url="/deck-builder"
+            label="Deck Builder"
+            currentPathname={pathname}
+          />
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavLink url="#" label="Collection" currentPathname={pathname} />
@@ -329,25 +333,6 @@ export function NavBar() {
               <Navbar pathname={pathname} />
             </div>
           </div>
-          <nav className="hidden md:flex justify-evenly gap-4">
-            <NavLink
-              url="/articles"
-              label="Articles"
-              currentPathname={pathname}
-            />
-            <NavLink
-              url="/spoilers"
-              label="Spoilers"
-              currentPathname={pathname}
-            />
-            <NavLink url="#" label="Card Library" currentPathname={pathname} />
-            <NavLink
-              url="/deck-builder"
-              label="Deck Builder"
-              currentPathname={pathname}
-            />
-            <NavLink url="#" label="Events" currentPathname={pathname} />
-          </nav>
           <div className="flex items-center justify-center min-w-32 gap-4">
             <div className="max-sm:hidden">
               <Search />
