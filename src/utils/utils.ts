@@ -96,5 +96,11 @@ export function formatSetId(
   // assume index is padded to set digit length
   const indexLength = setTotal.toString().length;
   const paddedIndex = setIndex.toString().padStart(indexLength, '0');
-  return `${setCode}-${paddedIndex}/${setTotal}`;
+  return `${setCode.toUpperCase()}-${paddedIndex}/${setTotal}`;
+}
+
+export function isFutureDate(date: string) {
+  const today = new Date();
+  const givenDate = new Date(date);
+  return givenDate > today;
 }

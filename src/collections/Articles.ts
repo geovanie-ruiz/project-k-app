@@ -44,13 +44,36 @@ export const Articles: CollectionConfig = {
       required: true,
     },
     {
+      name: 'author_name',
+      label: 'Author',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      required: true,
+      hooks: {
+        beforeValidate: [
+          ({ value, operation, req }) => {
+            if (operation === 'create') {
+              return req.user?.author_name || req.user?.username;
+            }
+            return value;
+          },
+        ],
+      },
+    },
+    {
       name: 'author',
       type: 'relationship',
       relationTo: 'users',
       hasMany: false,
       admin: {
         readOnly: true,
-        position: 'sidebar',
+        hidden: true,
+      },
+      access: {
+        read: () => false,
       },
       required: true,
       hooks: {

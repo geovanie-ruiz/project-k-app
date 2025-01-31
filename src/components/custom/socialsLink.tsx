@@ -2,11 +2,10 @@ import Link from 'next/link';
 import { JSX } from 'react';
 
 import {
+  SiBluesky,
   SiDiscord,
-  SiInstagram,
   SiTiktok,
   SiTwitch,
-  SiX,
   SiYoutube,
 } from '@icons-pack/react-simple-icons';
 import { Notebook, Podcast } from 'lucide-react';
@@ -14,21 +13,36 @@ import MobalyticLogo from '../icons/MobalyticLogo';
 import OpGG from '../icons/OPGGLogo';
 import TCGPlayerIcon from '../icons/TCGPlayerIcon';
 
+export enum SupportedSocials {
+  Blog = 'Blog',
+  Bluesky = 'Bluesky',
+  Discord = 'Discord',
+  Mobalytics = 'Mobalytics',
+  OPGG = 'OP.GG',
+  Podcast = 'Podcast',
+  TCGplayer = 'TCGplayer',
+  TikTok = 'TikTok',
+  Twitch = 'Twitch',
+  YouTube = 'YouTube',
+}
+
+export const SOCIALS: SupportedSocials[] = [
+  SupportedSocials.Blog,
+  SupportedSocials.Bluesky,
+  SupportedSocials.Discord,
+  SupportedSocials.Mobalytics,
+  SupportedSocials.OPGG,
+  SupportedSocials.Podcast,
+  SupportedSocials.TCGplayer,
+  SupportedSocials.TikTok,
+  SupportedSocials.Twitch,
+  SupportedSocials.YouTube,
+];
+
 type SocialLink = {
   id?: string | null;
   url: string;
-  site:
-    | 'Blog'
-    | 'Discord'
-    | 'Instagram'
-    | 'Mobalytics'
-    | 'OP.GG'
-    | 'Podcast'
-    | 'TCGplayer'
-    | 'TikTok'
-    | 'Twitch'
-    | 'Twitter (X)'
-    | 'YouTube';
+  site: SupportedSocials;
 };
 
 const isUrl = (url: string) => {
@@ -39,12 +53,6 @@ const isDiscord = (url: string) => {
   const parsedURL = new URL(url);
   const hostname = parsedURL.hostname;
   return hostname.toLowerCase().includes('discord.gg');
-};
-
-const isInstagram = (url: string) => {
-  const parsedURL = new URL(url);
-  const hostname = parsedURL.hostname;
-  return hostname.toLowerCase().includes('instagram.com');
 };
 
 const isMobalytics = (url: string) => {
@@ -77,10 +85,10 @@ const isTwitch = (url: string) => {
   return hostname.toLowerCase().includes('twitch.tv');
 };
 
-const isTwitter = (url: string) => {
+const isBluesky = (url: string) => {
   const parsedURL = new URL(url);
   const hostname = parsedURL.hostname;
-  return hostname.toLowerCase().includes('x.com');
+  return hostname.toLowerCase().includes('bsky.app');
 };
 
 const isYoutube = (url: string) => {
@@ -96,16 +104,16 @@ export default function SocialLink({ url, site }: SocialLink) {
   let icon: JSX.Element = <></>;
 
   switch (site) {
-    case 'Blog':
+    case SupportedSocials.Bluesky:
+      if (!isBluesky(url)) return;
+      icon = <SiBluesky />;
+      break;
+    case SupportedSocials.Blog:
       icon = <Notebook />;
       break;
     case 'Discord':
       if (!isDiscord(url)) return;
       icon = <SiDiscord />;
-      break;
-    case 'Instagram':
-      if (!isInstagram(url)) return;
-      icon = <SiInstagram />;
       break;
     case 'Mobalytics':
       if (!isMobalytics(url)) return;
@@ -129,10 +137,6 @@ export default function SocialLink({ url, site }: SocialLink) {
     case 'Twitch':
       if (!isTwitch(url)) return;
       icon = <SiTwitch />;
-      break;
-    case 'Twitter (X)':
-      if (!isTwitter(url)) return;
-      icon = <SiX />;
       break;
     case 'YouTube':
       if (!isYoutube(url)) return;

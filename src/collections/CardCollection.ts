@@ -41,6 +41,9 @@ export const CardCollection: CollectionConfig = {
       relationTo: 'users',
       required: true,
       hasMany: false,
+      access: {
+        read: () => false,
+      },
       admin: {
         readOnly: true,
       },
