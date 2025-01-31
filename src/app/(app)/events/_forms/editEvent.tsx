@@ -122,7 +122,7 @@ export const EditEventForm = ({
           Cancel
         </Button>
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Submitting...' : 'Submit Event'}
+          {isPending ? 'Submitting...' : 'Submit for Approval'}
         </Button>
       </div>
       {state && state.error && (
