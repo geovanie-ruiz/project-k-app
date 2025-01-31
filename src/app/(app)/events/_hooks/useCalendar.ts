@@ -6,7 +6,7 @@ import {
   type ParsedEvent,
 } from '@/utils/types/events.types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getFilteredEvents } from '../_actions';
+import { getEvents } from '../_utils/getEvents';
 
 // At some point it'll be nice to remember filter preferences
 let userProfile = {
@@ -43,11 +43,7 @@ export const useCalendar = () => {
       const startDate = new Date(year, 0, 1);
       const endDate = new Date(year, 11, 31);
 
-      const newEvents = await getFilteredEvents(
-        EVENT_TYPES,
-        startDate,
-        endDate
-      );
+      const newEvents = await getEvents(EVENT_TYPES, startDate, endDate);
 
       setEvents((prevEvents) => {
         const uniqueNewEvents = newEvents.filter(
@@ -64,6 +60,11 @@ export const useCalendar = () => {
     },
     [loadedYears]
   );
+
+  const removeEvent = async (eventId: number) => {
+    const eventRemoved = events.filter((event) => event.id !== eventId);
+    setEvents(eventRemoved);
+  };
 
   useEffect(() => {
     fetchEventsForYear(selectedYear);
@@ -103,5 +104,6 @@ export const useCalendar = () => {
     setSelectedYear,
     isLoading,
     handleFilterChange,
+    removeEvent,
   };
 };

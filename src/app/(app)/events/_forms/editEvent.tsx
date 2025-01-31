@@ -50,10 +50,7 @@ export const EditEventForm = ({
     setEventType(value as EventType);
   };
 
-  if (state.success) console.log('[Geo] This makes sense...');
-
   useEffect(() => {
-    console.log('[Geo] we are in here and should only be once', state);
     if (state.success) {
       toast.success('Event submitted', {
         description: 'Your event has been successfully updated.',
@@ -63,10 +60,6 @@ export const EditEventForm = ({
       toast.error('There was an error updating your event. Please try again.');
     }
   }, [state, onEventSubmitted]);
-
-  useEffect(() => {
-    console.log('[Geo] which event?', selectedEvent);
-  }, [selectedEvent]);
 
   return (
     <form action={formAction} className="space-y-4">

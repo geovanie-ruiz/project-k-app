@@ -1,15 +1,17 @@
+import { isAdminAuthorOrApproved } from '@/access/isAdminAuthorOrApproved';
 import { isAdminOrAuthor } from '@/access/isAdminOrAuthor';
 import { isAuthenticated } from '@/access/isAuthenticated';
 import { checkRole } from '@/utils/roles';
 import { EVENT_TYPES } from '@/utils/types/events.types';
 import { CollectionConfig } from 'payload';
+import { revalidateDelete, revalidateEvents } from './hooks/revalidateEvents';
 
 export const CommunityEvents: CollectionConfig = {
   slug: 'events',
   access: {
     create: isAuthenticated,
     delete: isAdminOrAuthor,
-    read: () => true,
+    read: isAdminAuthorOrApproved,
     update: isAdminOrAuthor,
   },
   admin: {
@@ -28,9 +30,7 @@ export const CommunityEvents: CollectionConfig = {
         position: 'sidebar',
       },
       access: {
-        create: () => false,
         read: () => checkRole('admin'),
-        update: () => checkRole('admin'),
       },
       defaultValue: ({ user }) => user,
     },
@@ -91,4 +91,8 @@ export const CommunityEvents: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [revalidateEvents],
+    afterDelete: [revalidateDelete],
+  },
 };

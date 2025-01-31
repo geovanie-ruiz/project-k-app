@@ -31,9 +31,15 @@ const EventList = ({
 
   const eventRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const isUserContributed = (event: Event, clerkUserId: string) => {
+  const isUserContributed = (
+    event: Event,
+    clerkUserId: string,
+    metadata: UserPublicMetadata
+  ) => {
     const contributor = event.contributor as User;
-    return contributor?.clerk_id === clerkUserId;
+    const isContributor = contributor?.clerk_id === clerkUserId;
+    const isAdmin = metadata['role'] === 'admin';
+    return isContributor || isAdmin;
   };
 
   useEffect(() => {
@@ -77,32 +83,37 @@ const EventList = ({
             <div className="cursor-pointer" onClick={() => onEventClick(event)}>
               <EventBox event={event} />
             </div>
-            {isSignedIn && isUserContributed(event, clerkUser.id) && (
-              <div className="flex flex-row">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEventEdit(event);
-                  }}
-                  aria-label="Delete event"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEventDelete(event);
-                  }}
-                  aria-label="Delete event"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
+            {isSignedIn &&
+              isUserContributed(
+                event,
+                clerkUser.id,
+                clerkUser.publicMetadata
+              ) && (
+                <div className="flex flex-row">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEventEdit(event);
+                    }}
+                    aria-label="Delete event"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEventDelete(event);
+                    }}
+                    aria-label="Delete event"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
           </div>
         </div>
       ))}

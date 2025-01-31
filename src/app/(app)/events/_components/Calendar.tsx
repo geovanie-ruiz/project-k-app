@@ -27,6 +27,7 @@ export const Calendar = () => {
     setSelectedYear,
     isLoading,
     handleFilterChange,
+    removeEvent,
   } = useCalendar();
   const [isOpen, setIsOpen] = useState(false);
   const [dialogType, setDialogType] = useState<DialogType>('');
@@ -42,11 +43,14 @@ export const Calendar = () => {
   const eventListRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const handleEventSubmit = useCallback(() => {
+  const handleEventSubmit = useCallback(async () => {
     setIsOpen(false);
     setDialogType('');
+    if (selectedEvent) {
+      removeEvent(selectedEvent.id);
+    }
     fetchEventsForYear(selectedYear);
-  }, [selectedYear, fetchEventsForYear]);
+  }, [selectedEvent, selectedYear, fetchEventsForYear, removeEvent]);
 
   const handleEventClick = useCallback(
     (event: ParsedEvent) => {
@@ -89,12 +93,15 @@ export const Calendar = () => {
         });
         setIsOpen(false);
         setDialogType('');
+        if (selectedEvent) {
+          removeEvent(selectedEvent.id);
+        }
         fetchEventsForYear(selectedYear);
       } else {
         toast.error('There was an error deleting the event. Please try again.');
       }
     },
-    [selectedYear, fetchEventsForYear]
+    [selectedEvent, selectedYear, fetchEventsForYear, removeEvent]
   );
 
   const handleEventDelete = useCallback(async (event: ParsedEvent) => {
