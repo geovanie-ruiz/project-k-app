@@ -253,7 +253,7 @@ export default function DeckBuilderPage() {
   return (
     <div className="mx-auto w-full max-w-screen-2xl">
       <Suspense fallback={<DeckBuilderSkeleton />}>
-        <div className="grid h-[calc(100vh-8rem)] grid-cols-1 lg:grid-cols-[320px_1fr_400px] gap-6">
+        <div className="grid h-[calc(100vh-7rem)] mb-4 grid-cols-1 lg:grid-cols-[320px_1fr_400px] gap-6">
           {/* Filters Section */}
           <Card className="p-4 pb-2">
             <ScrollArea className="h-full">
