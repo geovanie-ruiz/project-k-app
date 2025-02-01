@@ -1,16 +1,19 @@
 'use client';
 
-import { Card, Media, Tag } from '@/payload-types';
+import { Card, Media, Set, Tag } from '@/payload-types';
+import { formatSetId } from '@/utils/utils';
 import { CldImage } from 'next-cloudinary';
 import { getCardColorBG } from '../../_actions/getCardColor';
 
 export function CardPage({ card }: { card: Card }) {
   const cardArt = card.card_art as Media;
-  console.log(getCardColorBG(card.rune));
+  const setCode = (card.set as Set).set_code;
+  const setTotal = (card.set as Set).total;
+
   return (
     <div
       key={card.id}
-      className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 flex flex-wrap"
+      className="mx-auto w-full max-w-screen-xl px-4 mb-4 flex flex-col-reverse md:flex-row gap-2"
     >
       <div className="w-full md:w-3/12">
         <CldImage
@@ -19,7 +22,7 @@ export function CardPage({ card }: { card: Card }) {
           width={1000}
           height={800}
           // gravity="auto"
-          className="hidden sm:block rounded-xl px-1"
+          className="rounded-xl px-1"
         />
         {/* Cropped image for mobile */}
         {/* <Image
@@ -39,7 +42,7 @@ export function CardPage({ card }: { card: Card }) {
           </h1>
           <div className="flex-row">
             <div className="bg-black text-white rounded px-2 text-xs font-semibold text-center">
-              FND-041/298
+              {formatSetId(setCode, setTotal, card.set_index)}
             </div>
           </div>
         </div>
@@ -65,10 +68,16 @@ export function CardPage({ card }: { card: Card }) {
                 </label>
               </div>
               <div
-                className={`${getCardColorBG(card.rune)} px-4 uppercase flex items-center pb-0.5 tracking-widest text-white rounded antonio`}
+                className={`${getCardColorBG(card.rune)} px-4 uppercase flex items-center pb-0.5 tracking-widest text-white rounded`}
               >
                 {/* <Image src={red} alt="icon" className="w-5 mt-0.5 mx-1"/> */}
-                {card.rune && card.rune.at(0)}
+                {card.rune &&
+                  card.rune.map((rune, index) => (
+                    <div key={`rune-${index}`} className="flex flex-row pr-1">
+                      {/* <Icon iconType={rune.toLowerCase() as ICON_KEYS} /> */}
+                      <span className="px-1">{rune}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
