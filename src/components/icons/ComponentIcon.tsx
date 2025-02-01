@@ -27,7 +27,7 @@ import UnitIcon from './UnitIcon';
 
 export type ICON_KEYS =
   | 'logo'
-  | 'any_rune'
+  | 'any'
   | 'battlefield'
   | 'calm'
   | 'calm_color'
@@ -88,7 +88,7 @@ interface ComponentIconProps {
 const ComponentIconMap: { [key in ICON_KEYS]: React.ComponentType<IconProps> } =
   {
     logo: LogoIcon,
-    any_rune: AnyRuneIcon,
+    any: AnyRuneIcon,
     battlefield: BattlefieldIcon,
     calm: CalmIcon,
     calm_color: CalmIcon,

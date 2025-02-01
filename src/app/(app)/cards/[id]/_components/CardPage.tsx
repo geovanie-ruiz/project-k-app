@@ -1,5 +1,8 @@
 'use client';
 
+import CardText from '@/components/custom/cardText';
+import Icon, { ICON_KEYS } from '@/components/icons/ComponentIcon';
+import MightIcon from '@/components/icons/MightIcon';
 import { Card, Media, Set, Tag } from '@/payload-types';
 import { formatSetId } from '@/utils/utils';
 import { CldImage } from 'next-cloudinary';
@@ -9,6 +12,9 @@ export function CardPage({ card }: { card: Card }) {
   const cardArt = card.card_art as Media;
   const setCode = (card.set as Set).set_code;
   const setTotal = (card.set as Set).total;
+  const cycleRunes =
+    card.recycle &&
+    card.recycle.map((cost) => cost.rune).filter((rune) => !!rune);
 
   return (
     <div
@@ -54,8 +60,8 @@ export function CardPage({ card }: { card: Card }) {
                   CARD TYPE
                 </label>
               </div>
-              <div className="rounded bg-content_light-500 dark:bg-content-500 px-4 uppercase flex items-center pb-0.5 tracking-widest antonio">
-                {/* <Image src={champion} alt="icon" className="w-3.5 mt-0.5 mx-1"/> */}
+              <div className="rounded bg-content_light-500 dark:bg-content-500 px-4 uppercase flex items-center pb-0.5 tracking-widest gap-2">
+                <Icon iconType={card.type.toLowerCase() as ICON_KEYS} />
                 {card.type}
               </div>
             </div>
@@ -70,11 +76,10 @@ export function CardPage({ card }: { card: Card }) {
               <div
                 className={`${getCardColorBG(card.rune)} px-4 uppercase flex items-center pb-0.5 tracking-widest text-white rounded`}
               >
-                {/* <Image src={red} alt="icon" className="w-5 mt-0.5 mx-1"/> */}
                 {card.rune &&
                   card.rune.map((rune, index) => (
                     <div key={`rune-${index}`} className="flex flex-row pr-1">
-                      {/* <Icon iconType={rune.toLowerCase() as ICON_KEYS} /> */}
+                      <Icon iconType={rune.toLowerCase() as ICON_KEYS} />
                       <span className="px-1">{rune}</span>
                     </div>
                   ))}
@@ -87,8 +92,8 @@ export function CardPage({ card }: { card: Card }) {
               <div className="w-2/6 md:w-1/6">
                 <div className="flex items-center ml-2.5 -m-px">
                   <label className="bg-content_light-500 dark:bg-content-500 text-xs font-semibold border-content3 px-1 border border-b-0 rounded-t">
-                    <div className="flex items-center">
-                      {/* <Image src={might} alt="might" className="w-2.5 h-2.5 mr-0.5"/> */}
+                    <div className="flex items-center gap-2">
+                      <MightIcon />
                       MIGHT
                     </div>
                   </label>
@@ -110,7 +115,7 @@ export function CardPage({ card }: { card: Card }) {
                 </div>
               </div>
             )}
-            {card.recycle && card.recycle.length > 0 && (
+            {cycleRunes && cycleRunes.length > 0 && (
               <div className="w-2/6 md:w-1/6">
                 <div className="flex items-center ml-2.5 -m-px">
                   <label className="bg-content_light-500 dark:bg-content-500 text-xs font-semibold border-content3 px-1 border border-b-0 rounded-t">
@@ -118,8 +123,11 @@ export function CardPage({ card }: { card: Card }) {
                   </label>
                 </div>
                 <div className="mx-0.5 h-8 bg-content_light-500 dark:bg-content-500 rounded border border-content3 flex items-center justify-center ">
-                  {/* <Image src={red} alt="icon" className="w-5 mt-0.5 mx-1"/>
-                  <Image src={red} alt="icon" className="w-5 mt-0.5 mx-1"/> */}
+                  {cycleRunes.map((rune, index) => (
+                    <div key={`cycle-${index}`}>
+                      <Icon iconType={rune.toLowerCase() as ICON_KEYS} />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -151,7 +159,11 @@ export function CardPage({ card }: { card: Card }) {
                 </label>
               </div>
               <div className="rounded bg-content_light-500 dark:bg-content-500 px-2 py-1 md:px-3">
-                {card.abilities_text}
+                <CardText
+                  cardText={card.abilities}
+                  keywords={card.keywords}
+                  showReminders={true}
+                />
               </div>
             </div>
           )}
