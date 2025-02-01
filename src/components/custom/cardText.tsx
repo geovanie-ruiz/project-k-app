@@ -7,12 +7,14 @@ type CardTextProps = {
   cardText: SerializedEditorState | null | undefined;
   keywords: (number | Keyword)[] | null | undefined;
   showReminders: boolean;
+  className?: string;
 };
 
 export default function CardText({
   cardText,
   keywords,
   showReminders,
+  className,
 }: CardTextProps) {
   let prefixText: SerializedEditorState[] = [];
   let suffixText: SerializedEditorState[] = [];
@@ -56,7 +58,7 @@ export default function CardText({
   }
 
   return (
-    <div className="max-w-[350px]">
+    <div className={className}>
       {nonEffectKeywords &&
         nonEffectKeywords.map(({ keyword, color, reminder_text }, index) => {
           return (

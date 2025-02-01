@@ -266,14 +266,14 @@ export const Cards: CollectionConfig = {
     beforeChange: [
       async ({ data, req }) => {
         let full_card_name = '';
-        if (data.subtitle) {
+        if (data.type === 'Champion') {
           full_card_name = `${data.name}, ${data.subtitle}`;
-        } else if (data.character) {
-          const result = await req.payload.findByID({
+        } else if (CHARACTER_TYPES.includes(data.type)) {
+          const character = await req.payload.findByID({
             collection: 'characters',
             id: data.character,
           });
-          full_card_name = `${data.name} (${result.name})`;
+          full_card_name = `${data.name} (${character.name})`;
         } else {
           full_card_name = `${data.name}`;
         }
