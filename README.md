@@ -157,5 +157,3 @@ To learn more about this CSS framework and the component library we're using, pl
 ### Figma
 
 Figma is currently being managed by @JDMetal. Get with him to be added to the figma file.
-
-#
