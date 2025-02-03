@@ -397,6 +397,7 @@ export type Database = {
       cards: {
         Row: {
           abilities: Json | null
+          abilities_markup: string | null
           abilities_text: string | null
           artist_id: number | null
           card_art_id: number | null
@@ -421,6 +422,7 @@ export type Database = {
         }
         Insert: {
           abilities?: Json | null
+          abilities_markup?: string | null
           abilities_text?: string | null
           artist_id?: number | null
           card_art_id?: number | null
@@ -445,6 +447,7 @@ export type Database = {
         }
         Update: {
           abilities?: Json | null
+          abilities_markup?: string | null
           abilities_text?: string | null
           artist_id?: number | null
           card_art_id?: number | null
@@ -865,6 +868,8 @@ export type Database = {
           id: number
           keyword: string | null
           position: Database["public"]["Enums"]["enum_keywords_position"] | null
+          reminder_markup: string | null
+          reminder_plaintext: string | null
           reminder_text: Json | null
           type: Database["public"]["Enums"]["enum_keywords_type"] | null
           updated_at: string
@@ -877,6 +882,8 @@ export type Database = {
           position?:
             | Database["public"]["Enums"]["enum_keywords_position"]
             | null
+          reminder_markup?: string | null
+          reminder_plaintext?: string | null
           reminder_text?: Json | null
           type?: Database["public"]["Enums"]["enum_keywords_type"] | null
           updated_at?: string
@@ -889,6 +896,8 @@ export type Database = {
           position?:
             | Database["public"]["Enums"]["enum_keywords_position"]
             | null
+          reminder_markup?: string | null
+          reminder_plaintext?: string | null
           reminder_text?: Json | null
           type?: Database["public"]["Enums"]["enum_keywords_type"] | null
           updated_at?: string
@@ -1577,7 +1586,58 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      search_cards_using_id: {
+        Args: {
+          card_id: number
+        }
+        Returns: {
+          id: number
+          name: string
+          type: string
+          cost: number
+          might: number
+          abilities_markup: string
+          set_index: number
+          set_code: string
+          set_total: number
+          rarity: string
+          artist_name: string
+          art_public_id: string
+          runes: string[]
+          recycle: string[]
+          keywords: string[]
+          keywords_type: string[]
+          keywords_text: string[]
+          keywords_position: string[]
+          tags: string[]
+        }[]
+      }
+      search_cards_using_name_text: {
+        Args: {
+          search_query: string
+        }
+        Returns: {
+          id: number
+          name: string
+          type: string
+          cost: number
+          might: number
+          abilities_markup: string
+          set_index: number
+          set_code: string
+          set_total: number
+          rarity: string
+          artist_name: string
+          art_public_id: string
+          runes: string[]
+          recycle: string[]
+          keywords: string[]
+          keywords_type: string[]
+          keywords_text: string[]
+          keywords_position: string[]
+          tags: string[]
+        }[]
+      }
     }
     Enums: {
       enum__articles_v_version_status: "draft" | "published"

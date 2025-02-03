@@ -300,6 +300,7 @@ export interface Card {
     [k: string]: unknown;
   } | null;
   abilities_text?: string | null;
+  abilities_markup?: string | null;
   flavor?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -339,6 +340,8 @@ export interface Keyword {
     };
     [k: string]: unknown;
   } | null;
+  reminder_plaintext?: string | null;
+  reminder_markup?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -664,6 +667,7 @@ export interface CardsSelect<T extends boolean = true> {
   tags?: T;
   abilities?: T;
   abilities_text?: T;
+  abilities_markup?: T;
   flavor?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -748,6 +752,8 @@ export interface KeywordsSelect<T extends boolean = true> {
   position?: T;
   color?: T;
   reminder_text?: T;
+  reminder_plaintext?: T;
+  reminder_markup?: T;
   updatedAt?: T;
   createdAt?: T;
 }
