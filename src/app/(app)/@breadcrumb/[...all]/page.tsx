@@ -46,7 +46,7 @@ export default async function BreadcrumbSlot({ params }: BreadcrumbSlotProps) {
   }
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="mb-4">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
