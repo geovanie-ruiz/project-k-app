@@ -5,6 +5,7 @@ import { isCollaborator } from '@/access/isCollaborator';
 import { Card, Recycle } from '@/payload-types';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
+import { lexicalToDiscord } from '@/utils/lexical/utils/lexicalToDiscord';
 import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import {
   ALL_RUNE_TYPES,
@@ -247,6 +248,14 @@ export const Cards: CollectionConfig = {
               },
               defaultValue: '',
             },
+            {
+              name: 'abilities_markup',
+              type: 'text',
+              admin: {
+                hidden: true,
+              },
+              defaultValue: '',
+            },
           ],
         },
         {
@@ -285,14 +294,20 @@ export const Cards: CollectionConfig = {
       async ({ data, req }) => {
         if (!data.abilities) return { ...data };
 
-        const convertedAbilities = await lexicalToPlaintext(
+        const abilitiesToText = await lexicalToPlaintext(
+          data.abilities as SerializedEditorState,
+          req.payload.config
+        );
+
+        const abilitiesToMarkup = await lexicalToDiscord(
           data.abilities as SerializedEditorState,
           req.payload.config
         );
 
         return {
           ...data,
-          abilities_text: convertedAbilities,
+          abilities_text: abilitiesToText,
+          abilities_markup: abilitiesToMarkup,
         };
       },
       async ({ data }) => {
