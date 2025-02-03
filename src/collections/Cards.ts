@@ -277,7 +277,7 @@ export const Cards: CollectionConfig = {
         let full_card_name = '';
         if (data.type === 'Champion') {
           full_card_name = `${data.name}, ${data.subtitle}`;
-        } else if (CHARACTER_TYPES.includes(data.type)) {
+        } else if (data.character && CHARACTER_TYPES.includes(data.type)) {
           const character = await req.payload.findByID({
             collection: 'characters',
             id: data.character,
