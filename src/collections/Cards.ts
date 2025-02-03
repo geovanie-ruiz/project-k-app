@@ -313,9 +313,16 @@ export const Cards: CollectionConfig = {
       async ({ data }) => {
         const recycle: Recycle = data.recycle;
         if (!recycle || recycle.length === 0) return { ...data };
-        const runes = recycle.map(
-          (rune) => rune?.rune?.at(0)?.toLowerCase() || ''
-        );
+        const runes = recycle.map(({ rune }) => {
+          if (!rune) return '';
+          if (rune === 'Any') return 'a';
+          if (rune === 'Calm') return 'c';
+          if (rune === 'Chaos') return 'k';
+          if (rune === 'Fury') return 'f';
+          if (rune === 'Mental') return 'm';
+          if (rune === 'Order') return 'o';
+          if (rune === 'Physical') return 'p';
+        });
         return {
           ...data,
           recycle_serial: runes.filter((rune) => rune !== '').join(''),
