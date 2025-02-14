@@ -5,6 +5,7 @@ import { isCollaborator } from '@/access/isCollaborator';
 import { Card, Recycle } from '@/payload-types';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
+import { lexicalToDiscord } from '@/utils/lexical/utils/lexicalToDiscord';
 import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import {
   ALL_RUNE_TYPES,
@@ -247,6 +248,14 @@ export const Cards: CollectionConfig = {
               },
               defaultValue: '',
             },
+            {
+              name: 'abilities_markup',
+              type: 'text',
+              admin: {
+                hidden: true,
+              },
+              defaultValue: '',
+            },
           ],
         },
         {
@@ -266,14 +275,14 @@ export const Cards: CollectionConfig = {
     beforeChange: [
       async ({ data, req }) => {
         let full_card_name = '';
-        if (data.subtitle) {
+        if (data.type === 'Champion') {
           full_card_name = `${data.name}, ${data.subtitle}`;
-        } else if (data.character) {
-          const result = await req.payload.findByID({
+        } else if (data.character && CHARACTER_TYPES.includes(data.type)) {
+          const character = await req.payload.findByID({
             collection: 'characters',
             id: data.character,
           });
-          full_card_name = `${data.name} (${result.name})`;
+          full_card_name = `${data.name} (${character.name})`;
         } else {
           full_card_name = `${data.name}`;
         }
@@ -285,22 +294,35 @@ export const Cards: CollectionConfig = {
       async ({ data, req }) => {
         if (!data.abilities) return { ...data };
 
-        const convertedAbilities = await lexicalToPlaintext(
+        const abilitiesToText = await lexicalToPlaintext(
+          data.abilities as SerializedEditorState,
+          req.payload.config
+        );
+
+        const abilitiesToMarkup = await lexicalToDiscord(
           data.abilities as SerializedEditorState,
           req.payload.config
         );
 
         return {
           ...data,
-          abilities_text: convertedAbilities,
+          abilities_text: abilitiesToText,
+          abilities_markup: abilitiesToMarkup,
         };
       },
       async ({ data }) => {
         const recycle: Recycle = data.recycle;
         if (!recycle || recycle.length === 0) return { ...data };
-        const runes = recycle.map(
-          (rune) => rune?.rune?.at(0)?.toLowerCase() || ''
-        );
+        const runes = recycle.map(({ rune }) => {
+          if (!rune) return '';
+          if (rune === 'Any') return 'a';
+          if (rune === 'Calm') return 'c';
+          if (rune === 'Chaos') return 'k';
+          if (rune === 'Fury') return 'f';
+          if (rune === 'Mental') return 'm';
+          if (rune === 'Order') return 'o';
+          if (rune === 'Physical') return 'p';
+        });
         return {
           ...data,
           recycle_serial: runes.filter((rune) => rune !== '').join(''),

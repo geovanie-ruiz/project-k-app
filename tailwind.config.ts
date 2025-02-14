@@ -11,6 +11,25 @@ export default {
   theme: {
   	extend: {
   		colors: {
+        Fury: '#C8141E',
+        Calm: '#14AE69',
+        Mental: '#2B9CD6',
+        Physical: '#E68111',
+        Chaos: "#924898",
+        Order: '#FFE00B',
+        Gray: '#5B6060',
+        content: {
+          100: '#52525b',
+          300: '#3f3f46',
+          500: '#27272a',
+          700: '#18181b',
+        },
+        content_light: {
+          100: '#ffffff',
+          300: '#f4f4f5',
+          500: '#e4e4e7',
+          700: '#d4d4d8',
+        },
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

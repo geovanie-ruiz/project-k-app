@@ -3,7 +3,7 @@ import { Icon } from '../plugin';
 const IconList: Icon[] = [
   {
     description: 'any rune type',
-    icon: 'any_rune',
+    icon: 'any',
     category: 'Rules Indicator',
     tags: ['rainbow', 'rune', 'any', 'generic'],
   },

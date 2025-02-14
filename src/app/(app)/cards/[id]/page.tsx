@@ -9,6 +9,7 @@ import { Metadata } from 'next';
 
 import { generateMeta, PageMeta } from '@/utils/opengraph';
 import { queryCardById } from './_actions/queryCardById';
+import { CardPage } from './_components/CardPage';
 
 export type CardViewProps = {
   params: Promise<{ id: number }>;
@@ -21,9 +22,7 @@ export default async function CardView({ params }: CardViewProps) {
   if (!card) return notFound();
 
   return (
-    <article id={`card-${card.id}`}>
-      <div>{card.full_card_name}</div>
-    </article>
+    <CardPage card={card} />
   );
 }
 

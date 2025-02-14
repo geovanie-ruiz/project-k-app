@@ -37,7 +37,7 @@ export default async function BreadcrumbSlot({
   const article = await queryArticleTitleBySlug({ slug });
 
   return (
-    <Breadcrumb className="mb-4 px-4 max-w-5xl mx-auto">
+    <Breadcrumb className="mb-4">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">

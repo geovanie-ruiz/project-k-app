@@ -4,12 +4,15 @@ import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
 import { PrettyIconsFeature } from '@/utils/lexical/features/pretty-icons/server';
 import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/server';
+import { lexicalToDiscord } from '@/utils/lexical/utils/lexicalToDiscord';
+import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import { KeywordTypes } from '@/utils/types/keywords.types';
 import {
   FixedToolbarFeature,
   HeadingFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
+import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import updateKeywordType from './hooks/updateKeywordType';
 
 export const Keywords: CollectionConfig = {
@@ -134,5 +137,44 @@ export const Keywords: CollectionConfig = {
         ],
       }),
     },
+    {
+      name: 'reminder_plaintext',
+      type: 'text',
+      admin: {
+        hidden: true,
+      },
+      defaultValue: '',
+    },
+    {
+      name: 'reminder_markup',
+      type: 'text',
+      admin: {
+        hidden: true,
+      },
+      defaultValue: '',
+    },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        if (!data.reminder_text) return { ...data };
+
+        const reminderToText = await lexicalToPlaintext(
+          data.reminder_text as SerializedEditorState,
+          req.payload.config
+        );
+
+        const reminderToMarkup = await lexicalToDiscord(
+          data.reminder_text as SerializedEditorState,
+          req.payload.config
+        );
+
+        return {
+          ...data,
+          reminder_plaintext: reminderToText,
+          reminder_markup: reminderToMarkup,
+        };
+      },
+    ],
+  },
 };
