@@ -1,3 +1,10 @@
+import CalmIcon from '@/components/icons/CalmIcon';
+import ChaosIcon from '@/components/icons/ChaosIcon';
+import FuryIcon from '@/components/icons/FuryIcon';
+import MentalIcon from '@/components/icons/MentalIcon';
+import OrderIcon from '@/components/icons/OrderIcon';
+import PhysicalIcon from '@/components/icons/PhysicalIcon';
+
 export interface Filters {
   runeFilters: string[];
   cardTypeFilters: string[];
@@ -15,6 +22,27 @@ interface FiltersProps {
   toggleRuneCostFilter: (value: string) => void;
   clearAllCardTypes: () => void;
 }
+
+const RuneIcon = ({ type }: { type: string }) => {
+  if (type === 'Calm') {
+    return <CalmIcon className="size-9" complex="true" colored="true" />;
+  }
+  if (type === 'Chaos') {
+    return <ChaosIcon className="size-9" complex="true" colored="true" />;
+  }
+  if (type === 'Fury') {
+    return <FuryIcon className="size-9" complex="true" colored="true" />;
+  }
+  if (type === 'Mental') {
+    return <MentalIcon className="size-9" complex="true" colored="true" />;
+  }
+  if (type === 'Order') {
+    return <OrderIcon className="size-9" complex="true" colored="true" />;
+  }
+  if (type === 'Physical') {
+    return <PhysicalIcon className="size-9" complex="true" colored="true" />;
+  }
+};
 
 export function FiltersComponent({
   filters,
@@ -42,11 +70,7 @@ export function FiltersComponent({
                 }`}
                 onClick={() => toggleRuneFilter(rune)}
               >
-                <img
-                  src={`/icons/${rune}.png`}
-                  alt={`${rune} Rune`}
-                  className="w-9 h-9"
-                />
+                <RuneIcon type={rune} />
                 {filters.runeFilters.includes(rune) && (
                   <span className="absolute inset-0 rounded-lg"></span>
                 )}
