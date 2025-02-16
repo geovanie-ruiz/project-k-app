@@ -7,33 +7,21 @@ import config from '@/payload.config';
 
 import { Metadata } from 'next';
 
+import { showDateTitle } from '@/utils';
 import { generateMeta, PageMeta } from '@/utils/opengraph';
-import { showDateTitle } from '@/utils/utils';
+import { Suspense } from 'react';
 import { querySetByCode } from './_actions/querySetByCode';
 import { HeroProps, SetHero } from './_components/hero';
+import { SetCardList } from './_components/SetCardList';
 
 export type SetViewProps = {
   params: Promise<{ code: string }>;
 };
 
-const queryCardsBySetId = async ({ id }: { id: number }) => {
-  const payload = await getPayload({ config });
-  return await payload.find({
-    collection: 'cards',
-    where: {
-      set: {
-        equals: id,
-      },
-    },
-    sort: ['set_index'],
-    limit: 1,
-  });
-};
-
 export default async function SetView({ params }: SetViewProps) {
   const { code = '' } = await params;
 
-  const set = await querySetByCode({ code });
+  const { set, collected } = await querySetByCode({ code });
   if (!set) return notFound();
 
   const heroProps: HeroProps = {
@@ -43,19 +31,17 @@ export default async function SetView({ params }: SetViewProps) {
     cardTotal: set.total,
     releaseDate: set.releasedAt || '',
     heroImage: set.key_art as Media,
+    collected,
   };
-
-  const { docs: cards } = await queryCardsBySetId({ id: set.id });
 
   return (
     <article id={`set-${set.id}`}>
-      <SetHero {...heroProps} />
+      <div className="mx-auto w-full max-w-screen-xl">
+        <SetHero {...heroProps} />
 
-      {/** suspense into a cardlist component */}
-      <div className="max-w-[48rem] mx-auto">
-        {cards.map((card) => (
-          <div key={card.id}>{card.name}</div>
-        ))}
+        <Suspense fallback={<div className="text-center">Loading sets...</div>}>
+          <SetCardList set={set} />
+        </Suspense>
       </div>
     </article>
   );
@@ -81,7 +67,7 @@ export async function generateMetadata({
 }: SetViewProps): Promise<Metadata> {
   const { code = '' } = await params;
 
-  const set = await querySetByCode({ code });
+  const { set } = await querySetByCode({ code });
   const imagePublicId = await getPublicId(set?.key_art);
 
   let pageMeta: PageMeta = {

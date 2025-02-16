@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { InView } from 'react-intersection-observer';
 
 import { Media, Set } from '@/payload-types';
-import { isFutureDate, showDateTitle } from '@/utils/utils';
+import { isFutureDate, showDateTitle } from '@/utils';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { useState } from 'react';
