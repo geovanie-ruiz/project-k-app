@@ -20,7 +20,8 @@ async function getDeckFromHash(hash: string): Promise<EditDeckList> {
 
     console.log('Decompressed:', decompressed);
     // TODO - Validate the deck structure
-    const deck = JSON.parse(decompressed) as EditDeckList;
+    const deck = JSON.parse(decompressed);
+    
 
     // Ensure all required properties exist
     return {

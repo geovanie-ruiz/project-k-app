@@ -75,10 +75,10 @@ export function CardsList({ filters, addCardToDeck }: CardsListProps) {
         type === 'name'
           ? card.name.toLowerCase().includes(lowerCaseText)
           : type === 'text'
-            ? (card.full_card_name?.toLowerCase().includes(lowerCaseText) ??
+            ? (card.abilities_text?.toLowerCase().includes(lowerCaseText) ??
               false)
             : card.name.toLowerCase().includes(lowerCaseText) ||
-              card.full_card_name?.toLowerCase().includes(lowerCaseText);
+              card.abilities_text?.toLowerCase().includes(lowerCaseText);
 
       const matchesRune =
         filters.runeFilters.length === 0 ||
