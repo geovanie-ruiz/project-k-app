@@ -1,6 +1,6 @@
 import { isAdmin } from '@/access/isAdmin';
 import { isCollaborator } from '@/access/isCollaborator';
-import { kebabIt } from '@/utils/utils';
+import { kebabIt } from '@/utils';
 import type { CollectionConfig } from 'payload';
 
 export const Media: CollectionConfig = {

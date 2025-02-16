@@ -8,13 +8,11 @@ import { PrettyKeywordsFeature } from '@/utils/lexical/features/pretty-keywords/
 import { lexicalToDiscord } from '@/utils/lexical/utils/lexicalToDiscord';
 import { lexicalToPlaintext } from '@/utils/lexical/utils/lexicalToPlaintext';
 import {
-  ALL_RUNE_TYPES,
-  CARD_TYPES,
+  CardType,
   CHARACTER_TYPES,
   COMBAT_TYPES,
-  RARITIES,
   RULES_TYPES,
-  RUNE_TYPES,
+  RuneType,
   SIMPLE_TYPES,
 } from '@/utils/types/cards.types';
 import {
@@ -74,7 +72,7 @@ export const Cards: CollectionConfig = {
           name: 'rune',
           type: 'select',
           hasMany: false,
-          options: ALL_RUNE_TYPES,
+          options: Object.values(RuneType),
         },
       ],
     },
@@ -100,14 +98,16 @@ export const Cards: CollectionConfig = {
                   name: 'type',
                   type: 'select',
                   hasMany: false,
-                  options: CARD_TYPES,
+                  options: Object.values(CardType),
                   required: true,
                 },
                 {
                   name: 'rune',
                   type: 'select',
                   hasMany: true,
-                  options: RUNE_TYPES,
+                  options: Object.values(RuneType).filter(
+                    (v) => v !== RuneType.ANY
+                  ),
                   admin: {
                     condition: (data) =>
                       !!data.type && data.type !== 'Battlefield',
@@ -173,12 +173,6 @@ export const Cards: CollectionConfig = {
                   hasMany: false,
                   required: true,
                 },
-                {
-                  name: 'rarity',
-                  type: 'select',
-                  options: RARITIES,
-                  required: true,
-                },
               ],
             },
           ],
@@ -187,17 +181,11 @@ export const Cards: CollectionConfig = {
           label: 'Art',
           fields: [
             {
-              name: 'artist',
-              type: 'relationship',
-              relationTo: 'artists',
-              hasMany: false,
-            },
-            {
-              name: 'card_art',
-              type: 'upload',
-              label: 'Card Art',
-              relationTo: 'media',
-              hasMany: false,
+              name: 'variants',
+              type: 'join',
+              collection: 'cards-variants',
+              on: 'card',
+              maxDepth: 2,
             },
           ],
         },

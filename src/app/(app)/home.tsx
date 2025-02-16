@@ -3,7 +3,7 @@
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { isDarkTheme } from '@/utils/utils';
+import { isDarkTheme } from '@/utils';
 import { CldImage } from 'next-cloudinary';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';

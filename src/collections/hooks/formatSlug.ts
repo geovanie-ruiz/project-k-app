@@ -1,5 +1,5 @@
 import { Article } from '@/payload-types';
-import { kebabIt } from '@/utils/utils';
+import { kebabIt } from '@/utils';
 import type { CollectionBeforeChangeHook } from 'payload';
 
 const slugNumber = [
