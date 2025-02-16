@@ -14,8 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { cn } from '@/utils';
 import { EVENT_TYPES, EventType } from '@/utils/types/events.types';
-import { cn } from '@/utils/utils';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 
