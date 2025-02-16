@@ -5,8 +5,9 @@ import { fileURLToPath } from 'url';
 
 import { Articles } from './collections/Articles';
 import { Artists } from './collections/Artists';
-import { CardCollection } from './collections/CardCollection';
 import { Cards } from './collections/Cards';
+import { CardsVariants } from './collections/CardsVariants';
+import { CardsVariantsCollected } from './collections/CardsVariantsCollected';
 import { Categories } from './collections/Categories';
 import { Characters } from './collections/Characters';
 import { Decks } from './collections/Decks';
@@ -17,6 +18,7 @@ import { Sets } from './collections/Sets';
 import { Spoilers } from './collections/Spoilers';
 import { Tags } from './collections/Tags';
 import { Users } from './collections/Users';
+import { Variants } from './collections/Variants';
 import { ArticlesTableExpansion } from './schemaHooks/articles';
 import { CardsTableExpansion } from './schemaHooks/cards';
 import { DecksTableExpansion } from './schemaHooks/decks';
@@ -56,8 +58,9 @@ export default buildConfig({
   collections: [
     Articles,
     Artists,
-    CardCollection,
     Cards,
+    CardsVariants,
+    CardsVariantsCollected,
     Categories,
     Characters,
     CommunityEvents,
@@ -68,6 +71,7 @@ export default buildConfig({
     Spoilers,
     Tags,
     Users,
+    Variants,
   ],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

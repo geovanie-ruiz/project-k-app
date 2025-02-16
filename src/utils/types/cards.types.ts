@@ -8,16 +8,6 @@ export enum CardType {
   RUNE = 'Rune',
 }
 
-export const CARD_TYPES: CardType[] = [
-  CardType.UNIT,
-  CardType.CHAMPION,
-  CardType.LEGEND,
-  CardType.SPELL,
-  CardType.BATTLEFIELD,
-  CardType.GEAR,
-  CardType.RUNE,
-];
-
 export enum RuneType {
   ANY = 'Any',
   CALM = 'Calm',
@@ -28,42 +18,14 @@ export enum RuneType {
   PHYSICAL = 'Physical',
 }
 
-export const ALL_RUNE_TYPES: RuneType[] = [
-  RuneType.ANY,
-  RuneType.CALM,
-  RuneType.CHAOS,
-  RuneType.FURY,
-  RuneType.MENTAL,
-  RuneType.ORDER,
-  RuneType.PHYSICAL,
-];
-
-export const RUNE_TYPES: RuneType[] = [
-  RuneType.CALM,
-  RuneType.CHAOS,
-  RuneType.FURY,
-  RuneType.MENTAL,
-  RuneType.ORDER,
-  RuneType.PHYSICAL,
-];
-
 export enum Rarity {
   NONE = 'None',
-  WHITE_CIRCLE = 'White Circle',
-  GREEN_TRIANGLE = 'Green Triangle',
-  PURPLE_DIAMOND = 'Purple Diamond',
-  GOLDEN_PENTAGON = 'Golden Pentagon',
+  COMMON = 'Common',
+  UNCOMMON = 'Uncommon',
+  RARE = 'Rare',
+  LEGENDARY = 'Legendary',
   PROMO = 'Promo',
 }
-
-export const RARITIES: Rarity[] = [
-  Rarity.NONE,
-  Rarity.WHITE_CIRCLE,
-  Rarity.GREEN_TRIANGLE,
-  Rarity.PURPLE_DIAMOND,
-  Rarity.GOLDEN_PENTAGON,
-  Rarity.PROMO,
-];
 
 export const COMBAT_TYPES = ['Unit', 'Champion'];
 export const RULES_TYPES = ['Rune', 'Battlefield', 'Legend'];

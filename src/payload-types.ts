@@ -47,8 +47,9 @@ export interface Config {
   collections: {
     articles: Article;
     artists: Artist;
-    'card-collection': CardCollection;
     cards: Card;
+    'cards-variants': CardsVariant;
+    'cards-variants-collected': CardsVariantsCollected;
     categories: Category;
     characters: Character;
     events: Event;
@@ -59,16 +60,22 @@ export interface Config {
     spoilers: Spoiler;
     tags: Tag;
     users: User;
+    variants: Variant;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    cards: {
+      variants: 'cards-variants';
+    };
+  };
   collectionsSelect: {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     artists: ArtistsSelect<false> | ArtistsSelect<true>;
-    'card-collection': CardCollectionSelect<false> | CardCollectionSelect<true>;
     cards: CardsSelect<false> | CardsSelect<true>;
+    'cards-variants': CardsVariantsSelect<false> | CardsVariantsSelect<true>;
+    'cards-variants-collected': CardsVariantsCollectedSelect<false> | CardsVariantsCollectedSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     characters: CharactersSelect<false> | CharactersSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
@@ -79,6 +86,7 @@ export interface Config {
     spoilers: SpoilersSelect<false> | SpoilersSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    variants: VariantsSelect<false> | VariantsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -207,59 +215,6 @@ export interface Artist {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "card-collection".
- */
-export interface CardCollection {
-  id: number;
-  owner: number | User;
-  sets?:
-    | {
-        set?: (number | null) | Set;
-        cards?:
-          | {
-              card?: (number | null) | Card;
-              normal?: number | null;
-              foil?: number | null;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * (Field only updates on manual page reload; known issue)
-         */
-        completion?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sets".
- */
-export interface Set {
-  id: number;
-  name: string;
-  releasedAt?: string | null;
-  set_code: string;
-  /**
-   * The published card total for the set
-   */
-  total: number;
-  /**
-   * The true card total for the set
-   */
-  collectible?: number | null;
-  /**
-   * A brief description of the set
-   */
-  description?: string | null;
-  key_art?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cards".
  */
 export interface Card {
@@ -279,9 +234,10 @@ export interface Card {
   might?: number | null;
   set_index: number;
   set: number | Set;
-  rarity: 'None' | 'White Circle' | 'Green Triangle' | 'Purple Diamond' | 'Golden Pentagon' | 'Promo';
-  artist?: (number | null) | Artist;
-  card_art?: (number | null) | Media;
+  variants?: {
+    docs?: (number | CardsVariant)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
   keywords?: (number | Keyword)[] | null;
   tags?: (number | Tag)[] | null;
   abilities?: {
@@ -312,6 +268,60 @@ export interface Card {
 export interface Character {
   id: number;
   name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sets".
+ */
+export interface Set {
+  id: number;
+  name: string;
+  releasedAt?: string | null;
+  set_code: string;
+  /**
+   * The published card total for the set
+   */
+  total: number;
+  /**
+   * The true card total for the set
+   */
+  collectible?: number | null;
+  /**
+   * A brief description of the set
+   */
+  description?: string | null;
+  key_art?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cards-variants".
+ */
+export interface CardsVariant {
+  id: number;
+  card: number | Card;
+  variant: number | Variant;
+  /**
+   * Indicates this variant is the de facto variant of the card.
+   */
+  defaultVariant?: boolean | null;
+  artist?: (number | null) | Artist;
+  card_art: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants".
+ */
+export interface Variant {
+  id: number;
+  full_variant_name?: string | null;
+  name?: string | null;
+  rarity: 'None' | 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'Promo';
   updatedAt: string;
   createdAt: string;
 }
@@ -353,6 +363,18 @@ export interface Tag {
   id: number;
   region?: boolean | null;
   tag?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cards-variants-collected".
+ */
+export interface CardsVariantsCollected {
+  id: number;
+  user: number | User;
+  variant: number | CardsVariant;
+  quantity?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -503,12 +525,16 @@ export interface PayloadLockedDocument {
         value: number | Artist;
       } | null)
     | ({
-        relationTo: 'card-collection';
-        value: number | CardCollection;
-      } | null)
-    | ({
         relationTo: 'cards';
         value: number | Card;
+      } | null)
+    | ({
+        relationTo: 'cards-variants';
+        value: number | CardsVariant;
+      } | null)
+    | ({
+        relationTo: 'cards-variants-collected';
+        value: number | CardsVariantsCollected;
       } | null)
     | ({
         relationTo: 'categories';
@@ -549,6 +575,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'variants';
+        value: number | Variant;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -621,30 +651,6 @@ export interface ArtistsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "card-collection_select".
- */
-export interface CardCollectionSelect<T extends boolean = true> {
-  owner?: T;
-  sets?:
-    | T
-    | {
-        set?: T;
-        cards?:
-          | T
-          | {
-              card?: T;
-              normal?: T;
-              foil?: T;
-              id?: T;
-            };
-        completion?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cards_select".
  */
 export interface CardsSelect<T extends boolean = true> {
@@ -660,9 +666,7 @@ export interface CardsSelect<T extends boolean = true> {
   might?: T;
   set_index?: T;
   set?: T;
-  rarity?: T;
-  artist?: T;
-  card_art?: T;
+  variants?: T;
   keywords?: T;
   tags?: T;
   abilities?: T;
@@ -679,6 +683,30 @@ export interface CardsSelect<T extends boolean = true> {
 export interface RecycleSelect<T extends boolean = true> {
   rune?: T;
   id?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cards-variants_select".
+ */
+export interface CardsVariantsSelect<T extends boolean = true> {
+  card?: T;
+  variant?: T;
+  defaultVariant?: T;
+  artist?: T;
+  card_art?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cards-variants-collected_select".
+ */
+export interface CardsVariantsCollectedSelect<T extends boolean = true> {
+  user?: T;
+  variant?: T;
+  quantity?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -856,6 +884,17 @@ export interface CreatorProfilesSelect<T extends boolean = true> {
   site?: T;
   url?: T;
   id?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants_select".
+ */
+export interface VariantsSelect<T extends boolean = true> {
+  full_variant_name?: T;
+  name?: T;
+  rarity?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

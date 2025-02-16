@@ -13,7 +13,8 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "payload:types": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload generate:types"
+    "payload:types": "PAYLOAD_CONFIG_PATH=./src/payload.config.ts payload generate:types",
+    "shadd": "npx shadcn@latest add"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.9.6",
@@ -32,6 +33,7 @@
     "@radix-ui/react-popover": "^1.1.5",
     "@radix-ui/react-scroll-area": "^1.2.2",
     "@radix-ui/react-select": "^2.1.5",
+    "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.6",
@@ -48,6 +50,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "escape-html": "^1.0.3",
+    "framer-motion": "^12.0.11",
     "graphql": "^16.10.0",
     "jest-environment-jsdom": "^29.7.0",
     "lucide-react": "^0.468.0",
@@ -58,6 +61,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intersection-observer": "^9.14.0",
+    "recharts": "^2.15.1",
     "short-unique-id": "^5.2.0",
     "simple-icons": "^14.2.0",
     "sonner": "^1.7.2",
@@ -85,5 +89,8 @@
     "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "overrides": {
+    "react-is": "^19.0.0-rc-69d4b800-20241021"
   }
 }
