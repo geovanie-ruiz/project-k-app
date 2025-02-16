@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Spoiler } from '@/payload-types';
-import { showDateTitle } from '@/utils/utils';
+import { showDateTitle } from '@/utils';
 import { CldImage } from 'next-cloudinary';
 import { InView } from 'react-intersection-observer';
 import { fetchSpoilers } from '../_actions/fetchSpoilers';

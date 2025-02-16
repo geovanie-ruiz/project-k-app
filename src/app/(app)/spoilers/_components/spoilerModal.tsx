@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Spoiler } from '@/payload-types';
-import { showDateTitle } from '@/utils/utils';
+import { showDateTitle } from '@/utils';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 
