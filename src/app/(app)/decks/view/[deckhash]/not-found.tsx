@@ -8,7 +8,7 @@ export default function DeckNotFound() {
       <Card className="p-6 text-center">
         <h1 className="text-2xl font-bold mb-4">Deck Not Found</h1>
         <p className="text-muted-foreground mb-6">
-          The deck you're looking for doesn't exist or the URL is invalid.
+          {`The deck you're looking for doesn't exist or the URL is invalid.`}
         </p>
         <Button asChild>
           <Link href="/decks">Back to Decks</Link>

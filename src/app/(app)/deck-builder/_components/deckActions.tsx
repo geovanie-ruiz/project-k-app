@@ -8,8 +8,8 @@ interface ActionRowProps {
 }
 
 export function ActionRow({
-  deckName,
-  saveDeck,
+  // deckName,
+  // saveDeck,
   copyDeckLink,
 }: ActionRowProps) {
   return (

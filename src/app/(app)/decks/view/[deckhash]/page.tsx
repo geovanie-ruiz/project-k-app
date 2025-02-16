@@ -21,7 +21,6 @@ async function getDeckFromHash(hash: string): Promise<EditDeckList> {
     console.log('Decompressed:', decompressed);
     // TODO - Validate the deck structure
     const deck = JSON.parse(decompressed);
-    
 
     // Ensure all required properties exist
     return {
@@ -44,7 +43,7 @@ export default async function DeckViewPage({ params }: DeckViewPageProps) {
   try {
     const { deckhash } = await params;
     deck = await getDeckFromHash(deckhash);
-  } catch (error) {
+  } catch {
     notFound();
   }
 
