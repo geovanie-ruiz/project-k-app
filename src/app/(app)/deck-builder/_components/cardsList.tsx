@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/select';
 import { Card, Set } from '@/payload-types';
 import { CldImage } from 'next-cloudinary';
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useCallback, useEffect, useState } from 'react';
+import { InView } from 'react-intersection-observer';
 import { fetchCards } from '../_actions/fetchCards';
 
 export const CARDS_PER_PAGE = 300;
@@ -40,8 +40,6 @@ export function CardsList({ filters, addCardToDeck }: CardsListProps) {
   const [filterText, setFilterText] = useState('');
   const [filterType, setFilterType] = useState('name');
 
-  const { ref, inView } = useInView();
-
   const loadMoreCards = async () => {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
@@ -64,84 +62,93 @@ export function CardsList({ filters, addCardToDeck }: CardsListProps) {
     }
   };
 
-  const applyFilters = (
-    cardsToFilter: Card[],
-    text: string,
-    type: 'name' | 'text' | 'both' | string
-  ) => {
-    const lowerCaseText = text.toLowerCase();
-    const filtered = cardsToFilter.filter((card) => {
-      const matchesText =
-        type === 'name'
-          ? card.name.toLowerCase().includes(lowerCaseText)
-          : type === 'text'
-            ? (card.abilities_text?.toLowerCase().includes(lowerCaseText) ??
-              false)
-            : card.name.toLowerCase().includes(lowerCaseText) ||
-              card.abilities_text?.toLowerCase().includes(lowerCaseText);
+  const applyFilters = useCallback(
+    (
+      cardsToFilter: Card[],
+      text: string,
+      type: 'name' | 'text' | 'both' | string
+    ) => {
+      const lowerCaseText = text.toLowerCase();
+      const filtered = cardsToFilter.filter((card) => {
+        const matchesText =
+          type === 'name'
+            ? card.name.toLowerCase().includes(lowerCaseText)
+            : type === 'text'
+              ? (card.abilities_text?.toLowerCase().includes(lowerCaseText) ??
+                false)
+              : card.name.toLowerCase().includes(lowerCaseText) ||
+                card.abilities_text?.toLowerCase().includes(lowerCaseText);
 
-      const matchesRune =
-        filters.runeFilters.length === 0 ||
-        filters.runeFilters.some((rune) =>
-          card.rune?.includes(
-            rune as 'Calm' | 'Chaos' | 'Fury' | 'Mental' | 'Order' | 'Physical'
-          )
+        const matchesRune =
+          filters.runeFilters.length === 0 ||
+          filters.runeFilters.some((rune) =>
+            card.rune?.includes(
+              rune as
+                | 'Calm'
+                | 'Chaos'
+                | 'Fury'
+                | 'Mental'
+                | 'Order'
+                | 'Physical'
+            )
+          );
+
+        const matchesCardType =
+          filters.cardTypeFilters.length === 0 ||
+          filters.cardTypeFilters.includes(card.type);
+
+        const matchesMight =
+          filters.mightFilters.length === 0 ||
+          filters.mightFilters.some((might) =>
+            might === '10+'
+              ? card.might && card.might >= 10
+              : card.might === parseInt(might)
+          );
+
+        const matchesCost =
+          filters.costFilters.length === 0 ||
+          filters.costFilters.some((cost) =>
+            cost === '10+'
+              ? card.cost && card.cost >= 10
+              : card.cost === parseInt(cost)
+          );
+
+        const matchesRuneCost =
+          filters.runeCostFilters.length === 0 ||
+          filters.runeCostFilters.some((cost) =>
+            card.recycle ? card.recycle.length === parseInt(cost) : false
+          );
+
+        return (
+          matchesText &&
+          matchesRune &&
+          matchesCardType &&
+          matchesMight &&
+          matchesCost &&
+          matchesRuneCost
         );
-
-      const matchesCardType =
-        filters.cardTypeFilters.length === 0 ||
-        filters.cardTypeFilters.includes(card.type);
-
-      const matchesMight =
-        filters.mightFilters.length === 0 ||
-        filters.mightFilters.some((might) =>
-          might === '10+'
-            ? card.might && card.might >= 10
-            : card.might === parseInt(might)
-        );
-
-      const matchesCost =
-        filters.costFilters.length === 0 ||
-        filters.costFilters.some((cost) =>
-          cost === '10+'
-            ? card.cost && card.cost >= 10
-            : card.cost === parseInt(cost)
-        );
-
-      const matchesRuneCost =
-        filters.runeCostFilters.length === 0 ||
-        filters.runeCostFilters.some((cost) =>
-          card.recycle ? card.recycle.length === parseInt(cost) : false
-        );
-
-      return (
-        matchesText &&
-        matchesRune &&
-        matchesCardType &&
-        matchesMight &&
-        matchesCost &&
-        matchesRuneCost
-      );
-    });
-    setFilteredCards(filtered);
-  };
+      });
+      setFilteredCards(filtered);
+    },
+    [
+      filters.cardTypeFilters,
+      filters.costFilters,
+      filters.mightFilters,
+      filters.runeCostFilters,
+      filters.runeFilters,
+    ]
+  );
 
   // Apply filters whenever filters or cards change
   useEffect(() => {
     applyFilters(cards, filterText, filterType);
-  }, [filters, filterText, filterType, cards]);
+  }, [filters, filterText, filterType, cards, applyFilters]);
 
-  // Load initial cards
-  useEffect(() => {
-    loadMoreCards();
-  }, []);
-
-  // Load more cards when scrolling
-  useEffect(() => {
+  const handleInViewChange = (inView: boolean) => {
     if (inView && !isLoading) {
       loadMoreCards();
     }
-  }, [inView, isLoading]);
+  };
 
   const getGridClass = () => {
     switch (cardSize) {
@@ -224,20 +231,35 @@ export function CardsList({ filters, addCardToDeck }: CardsListProps) {
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Load More Button */}
-      {hasMore && (
-        <div ref={ref} className="flex justify-center py-4">
-          {isLoading ? (
-            <p className="text-muted-foreground">Loading more cards...</p>
-          ) : (
-            <Button onClick={loadMoreCards} variant="outline">
-              Load More
-            </Button>
-          )}
-        </div>
-      )}
+        {/* Load More Button */}
+        {isLoading && (
+          <p className="text-center text-muted-foreground py-4">
+            Loading more cards...
+          </p>
+        )}
+        {hasMore && !isLoading && (
+          <InView
+            onChange={handleInViewChange}
+            trackVisibility={true}
+            delay={100}
+            initialInView={true}
+          >
+            {({ ref }) => (
+              <div ref={ref} className="text-center">
+                <Button onClick={loadMoreCards} variant="outline">
+                  Load More
+                </Button>
+              </div>
+            )}
+          </InView>
+        )}
+        {!hasMore && (
+          <p className="text-center text-muted-foreground py-4">
+            No more cards to load.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
