@@ -290,7 +290,11 @@ const Navbar = ({ pathname }: { pathname: string }) => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavLink url="#" label="Deck Builder" currentPathname={pathname} />
+          <NavLink
+            url="/deck-builder"
+            label="Deck Builder"
+            currentPathname={pathname}
+          />
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavLink url="#" label="Collection" currentPathname={pathname} />
@@ -329,7 +333,7 @@ export function NavBar() {
               <Navbar pathname={pathname} />
             </div>
           </div>
-          <div className="flex items-center justify-end basis-1/3 gap-4">
+          <div className="flex items-center justify-center min-w-32 gap-4">
             <div className="max-sm:hidden">
               <Search />
             </div>
