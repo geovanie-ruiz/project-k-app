@@ -12,7 +12,7 @@ import {
 import { InView } from 'react-intersection-observer';
 
 import { Article, Media, User } from '@/payload-types';
-import { showDateTitle } from '@/utils/utils';
+import { showDateTitle } from '@/utils';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { useState } from 'react';

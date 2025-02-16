@@ -12,12 +12,12 @@ import { Metadata } from 'next';
 import { AlsoBy } from './_components/alsoBy';
 import { ArticleHero, HeroProps } from './_components/hero';
 
+import { showDateTitle } from '@/utils';
 import {
   DEFAULT_OG_IMAGE_PUBLIC_ID,
   generateMeta,
   PageMeta,
 } from '@/utils/opengraph';
-import { showDateTitle } from '@/utils/utils';
 
 type ArticleViewProps = {
   params: Promise<{ slug: string }>;

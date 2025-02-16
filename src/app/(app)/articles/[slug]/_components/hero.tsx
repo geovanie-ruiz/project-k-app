@@ -2,7 +2,7 @@
 
 import SocialLink, { SupportedSocials } from '@/components/custom/socialsLink';
 import { Category, CreatorProfiles, Media } from '@/payload-types';
-import { showDateTitle } from '@/utils/utils';
+import { showDateTitle } from '@/utils';
 import { CldImage } from 'next-cloudinary';
 import React from 'react';
 import { TagList } from '../../../../../components/custom/tagList';
