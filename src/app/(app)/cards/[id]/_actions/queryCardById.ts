@@ -6,5 +6,11 @@ export const queryCardById = async ({ id }: { id: number }) => {
   return await payload.findByID({
     collection: 'cards',
     id: id,
+    joins: {
+      variants: {
+        sort: 'rarity',
+      },
+    },
+    depth: 2,
   });
 };

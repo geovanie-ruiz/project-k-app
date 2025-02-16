@@ -3,13 +3,56 @@
 import CardText from '@/components/custom/cardText';
 import Icon, { ICON_KEYS } from '@/components/icons/ComponentIcon';
 import MightIcon from '@/components/icons/MightIcon';
-import { Card, Media, Set, Tag } from '@/payload-types';
-import { formatSetId } from '@/utils/utils';
-import { CldImage } from 'next-cloudinary';
+import { Card, CardsVariant, Media, Set, Tag, Variant } from '@/payload-types';
+import { formatSetId, partition } from '@/utils';
+import { useEffect, useState } from 'react';
 import { getCardColorBG } from '../../_actions/getCardColor';
+import VariantsCarousel, { ArtVariant } from './VariantsCarousel';
+
+const hasEffect = (card: Card) => {
+  if (card.abilities) return true;
+  if (card.keywords && card.keywords.length > 0) return true;
+  return false;
+};
+
+const getArtVariant = (variant: CardsVariant): ArtVariant => {
+  return {
+    publicId: (variant.card_art as Media).filename!,
+    variantName: (variant.variant as Variant).full_variant_name!,
+  };
+};
 
 export function CardPage({ card }: { card: Card }) {
-  const cardArt = card.card_art as Media;
+  const [art, setArt] = useState<ArtVariant[]>([
+    { publicId: 'cardback-blue', variantName: 'Cardback' },
+  ]);
+
+  useEffect(() => {
+    if (
+      !card.variants ||
+      !card.variants.docs ||
+      card.variants.docs.length === 0
+    ) {
+      setArt([
+        {
+          publicId: 'cardback-blue',
+          variantName: 'Cardback',
+        },
+      ]);
+    } else {
+      const variants = card.variants.docs as CardsVariant[];
+      const [defaultVariant, otherVariants] = partition<CardsVariant>(
+        variants,
+        (v) => !!v.defaultVariant
+      );
+      const artVariants = [
+        getArtVariant(defaultVariant[0]),
+        ...otherVariants.map((variant) => getArtVariant(variant)),
+      ];
+      setArt(artVariants);
+    }
+  }, [card]);
+
   const setCode = (card.set as Set).set_code;
   const setTotal = (card.set as Set).total;
   const cycleRunes =
@@ -22,22 +65,7 @@ export function CardPage({ card }: { card: Card }) {
       className="mx-auto w-full max-w-screen-xl px-4 mb-4 flex flex-col-reverse md:flex-row gap-2"
     >
       <div className="w-full md:w-3/12">
-        <CldImage
-          src={cardArt?.filename ?? 'cardback-blue'}
-          alt={card.full_card_name || 'Art for Unknown Card'}
-          width={1000}
-          height={800}
-          // gravity="auto"
-          className="rounded-xl px-1"
-        />
-        {/* Cropped image for mobile */}
-        {/* <Image
-          src="https://res.cloudinary.com/cdwiki/image/upload/c_crop,x_80,y_70,w_320,h_180/v1734044655/25c6059a82e7081902b57dd03644668e.jpg"
-          alt="---CARDTITLE--"
-          width={1000}
-          height={800}
-          className="sm:hidden"
-        />*/}
+        <VariantsCarousel variants={art} />
       </div>
       <div className="w-full md:w-9/12 rounded-md my-1">
         <div
@@ -151,7 +179,7 @@ export function CardPage({ card }: { card: Card }) {
             </div>
           </div>
 
-          {card.abilities_text && (
+          {hasEffect(card) && (
             <div className="mt-2">
               <div className="flex items-center ml-1 -m-px">
                 <label className=" bg-content_light-500 dark:bg-content-500  text-xs font-semibold border-content2 px-1 rounded-t">
@@ -164,6 +192,19 @@ export function CardPage({ card }: { card: Card }) {
                   keywords={card.keywords}
                   showReminders={true}
                 />
+              </div>
+            </div>
+          )}
+
+          {card.flavor && (
+            <div className="mt-2">
+              <div className="flex items-center ml-1 -m-px">
+                <label className=" bg-content_light-500 dark:bg-content-500  text-xs font-semibold border-content2 px-1 rounded-t">
+                  FLAVOR
+                </label>
+              </div>
+              <div className="rounded bg-content_light-500 dark:bg-content-500 px-2 py-1 md:px-3">
+                {card.flavor}
               </div>
             </div>
           )}

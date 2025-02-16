@@ -22,7 +22,9 @@ export default async function CardView({ params }: CardViewProps) {
   if (!card) return notFound();
 
   return (
-    <CardPage card={card} />
+    <article id={`card-${card.id}`}>
+      <CardPage card={card} />
+    </article>
   );
 }
 
