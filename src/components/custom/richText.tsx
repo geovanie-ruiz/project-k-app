@@ -10,9 +10,9 @@ import {
 } from '@payloadcms/richtext-lexical/react';
 
 import Icon from '@/components/icons/ComponentIcon';
+import { cn } from '@/utils';
 import { SerializedPrettyIconNode } from '@/utils/lexical/features/pretty-icons/client/nodes/PrettyIconNode';
 import { SerializedPrettyKeywordNode } from '@/utils/lexical/features/pretty-keywords/client/nodes/PrettyKeywordNode';
-import { cn } from '@/utils/utils';
 import Keyword from './keyword';
 
 type NodeTypes = DefaultNodeTypes;

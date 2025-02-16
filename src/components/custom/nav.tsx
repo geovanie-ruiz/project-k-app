@@ -23,7 +23,7 @@ import {
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 
-import { isDarkTheme } from '@/utils/utils';
+import { isDarkTheme } from '@/utils';
 
 import LogoIcon from '@/components/icons/2RunesLogo';
 import ProfileIcon from '@/components/icons/CreatorProfile';
