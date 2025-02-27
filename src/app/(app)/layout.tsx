@@ -53,7 +53,7 @@ export default function RootLayout({
             <div className="absolute top-0 z-[-2] h-screen w-screen"></div>
             {breadcrumb}
             <div className="flex flex-grow">
-              <main className="container mx-auto">{children}</main>
+              <main className="w-full">{children}</main>
               <Toaster />
             </div>
             <Footer />

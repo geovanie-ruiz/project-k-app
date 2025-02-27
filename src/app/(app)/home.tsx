@@ -1,30 +1,23 @@
 "use client";
 
-import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
-import { buttonVariants } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { isDarkTheme } from '@/utils/utils';
-import { Link } from 'lucide-react';
-import { CldImage } from 'next-cloudinary';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { Suspense } from 'react';
 import bg from '../../assets/bg.jpg';
 
 export default function Home() {
   const { theme, systemTheme } = useTheme();
 
   return (
-    <div className="bg-content2 text-white">
-      <div className="relative">
+    <div className="bg-content2 text-white ">
+      <div className="relative mb-3">
         {/* Background Image */}
-        <div className="absolute inset-0">
+        <div className="w-full absolute inset-0">
           <Image
             src={bg}
             alt="Background"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+          <div className="absolute inset-0 bg-black bg-opacity-30"></div>
         </div>
         <div className="max-w-7xl mx-auto px-2 relative z-10 flex flex-col justify-center h-64 space-y-4">
           <h1 className="text-4xl font-bold drop-shadow-sm">2RUNES</h1>
@@ -37,8 +30,12 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-none shadow-none">
+      <div className="container mx-auto max-w-7xl">
+        <h1 className="bold text-xl uppercase">Latest Articles</h1>
+        <div className='flex items-center justify-center p-4'>
+
+        </div>
+        {/* <Card className="w-full max-w-md border-none shadow-none">
           <CardContent className="text-center">
             <p className="mt-4 text-lg">Coming Soon: The Unofficial Home for</p>
             <h1 className="text-4xl font-bold">PROJECT K</h1>
@@ -113,7 +110,7 @@ export default function Home() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* <div className="py-4 container max-w-5xl mx-auto ">
