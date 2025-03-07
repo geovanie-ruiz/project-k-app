@@ -2,7 +2,9 @@
 
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import { Suspense } from 'react';
 import bg from '../../assets/bg.jpg';
+import { ArticleList } from './articles/_components/ArticleList';
 
 export default function Home() {
   const { theme, systemTheme } = useTheme();
@@ -19,9 +21,9 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black bg-opacity-30"></div>
         </div>
-        <div className="max-w-7xl mx-auto px-2 relative z-10 flex flex-col justify-center h-64 space-y-4">
-          <h1 className="text-4xl font-bold drop-shadow-sm">2RUNES</h1>
-          <p className="text-lg drop-shadow-sm">The Unofficial Home for PROJECT K</p>
+        <div className="max-w-7xl mx-auto px-2 relative z-10 flex flex-col justify-center h-56 space-y-4">
+          <h1 className="text-5xl onest-regular text-shadow-md font-bold drop-shadow-sm">2RUNES</h1>
+          <p className="text-xl protest-riot drop-shadow-sm text-shadow">The Unofficial Home for PROJECT K</p>
         </div>
 
         {/* Diagonal Shape */}
@@ -31,10 +33,12 @@ export default function Home() {
       </div>
 
       <div className="container mx-auto max-w-7xl">
-        <h1 className="bold text-xl uppercase">Latest Articles</h1>
-        <div className='flex items-center justify-center p-4'>
-
-        </div>
+        <h1 className="protest-riot text-shadow bold text-2xl uppercase mb-2">Latest Articles</h1>
+        <Suspense
+        fallback={<div className="text-center">Loading articles...</div>}
+        >
+          <ArticleList />
+        </Suspense>
         {/* <Card className="w-full max-w-md border-none shadow-none">
           <CardContent className="text-center">
             <p className="mt-4 text-lg">Coming Soon: The Unofficial Home for</p>

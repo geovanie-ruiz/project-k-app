@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Protest+Riot&display=swap');
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -89,4 +91,24 @@ body {
   height: 100%;
   background-color: #27272a;
   clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+
+.protest-riot {
+  font-family: 'Protest Riot', sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.onest-regular {
+  font-family: 'Onest', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.text-shadow {
+  text-shadow: 2px 3px 2px black;
+}
+
+.text-shadow-md {
+  text-shadow: 3px 4px 3px black;
 }

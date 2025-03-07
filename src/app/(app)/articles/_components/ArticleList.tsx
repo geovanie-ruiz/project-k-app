@@ -68,7 +68,7 @@ export function ArticleList() {
       })
       .filter((tag) => tag !== '');
     return (
-      <Card key={`article-${article.id}`} className="h-full flex flex-col">
+      <Card key={`article-${article.id}`} className="h-full bg-content-300 ex-col">
         <CardHeader className="p-0">
           <div className="relative w-full pt-[56.25%]">
             <Link href={`/articles/${article.slug!}`} className="hover:pointer">
